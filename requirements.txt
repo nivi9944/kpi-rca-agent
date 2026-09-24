@@ -1,0 +1,12 @@
+duckdb>=1.1
+pandas>=2.2
+numpy>=1.26
+scipy>=1.13
+statsmodels>=0.14
+pydantic>=2.7
+matplotlib>=3.8
+PyYAML>=6.0
+openai>=1.40
+python-dotenv>=1.0
+streamlit>=1.38
+pytest>=8.0

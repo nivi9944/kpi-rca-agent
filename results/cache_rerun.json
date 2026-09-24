@@ -1,0 +1,11 @@
+{
+  "nvidia": {
+    "scenarios": 50,
+    "infra_failed_attempts": 0,
+    "llm_calls": 570,
+    "cache_hits": 570,
+    "hit_rate_pct": 100.0,
+    "avg_latency_first_s": 127.09,
+    "avg_latency_rerun_s": 75.66
+  }
+}

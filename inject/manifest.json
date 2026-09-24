@@ -1,0 +1,976 @@
+{
+  "master_seed": 20260924,
+  "n": 50,
+  "scenarios": [
+    {
+      "id": "s01_volume_drop_small",
+      "type": "volume_drop",
+      "severity": "small",
+      "metric": "gmv",
+      "week": "2018-04-30",
+      "params": {
+        "dimension": "customer_state",
+        "segment": "SP",
+        "pct": 0.3
+      },
+      "seed": 20260925,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "customer_state",
+        "segment": "SP",
+        "effect": null
+      }
+    },
+    {
+      "id": "s02_volume_drop_medium",
+      "type": "volume_drop",
+      "severity": "medium",
+      "metric": "gmv",
+      "week": "2017-10-23",
+      "params": {
+        "dimension": "customer_state",
+        "segment": "RJ",
+        "pct": 0.5
+      },
+      "seed": 20260926,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "customer_state",
+        "segment": "RJ",
+        "effect": null
+      }
+    },
+    {
+      "id": "s03_volume_drop_large",
+      "type": "volume_drop",
+      "severity": "large",
+      "metric": "gmv",
+      "week": "2017-09-25",
+      "params": {
+        "dimension": "customer_state",
+        "segment": "MG",
+        "pct": 0.8
+      },
+      "seed": 20260927,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "customer_state",
+        "segment": "MG",
+        "effect": null
+      }
+    },
+    {
+      "id": "s04_volume_drop_small",
+      "type": "volume_drop",
+      "severity": "small",
+      "metric": "gmv",
+      "week": "2017-10-16",
+      "params": {
+        "dimension": "product_category",
+        "segment": "bed_bath_table",
+        "pct": 0.3
+      },
+      "seed": 20260928,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "bed_bath_table",
+        "effect": null
+      }
+    },
+    {
+      "id": "s05_volume_drop_medium",
+      "type": "volume_drop",
+      "severity": "medium",
+      "metric": "gmv",
+      "week": "2017-06-05",
+      "params": {
+        "dimension": "product_category",
+        "segment": "health_beauty",
+        "pct": 0.5
+      },
+      "seed": 20260929,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "health_beauty",
+        "effect": null
+      }
+    },
+    {
+      "id": "s06_volume_drop_large",
+      "type": "volume_drop",
+      "severity": "large",
+      "metric": "gmv",
+      "week": "2017-05-15",
+      "params": {
+        "dimension": "product_category",
+        "segment": "sports_leisure",
+        "pct": 0.8
+      },
+      "seed": 20260930,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "sports_leisure",
+        "effect": null
+      }
+    },
+    {
+      "id": "s07_volume_drop_small",
+      "type": "volume_drop",
+      "severity": "small",
+      "metric": "gmv",
+      "week": "2017-07-03",
+      "params": {
+        "dimension": "product_category",
+        "segment": "watches_gifts",
+        "pct": 0.3
+      },
+      "seed": 20260931,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "watches_gifts",
+        "effect": null
+      }
+    },
+    {
+      "id": "s08_volume_drop_medium",
+      "type": "volume_drop",
+      "severity": "medium",
+      "metric": "gmv",
+      "week": "2017-10-02",
+      "params": {
+        "dimension": "customer_state",
+        "segment": "RS",
+        "pct": 0.5
+      },
+      "seed": 20260932,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "customer_state",
+        "segment": "RS",
+        "effect": null
+      }
+    },
+    {
+      "id": "s09_price_drop_small",
+      "type": "price_drop",
+      "severity": "small",
+      "metric": "aov",
+      "week": "2017-09-25",
+      "params": {
+        "dimension": "product_category",
+        "segment": "watches_gifts",
+        "pct": 0.2
+      },
+      "seed": 20260933,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "watches_gifts",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s10_price_drop_medium",
+      "type": "price_drop",
+      "severity": "medium",
+      "metric": "aov",
+      "week": "2017-06-19",
+      "params": {
+        "dimension": "product_category",
+        "segment": "health_beauty",
+        "pct": 0.35
+      },
+      "seed": 20260934,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "health_beauty",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s11_price_drop_large",
+      "type": "price_drop",
+      "severity": "large",
+      "metric": "aov",
+      "week": "2017-06-12",
+      "params": {
+        "dimension": "product_category",
+        "segment": "computers_accessories",
+        "pct": 0.5
+      },
+      "seed": 20260935,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "computers_accessories",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s12_price_drop_small",
+      "type": "price_drop",
+      "severity": "small",
+      "metric": "aov",
+      "week": "2017-10-09",
+      "params": {
+        "dimension": "product_category",
+        "segment": "cool_stuff",
+        "pct": 0.2
+      },
+      "seed": 20260936,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "cool_stuff",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s13_price_drop_medium",
+      "type": "price_drop",
+      "severity": "medium",
+      "metric": "aov",
+      "week": "2017-07-31",
+      "params": {
+        "dimension": "product_category",
+        "segment": "sports_leisure",
+        "pct": 0.35
+      },
+      "seed": 20260937,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "sports_leisure",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s14_price_drop_large",
+      "type": "price_drop",
+      "severity": "large",
+      "metric": "aov",
+      "week": "2017-10-02",
+      "params": {
+        "dimension": "product_category",
+        "segment": "auto",
+        "pct": 0.5
+      },
+      "seed": 20260938,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "auto",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s15_price_drop_small",
+      "type": "price_drop",
+      "severity": "small",
+      "metric": "aov",
+      "week": "2017-07-03",
+      "params": {
+        "dimension": "product_category",
+        "segment": "bed_bath_table",
+        "pct": 0.2
+      },
+      "seed": 20260939,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "bed_bath_table",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s16_delivery_delay_small",
+      "type": "delivery_delay",
+      "severity": "small",
+      "metric": "on_time_rate",
+      "week": "2017-10-09",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "MG",
+        "days": 5
+      },
+      "seed": 20260940,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "MG",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s17_delivery_delay_medium",
+      "type": "delivery_delay",
+      "severity": "medium",
+      "metric": "on_time_rate",
+      "week": "2017-09-18",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "PR",
+        "days": 10
+      },
+      "seed": 20260941,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "PR",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s18_delivery_delay_large",
+      "type": "delivery_delay",
+      "severity": "large",
+      "metric": "on_time_rate",
+      "week": "2018-04-09",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "RJ",
+        "days": 15
+      },
+      "seed": 20260942,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "RJ",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s19_delivery_delay_small",
+      "type": "delivery_delay",
+      "severity": "small",
+      "metric": "on_time_rate",
+      "week": "2017-07-31",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "SC",
+        "days": 5
+      },
+      "seed": 20260943,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "SC",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s20_delivery_delay_medium",
+      "type": "delivery_delay",
+      "severity": "medium",
+      "metric": "on_time_rate",
+      "week": "2018-06-18",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "MG",
+        "days": 10
+      },
+      "seed": 20260944,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "MG",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s21_delivery_delay_large",
+      "type": "delivery_delay",
+      "severity": "large",
+      "metric": "on_time_rate",
+      "week": "2017-07-03",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "PR",
+        "days": 15
+      },
+      "seed": 20260945,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "PR",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s22_delivery_delay_small",
+      "type": "delivery_delay",
+      "severity": "small",
+      "metric": "on_time_rate",
+      "week": "2017-07-17",
+      "params": {
+        "dimension": "seller_state",
+        "segment": "SP",
+        "days": 5
+      },
+      "seed": 20260946,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "seller_state",
+        "segment": "SP",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s23_cancellation_spike_small",
+      "type": "cancellation_spike",
+      "severity": "small",
+      "metric": "cancellation_rate",
+      "week": "2017-07-31",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "boleto",
+        "pct": 0.1
+      },
+      "seed": 20260947,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "boleto",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s24_cancellation_spike_medium",
+      "type": "cancellation_spike",
+      "severity": "medium",
+      "metric": "cancellation_rate",
+      "week": "2017-05-15",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "credit_card",
+        "pct": 0.2
+      },
+      "seed": 20260948,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "credit_card",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s25_cancellation_spike_large",
+      "type": "cancellation_spike",
+      "severity": "large",
+      "metric": "cancellation_rate",
+      "week": "2017-05-22",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "voucher",
+        "pct": 0.35
+      },
+      "seed": 20260949,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "voucher",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s26_cancellation_spike_small",
+      "type": "cancellation_spike",
+      "severity": "small",
+      "metric": "cancellation_rate",
+      "week": "2017-05-01",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "boleto",
+        "pct": 0.1
+      },
+      "seed": 20260950,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "boleto",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s27_cancellation_spike_medium",
+      "type": "cancellation_spike",
+      "severity": "medium",
+      "metric": "cancellation_rate",
+      "week": "2017-10-02",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "credit_card",
+        "pct": 0.2
+      },
+      "seed": 20260951,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "credit_card",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s28_cancellation_spike_large",
+      "type": "cancellation_spike",
+      "severity": "large",
+      "metric": "cancellation_rate",
+      "week": "2017-06-26",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "voucher",
+        "pct": 0.35
+      },
+      "seed": 20260952,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "voucher",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s29_review_drop_small",
+      "type": "review_drop",
+      "severity": "small",
+      "metric": "avg_review_score",
+      "week": "2018-07-23",
+      "params": {
+        "dimension": "product_category",
+        "segment": "bed_bath_table",
+        "pct": 0.2
+      },
+      "seed": 20260953,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "bed_bath_table",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s30_review_drop_medium",
+      "type": "review_drop",
+      "severity": "medium",
+      "metric": "avg_review_score",
+      "week": "2018-06-25",
+      "params": {
+        "dimension": "product_category",
+        "segment": "health_beauty",
+        "pct": 0.4
+      },
+      "seed": 20260954,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "health_beauty",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s31_review_drop_large",
+      "type": "review_drop",
+      "severity": "large",
+      "metric": "avg_review_score",
+      "week": "2017-05-22",
+      "params": {
+        "dimension": "product_category",
+        "segment": "furniture_decor",
+        "pct": 0.6
+      },
+      "seed": 20260955,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "furniture_decor",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s32_review_drop_small",
+      "type": "review_drop",
+      "severity": "small",
+      "metric": "avg_review_score",
+      "week": "2018-07-16",
+      "params": {
+        "dimension": "product_category",
+        "segment": "housewares",
+        "pct": 0.2
+      },
+      "seed": 20260956,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "housewares",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s33_review_drop_medium",
+      "type": "review_drop",
+      "severity": "medium",
+      "metric": "avg_review_score",
+      "week": "2017-10-02",
+      "params": {
+        "dimension": "product_category",
+        "segment": "sports_leisure",
+        "pct": 0.4
+      },
+      "seed": 20260957,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "sports_leisure",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s34_review_drop_large",
+      "type": "review_drop",
+      "severity": "large",
+      "metric": "avg_review_score",
+      "week": "2018-04-16",
+      "params": {
+        "dimension": "product_category",
+        "segment": "computers_accessories",
+        "pct": 0.6
+      },
+      "seed": 20260958,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "computers_accessories",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "s35_mix_shift_small",
+      "type": "mix_shift",
+      "severity": "small",
+      "metric": "aov",
+      "week": "2017-06-05",
+      "params": {
+        "dimension": "product_category",
+        "segment": "telephony",
+        "pct": 0.1
+      },
+      "seed": 20260959,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "telephony",
+        "effect": "mix"
+      }
+    },
+    {
+      "id": "s36_mix_shift_medium",
+      "type": "mix_shift",
+      "severity": "medium",
+      "metric": "aov",
+      "week": "2017-07-31",
+      "params": {
+        "dimension": "product_category",
+        "segment": "electronics",
+        "pct": 0.2
+      },
+      "seed": 20260960,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "electronics",
+        "effect": "mix"
+      }
+    },
+    {
+      "id": "s37_mix_shift_large",
+      "type": "mix_shift",
+      "severity": "large",
+      "metric": "aov",
+      "week": "2017-05-15",
+      "params": {
+        "dimension": "product_category",
+        "segment": "fashion_bags_accessories",
+        "pct": 0.35
+      },
+      "seed": 20260961,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "fashion_bags_accessories",
+        "effect": "mix"
+      }
+    },
+    {
+      "id": "s38_mix_shift_small",
+      "type": "mix_shift",
+      "severity": "small",
+      "metric": "aov",
+      "week": "2018-04-02",
+      "params": {
+        "dimension": "product_category",
+        "segment": "telephony",
+        "pct": 0.1
+      },
+      "seed": 20260962,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "telephony",
+        "effect": "mix"
+      }
+    },
+    {
+      "id": "s39_mix_shift_medium",
+      "type": "mix_shift",
+      "severity": "medium",
+      "metric": "aov",
+      "week": "2017-06-19",
+      "params": {
+        "dimension": "product_category",
+        "segment": "electronics",
+        "pct": 0.2
+      },
+      "seed": 20260963,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "electronics",
+        "effect": "mix"
+      }
+    },
+    {
+      "id": "s40_mix_shift_large",
+      "type": "mix_shift",
+      "severity": "large",
+      "metric": "aov",
+      "week": "2017-10-30",
+      "params": {
+        "dimension": "product_category",
+        "segment": "fashion_bags_accessories",
+        "pct": 0.35
+      },
+      "seed": 20260964,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "product_category",
+        "segment": "fashion_bags_accessories",
+        "effect": "mix"
+      }
+    },
+    {
+      "id": "s41_control_clean",
+      "type": "control_clean",
+      "severity": "none",
+      "metric": "gmv",
+      "week": "2018-07-16",
+      "params": {},
+      "seed": 20260965,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s42_control_clean",
+      "type": "control_clean",
+      "severity": "none",
+      "metric": "aov",
+      "week": "2018-08-06",
+      "params": {},
+      "seed": 20260966,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s43_control_clean",
+      "type": "control_clean",
+      "severity": "none",
+      "metric": "on_time_rate",
+      "week": "2017-10-30",
+      "params": {},
+      "seed": 20260967,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s44_control_clean",
+      "type": "control_clean",
+      "severity": "none",
+      "metric": "cancellation_rate",
+      "week": "2017-10-23",
+      "params": {},
+      "seed": 20260968,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s45_control_clean",
+      "type": "control_clean",
+      "severity": "none",
+      "metric": "avg_review_score",
+      "week": "2017-07-31",
+      "params": {},
+      "seed": 20260969,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s46_control_noise",
+      "type": "control_noise",
+      "severity": "none",
+      "metric": "gmv",
+      "week": "2017-10-02",
+      "params": {
+        "pct": 0.05
+      },
+      "seed": 20260970,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s47_control_noise",
+      "type": "control_noise",
+      "severity": "none",
+      "metric": "aov",
+      "week": "2017-10-02",
+      "params": {
+        "pct": 0.05
+      },
+      "seed": 20260971,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s48_control_noise",
+      "type": "control_noise",
+      "severity": "none",
+      "metric": "on_time_rate",
+      "week": "2018-06-25",
+      "params": {
+        "pct": 0.05
+      },
+      "seed": 20260972,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s49_control_noise",
+      "type": "control_noise",
+      "severity": "none",
+      "metric": "cancellation_rate",
+      "week": "2017-07-03",
+      "params": {
+        "pct": 0.05
+      },
+      "seed": 20260973,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    },
+    {
+      "id": "s50_control_noise",
+      "type": "control_noise",
+      "severity": "none",
+      "metric": "avg_review_score",
+      "week": "2018-07-16",
+      "params": {
+        "pct": 0.05
+      },
+      "seed": 20260974,
+      "is_control": true,
+      "ground_truth": {
+        "anomaly": false,
+        "dimension": null,
+        "segment": null,
+        "effect": null
+      }
+    }
+  ]
+}

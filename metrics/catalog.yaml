@@ -1,0 +1,91 @@
+# Every metric is defined once here.
+# kind: sum  -> weekly value = SUM(value_col) over rows passing the filter
+# kind: mean -> weekly value = AVG(value_col) over rows passing the filter (rates are means of 0/1 columns)
+# table: which fact table the metric is computed on
+# money: true if the metric is in R$ (so impact can be expressed in R$)
+metrics:
+  gmv:
+    label: GMV
+    description: Sum of price + freight over non-canceled orders (R$)
+    table: items
+    kind: sum
+    value_col: item_value
+    filter: is_canceled == 0
+    unit: R$
+    money: true
+  orders:
+    label: Orders
+    description: Count of non-canceled orders
+    table: orders
+    kind: sum
+    value_col: one
+    filter: is_canceled == 0
+    unit: orders
+    money: false
+  aov:
+    label: AOV
+    description: Average order value = GMV / Orders (R$ per order)
+    table: orders
+    kind: mean
+    value_col: order_value
+    filter: is_canceled == 0
+    unit: R$
+    money: true
+  on_time_rate:
+    label: On-time delivery rate
+    description: Share of delivered orders delivered on or before the estimated date
+    table: orders
+    kind: mean
+    value_col: is_on_time
+    filter: is_delivered == 1
+    unit: share
+    binary: true
+    money: false
+  avg_delay_days:
+    label: Avg delivery delay (days)
+    description: Mean of (delivered date - estimated date) in days over delivered orders; negative = early
+    table: orders
+    kind: mean
+    value_col: delay_days
+    filter: is_delivered == 1
+    unit: days
+    money: false
+  avg_review_score:
+    label: Avg review score
+    description: Mean review score (1-5) over orders with a review
+    table: orders
+    kind: mean
+    value_col: review_score
+    filter: review_score == review_score
+    unit: stars
+    money: false
+  cancellation_rate:
+    label: Cancellation rate
+    description: Canceled or unavailable orders / all orders
+    table: orders
+    kind: mean
+    value_col: is_canceled
+    filter: null
+    unit: share
+    binary: true
+    money: false
+  repeat_customer_rate:
+    label: Repeat-customer rate
+    description: Share of non-canceled orders placed by a customer with an earlier order
+    table: orders
+    kind: mean
+    value_col: is_repeat_customer
+    filter: is_canceled == 0
+    unit: share
+    binary: true
+    money: false
+
+# Drill-down dimensions. For order-table metrics, item-level dimensions map to the order's
+# "main" item (the item with the largest value).
+dimensions:
+  customer_state: {items: customer_state, orders: customer_state}
+  product_category: {items: product_category, orders: main_category}
+  seller_state: {items: seller_state, orders: main_seller_state}
+  seller_id: {items: seller_id, orders: main_seller_id}
+  main_payment_type: {items: main_payment_type, orders: main_payment_type}
+  is_repeat_customer: {items: is_repeat_customer, orders: is_repeat_customer}

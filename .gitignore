@@ -1,0 +1,27 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/
+data/*.duckdb
+data/*.duckdb.wal
+*.zip
+charts/
+app_charts/
+trial_results/
+results/charts/
+results/case_study_charts/
+.streamlit/secrets.toml
+# build notes (kept locally, not in the public repo)
+HANDOVER.md
+CLAUDE.md
+# local notes, logs and private context (kept on the laptop only)
+MORNING_SUMMARY.md
+PLAN*.md
+NOTES*.md
+*notes*.md
+kpi-rca-agent-context*.md
+*.log
+scratch/

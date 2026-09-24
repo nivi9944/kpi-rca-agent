@@ -1,0 +1,87 @@
+{
+  "n_week_metric_pairs": 170,
+  "target_natural_alarm_rate": 0.1,
+  "chosen_hist_z": 4.25,
+  "natural_alarm_rate_by_threshold": {
+    "3.0": {
+      "overall": 0.353,
+      "by_metric": {
+        "aov": 0.324,
+        "avg_review_score": 0.353,
+        "cancellation_rate": 0.265,
+        "gmv": 0.324,
+        "on_time_rate": 0.5
+      }
+    },
+    "3.5": {
+      "overall": 0.241,
+      "by_metric": {
+        "aov": 0.235,
+        "avg_review_score": 0.206,
+        "cancellation_rate": 0.206,
+        "gmv": 0.206,
+        "on_time_rate": 0.353
+      }
+    },
+    "3.75": {
+      "overall": 0.165,
+      "by_metric": {
+        "aov": 0.176,
+        "avg_review_score": 0.147,
+        "cancellation_rate": 0.118,
+        "gmv": 0.176,
+        "on_time_rate": 0.206
+      }
+    },
+    "4.0": {
+      "overall": 0.112,
+      "by_metric": {
+        "aov": 0.088,
+        "avg_review_score": 0.088,
+        "cancellation_rate": 0.088,
+        "gmv": 0.147,
+        "on_time_rate": 0.147
+      }
+    },
+    "4.25": {
+      "overall": 0.082,
+      "by_metric": {
+        "aov": 0.088,
+        "avg_review_score": 0.059,
+        "cancellation_rate": 0.059,
+        "gmv": 0.118,
+        "on_time_rate": 0.088
+      }
+    },
+    "4.5": {
+      "overall": 0.082,
+      "by_metric": {
+        "aov": 0.088,
+        "avg_review_score": 0.059,
+        "cancellation_rate": 0.059,
+        "gmv": 0.118,
+        "on_time_rate": 0.088
+      }
+    },
+    "5.0": {
+      "overall": 0.035,
+      "by_metric": {
+        "aov": 0.029,
+        "avg_review_score": 0.029,
+        "cancellation_rate": 0.029,
+        "gmv": 0.059,
+        "on_time_rate": 0.029
+      }
+    },
+    "6.0": {
+      "overall": 0.035,
+      "by_metric": {
+        "aov": 0.029,
+        "avg_review_score": 0.029,
+        "cancellation_rate": 0.029,
+        "gmv": 0.059,
+        "on_time_rate": 0.029
+      }
+    }
+  }
+}
