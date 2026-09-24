@@ -1,0 +1,40 @@
+{
+  "baseline_topcontrib": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "top1_accuracy_pct": 17.5,
+    "top3_accuracy_pct": 20.0,
+    "detection_recall_pct": 25.0,
+    "false_alarm_rate_pct": 0.0,
+    "failed_runs": 0,
+    "grounding_rate_pct": null,
+    "ungrounded_reports": 0,
+    "avg_steps": 2.0,
+    "avg_tokens": null,
+    "avg_latency_s": 0.06,
+    "avg_est_cost_usd": null,
+    "infra_failed_attempts": 0,
+    "is_subset": false,
+    "label": "Baseline B1: top contribution"
+  },
+  "baseline_scan": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "top1_accuracy_pct": 52.5,
+    "top3_accuracy_pct": 57.5,
+    "detection_recall_pct": 65.0,
+    "false_alarm_rate_pct": 0.0,
+    "failed_runs": 0,
+    "grounding_rate_pct": null,
+    "ungrounded_reports": 0,
+    "avg_steps": 3.46,
+    "avg_tokens": null,
+    "avg_latency_s": 0.8,
+    "avg_est_cost_usd": null,
+    "infra_failed_attempts": 0,
+    "is_subset": false,
+    "label": "Baseline B2: scan + test"
+  }
+}

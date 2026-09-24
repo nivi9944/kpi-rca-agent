@@ -1,0 +1,18 @@
+{
+  "nvidia": {
+    "top1_accuracy_pct": 52.5,
+    "top3_accuracy_pct": 57.5,
+    "false_alarm_rate_pct": 0.0,
+    "grounding_rate_pct": 99.31,
+    "avg_latency_s": 127.09,
+    "avg_tokens": 72574.38
+  },
+  "gemini": {
+    "top1_accuracy_pct": 100.0,
+    "top3_accuracy_pct": 100.0,
+    "false_alarm_rate_pct": 0.0,
+    "grounding_rate_pct": 100.0,
+    "avg_latency_s": 241.91,
+    "avg_tokens": 66480.5
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "nvidia": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "top1_accuracy_pct": 52.5,
+    "top3_accuracy_pct": 57.5,
+    "detection_recall_pct": 65.0,
+    "false_alarm_rate_pct": 0.0,
+    "failed_runs": 0,
+    "grounding_rate_pct": 99.31,
+    "ungrounded_reports": 6,
+    "avg_steps": 9.96,
+    "avg_tokens": 72574.38,
+    "avg_latency_s": 127.09,
+    "avg_est_cost_usd": 0.0,
+    "infra_failed_attempts": 0,
+    "is_subset": false,
+    "label": "Agent (Nemotron 3 Ultra, NVIDIA)"
+  },
+  "gemini": {
+    "n_scenarios": 2,
+    "n_planted": 1,
+    "n_controls": 1,
+    "top1_accuracy_pct": 100.0,
+    "top3_accuracy_pct": 100.0,
+    "detection_recall_pct": 100.0,
+    "false_alarm_rate_pct": 0.0,
+    "failed_runs": 1,
+    "grounding_rate_pct": 100.0,
+    "ungrounded_reports": 0,
+    "avg_steps": 8.5,
+    "avg_tokens": 66480.5,
+    "avg_latency_s": 241.91,
+    "avg_est_cost_usd": 0.05,
+    "infra_failed_attempts": 1,
+    "is_subset": true,
+    "label": "Agent (Gemini Flash) (subset: 2 of 50 scenarios)"
+  }
+}
