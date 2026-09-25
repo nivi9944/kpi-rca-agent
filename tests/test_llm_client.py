@@ -16,6 +16,7 @@ def clean_env(monkeypatch):
 
 @pytest.mark.parametrize("preset, provider, model", [
     ("nvidia", "nvidia", "nvidia/nemotron-3-ultra-550b-a55b"),
+    ("nvidia-super", "nvidia", "nvidia/nemotron-3-super-120b-a12b"),
     ("mistral", "mistral", "mistral-small-2603"),
     ("mistral-medium", "mistral", "mistral-medium-latest"),
     ("gemini", "gemini", "gemini-3.6-flash"),
@@ -103,6 +104,6 @@ def test_nvidia_preset_is_free_thinking_off_and_under_the_gateway_limit(tmp_path
     c = ChatClient("nvidia")
     assert c.extra_body == {"chat_template_kwargs": {"enable_thinking": False}}
     assert ChatClient("gemini").extra_body is None
-    assert c.throttle.gap == pytest.approx(60 / 9)  # gateway allows ~10/min per key
+    assert c.throttle.gap == pytest.approx(60 / 6)  # NVIDIA returned frequent 429s at 20/min and 12/min
     assert c.price == (0.0, 0.0) and c.token_throttle is None
     assert worst_case_usd("nvidia", tmp_path / "none.jsonl") == 0.0  # the budget guard never triggers

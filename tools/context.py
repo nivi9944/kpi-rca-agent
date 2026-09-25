@@ -49,6 +49,7 @@ class Investigation:
     chart_dir: Path = Path("charts")
     evidence: dict = field(default_factory=dict)
     tests: list = field(default_factory=list)  # [{"key":..., "p_value":...}] for BH correction
+    hidden_metrics: set = field(default_factory=set)  # metrics the agent may not see (v1 reproduction)
     _n: int = 0
 
     def record(self, tool: str, args: dict, result: dict) -> dict:

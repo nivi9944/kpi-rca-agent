@@ -23,6 +23,17 @@ two concrete actions.
 
 Investigation id: {inv_id}"""
 
+SYSTEM_PROMPT_V1 = SYSTEM_PROMPT  # v1 behaviour, kept verbatim for the v1 vs v2 comparison
+
+# v2: two short rules added (see DECISIONS.md)
+SYSTEM_PROMPT_V2 = SYSTEM_PROMPT_V1.replace("\n\nInvestigation id:", """
+7. Rank root_causes by evidence strength: significant tests first, then larger |hist_z| from scan_segments, \
+then smaller q. Label a cause "mix" only if its share test (effect="share") is significant, "rate" only if \
+its rate test is.
+8. For AOV, also scan avg_item_price: a price change inside a category shows there even when AOV barely moves.
+
+Investigation id:""")
+
 CORRECTION_PROMPT = """The report failed the grounding check. These numbers do not appear in any tool \
 output you cited: {bad}. Resubmit with submit_report, quoting numbers exactly as the tools returned them \
 and citing the right evidence_ids (or remove those numbers)."""

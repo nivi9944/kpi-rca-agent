@@ -21,6 +21,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RES = ROOT / "results"
 AGENTS = ["nvidia", "mistral", "mistral-medium", "gemini", "ollama"]
 BASELINES = ["baseline_topcontrib", "baseline_scan"]
+# extra model-comparison rows (not in the headline table): the same v1 agent on a different model, DEV set only
+DEV_COMPARISONS = {"nvidia_super_v1_dev": "Agent v1 (Nemotron 3 Super), DEV set only"}
 LABELS = {"nvidia": "Agent (Nemotron 3 Ultra, NVIDIA)", "mistral": "Agent (Mistral Small 4)", "mistral-medium": "Agent (Mistral Medium 3.5)", "gemini": "Agent (Gemini Flash)", "ollama": "Agent (Qwen 2.5 local)",
           "baseline_topcontrib": "Baseline B1: top contribution", "baseline_scan": "Baseline B2: scan + test"}
 TYPE_ORDER = ["volume_drop", "price_drop", "delivery_delay", "cancellation_spike", "review_drop", "mix_shift",
@@ -33,7 +35,7 @@ def read_jsonl(p: Path) -> tuple[list[dict], int]:
     Failed attempts are retried by eval.run and stay in the file; only the latest attempt is scored, so a
     retried scenario is never counted twice, and the failed attempts are still reported."""
     rows = [json.loads(line) for line in p.read_text(encoding="utf-8").splitlines() if line.strip()]
-    infra = sum(1 for r in rows if r.get("error") and not r.get("report"))
+    infra = sum(1 for r in rows if str(r.get("error") or "").startswith("llm error") and not r.get("report"))
     latest = {}
     for r in rows:
         latest[r["id"]] = r
@@ -101,10 +103,12 @@ def main(res: Path = RES) -> dict:
         (res / "eval_summary.json").write_text(json.dumps(agent_s, indent=2))
     if base_s:
         (res / "baseline_summary.json").write_text(json.dumps(base_s, indent=2))
-    if len(agent_s) > 1:
+    comp = {**agent_s, **{m: {**summaries[m], "label": lab} for m, lab in DEV_COMPARISONS.items() if m in summaries}}
+    if len(comp) > 1:
         (res / "model_comparison.json").write_text(json.dumps(
-            {m: {k: s[k] for k in ("top1_accuracy_pct", "top3_accuracy_pct", "false_alarm_rate_pct",
-                                   "grounding_rate_pct", "avg_latency_s", "avg_tokens")} for m, s in agent_s.items()}, indent=2))
+            {m: {k: s[k] for k in ("label", "n_scenarios", "top1_accuracy_pct", "top3_accuracy_pct",
+                                   "false_alarm_rate_pct", "failed_runs", "grounding_rate_pct", "avg_latency_s",
+                                   "avg_tokens")} for m, s in comp.items()}, indent=2))
 
     # by type x severity, all models side by side
     with open(res / "eval_by_type.csv", "w", newline="", encoding="utf-8") as f:

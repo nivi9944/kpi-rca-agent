@@ -29,7 +29,8 @@ def inv():
 
 def test_happy_path_records_evidence_and_accepts_report():
     llm = ScriptedLLM([call("detect_anomalies", {"metric": "gmv", "week": W}), call("submit_report", good_report(), 1)])
-    r = run_agent(llm, inv(), "task")
+    # v1: the submitted report is kept as is (v2 would drop this cause, which has no significance test)
+    r = run_agent(llm, inv(), "task", version="v1")
     assert r.error is None and r.report["root_causes"][0]["segment"] == "A"
     assert r.steps == 1 and r.verification["grounding_rate_pct"] == 100.0 and not r.ungrounded
 

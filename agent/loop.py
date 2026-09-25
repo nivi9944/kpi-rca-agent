@@ -14,7 +14,8 @@ from dataclasses import dataclass, field
 from pydantic import ValidationError
 
 from agent.compact import Compactor, dumps
-from agent.prompts import CORRECTION_PROMPT, SYSTEM_PROMPT
+from agent.prompts import CORRECTION_PROMPT, SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
+from agent.guards import apply_guards
 from agent.schemas import Report
 from agent.verifier import verify
 from tools.context import Investigation
@@ -58,6 +59,9 @@ class AgentResult:
     served_models: list = field(default_factory=list)  # model names in the provider responses
     billable_prompt_tokens: int = 0                    # tokens of calls that reached the provider (no cache hit)
     billable_completion_tokens: int = 0
+    version: str = "v2"                                # agent version (v1 = the v1.0.0 behaviour)
+    rerank: dict | None = None                         # v2: what the guards changed (dropped causes, confirmed flag)
+    report_raw: dict | None = None                     # the report exactly as the LLM submitted it (before guards)
 
     @property
     def total_tokens(self) -> int:
@@ -93,16 +97,24 @@ def _truncate(obj: dict) -> str:
     return s if len(s) <= MAX_TOOL_CHARS else s[:MAX_TOOL_CHARS] + '..."(truncated)"'
 
 
+V1_HIDDEN_METRICS = {"avg_item_price"}  # added in v2
+V2_MAX_STEPS = 15  # 34 of 50 v2 DEV round-1 runs (68%) hit the v1 limit of 12 (DECISIONS.md)
+
+
 def run_agent(llm, inv: Investigation, task: str, inv_id: str = "adhoc",
-              cfg: AgentConfig | None = None, on_event=None) -> AgentResult:
-    cfg = cfg or AgentConfig()
-    tools = openai_tools([submit_tool()])
-    messages = [{"role": "system", "content": SYSTEM_PROMPT.format(inv_id=inv_id)},
+              cfg: AgentConfig | None = None, on_event=None, version: str = "v2",
+              reorder: bool = False) -> AgentResult:
+    cfg = cfg or (AgentConfig() if version == "v1" else AgentConfig(max_steps=V2_MAX_STEPS))
+    if version == "v1":
+        inv.hidden_metrics = set(V1_HIDDEN_METRICS)
+    prompt = SYSTEM_PROMPT_V1 if version == "v1" else SYSTEM_PROMPT_V2
+    tools = openai_tools([submit_tool()], inv.hidden_metrics)
+    messages = [{"role": "system", "content": prompt.format(inv_id=inv_id)},
                 {"role": "user", "content": task}]
     compactor = Compactor()  # the model sees compacted tool results; inv.evidence keeps them in full
     res = AgentResult(report=None, verification=None,
                       price_per_m=tuple(getattr(llm, "price", (PRICE_IN_PER_M, PRICE_OUT_PER_M))),
-                      model_name=getattr(llm, "model", None))
+                      model_name=getattr(llm, "model", None), version=version)
     t_start = time.time()
     retried = False
     final_forced = False
@@ -174,6 +186,9 @@ def run_agent(llm, inv: Investigation, task: str, inv_id: str = "adhoc",
                                      "content": CORRECTION_PROMPT.format(bad=", ".join(v["ungrounded"]))})
                     continue
                 res.report, res.verification = report, v
+                if version != "v1":  # v2 guards (deterministic; the verifier already ran on the LLM's report)
+                    res.report_raw = report
+                    res.report, res.rerank = apply_guards(report, inv.evidence, reorder=reorder)
                 res.ungrounded = bool(v["ungrounded"])
                 done = True
                 messages.append({"role": "tool", "tool_call_id": tc["id"], "content": "Report accepted."})
