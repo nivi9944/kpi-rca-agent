@@ -74,8 +74,9 @@ def worst_case_usd(model: str, path: Path) -> float:
 
 
 def is_infra_failure(row: dict) -> bool:
-    """An error with no report (API down, quota, timeout): retried on the next run, and counted."""
-    return bool(row.get("error")) and not row.get("report")
+    """The LLM API failed after all retries (outage, quota) and there is no report: retried on the next run,
+    and counted. Model failures (e.g. no report after the step limit) are results, not retried."""
+    return str(row.get("error") or "").startswith("llm error") and not row.get("report")
 
 
 def done_ids(path: Path) -> set[str]:
@@ -112,24 +113,26 @@ def make_llm(model: str):
     return ChatClient(model)
 
 
-def run_one(model: str, sc: dict, base, llm=None) -> dict:
+def run_one(model: str, sc: dict, base, llm=None, version: str = "v2", run_name: str | None = None,
+            reorder: bool = False) -> dict:
     store = apply_scenario(base, sc)
     inv = Investigation(store=store, chart_dir=out_dir(model) / "charts" / model / sc["id"])
     t0 = time.time()
-    row: dict = {"id": sc["id"], "model": model}
+    row: dict = {"id": sc["id"], "model": run_name or model}
     try:
         if model in BASELINES:
             report = BASELINES[model](inv, sc["metric"], sc["week"])
             row.update({"report": report, "steps": len(inv.evidence), "latency_s": round(time.time() - t0, 3)})
         else:
             from agent.loop import run_agent
-            r = run_agent(llm, inv, task_text(sc), inv_id=sc["id"])
+            r = run_agent(llm, inv, task_text(sc), inv_id=sc["id"], version=version, reorder=reorder)
             d = r.to_dict()
             row.update({"report": r.report, "error": r.error, "steps": r.steps, "llm_calls": r.llm_calls,
                         "prompt_tokens": r.prompt_tokens, "completion_tokens": r.completion_tokens,
                         "total_tokens": r.total_tokens, "est_cost_usd": d["est_cost_usd"],
                         "est_spend_usd": d["est_spend_usd"], "est_price_usd_per_m": list(r.price_per_m),
                         "model_name": r.model_name, "served_models": r.served_models,
+                        "agent_version": r.version, "rerank": r.rerank, "report_raw": r.report_raw,
                         "latency_s": round(r.latency_s, 2), "llm_latency_s": round(r.llm_latency_s, 2),
                         "cache_hits": r.cache_hits, "ungrounded": r.ungrounded, "corrected": r.corrected,
                         "grounding_rate_pct": (r.verification or {}).get("grounding_rate_pct"),
@@ -144,7 +147,7 @@ def run_one(model: str, sc: dict, base, llm=None) -> dict:
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True,
-                    choices=["baseline_topcontrib", "baseline_scan", "nvidia", "mistral", "mistral-medium", "gemini", "ollama",
+                    choices=["baseline_topcontrib", "baseline_scan", "nvidia", "nvidia-super", "mistral", "mistral-medium", "gemini", "ollama",
                              "scripted"])
     ap.add_argument("--only", nargs="*", help="scenario ids to run")
     ap.add_argument("--limit", type=int, default=None)
@@ -153,18 +156,32 @@ def main(argv=None):
                     help="write to results/runs_cache/ instead: a second pass to measure gateway cache hits")
     ap.add_argument("--max-infra-streak", type=int, default=2,
                     help="stop after this many scenarios in a row fail with no report (likely daily quota)")
+    ap.add_argument("--agent-version", choices=["v1", "v2"], default="v2",
+                    help="v1 reproduces the v1.0.0 agent (old prompt, no avg_item_price, no re-ranking)")
+    ap.add_argument("--reorder", action="store_true",
+                    help="v2 only: evidence re-ranking of causes (tried on DEV and rejected; off by default)")
+    ap.add_argument("--run-name", help="results file stem (default: the model name)")
+    ap.add_argument("--manifest", help="scenario manifest (default: inject/manifest.json, the DEV set)")
+    ap.add_argument("--results-dir", help="base results folder (default: results/); the TEST set uses results/v2")
+    ap.add_argument("--only-file", help="JSON list of scenario ids to run (fixed subsets: repeat, cache rerun)")
+    ap.add_argument("--no-cache", action="store_true", help="bypass the gateway cache (stability repeats)")
     args = ap.parse_args(argv)
     from dotenv import load_dotenv
     load_dotenv(ROOT / ".env")
     budget = float(os.getenv("BUDGET_USD", "8"))
     guarded = args.model not in BASELINES and args.model != "scripted"
 
-    path = run_file(args.model, "runs_cache" if args.cache_rerun else "runs")
+    if args.no_cache:
+        os.environ["LLM_CACHE_BYPASS"] = "true"
+    base_dir = Path(args.results_dir) if args.results_dir else out_dir(args.model)
+    path = base_dir / ("runs_cache" if args.cache_rerun else "runs") / f"{args.run_name or args.model}.jsonl"
+    if args.only_file:
+        args.only = (args.only or []) + json.loads(Path(args.only_file).read_text(encoding="utf-8"))
     path.parent.mkdir(parents=True, exist_ok=True)
     if args.fresh and path.exists():
         path.unlink()
     done = done_ids(path)
-    scs = [s for s in load_manifest() if (not args.only or s["id"] in args.only) and s["id"] not in done]
+    scs = [s for s in load_manifest(args.manifest) if (not args.only or s["id"] in args.only) and s["id"] not in done]
     if args.limit:
         scs = scs[: args.limit]
     base = default_store()
@@ -178,7 +195,7 @@ def main(argv=None):
                 print(f"STOPPED (budget): estimated spend so far ${spent:.4f}; the next scenario could cost up to "
                       f"${worst:.4f}, which would pass BUDGET_USD=${budget:.2f}. Nothing else was sent.", flush=True)
                 break
-        row = run_one(args.model, sc, base, llm)
+        row = run_one(args.model, sc, base, llm, args.agent_version, args.run_name, args.reorder)
         with open(path, "a", encoding="utf-8") as f:
             f.write(json.dumps(row, default=str) + "\n")
         s = row["score"]
@@ -199,8 +216,9 @@ def main(argv=None):
                   f"{(row.get('error') or '')[:120]}). Likely the daily quota or an outage. "
                   f"Rerun the same command later; failed scenarios will be retried.", flush=True)
             break
-    from eval.report_tables import main as tables
-    tables()
+    if not args.results_dir:  # the TEST set (results/v2) has its own metrics script
+        from eval.report_tables import main as tables
+        tables()
 
 
 if __name__ == "__main__":

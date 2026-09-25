@@ -31,6 +31,15 @@ metrics:
     filter: is_canceled == 0
     unit: R$
     money: true
+  avg_item_price:
+    label: Avg item price
+    description: Mean item price (R$, excluding freight) over items of non-canceled orders; isolates price changes from basket mix
+    table: items
+    kind: mean
+    value_col: price
+    filter: is_canceled == 0
+    unit: R$
+    money: true
   on_time_rate:
     label: On-time delivery rate
     description: Share of delivered orders delivered on or before the estimated date

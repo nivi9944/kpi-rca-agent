@@ -25,3 +25,6 @@ NOTES*.md
 kpi-rca-agent-context*.md
 *.log
 scratch/
+DEV_CHECK.md
+V2_SUMMARY.md
+results/progress_status.txt

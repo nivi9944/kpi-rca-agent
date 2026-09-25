@@ -56,11 +56,42 @@ The main design choices and the reason for each. Headline results are in the [RE
 | Top-1 requires dimension + segment (+ effect type for rate/mix cases) | Getting the segment right but calling a mix shift a rate change is wrong |
 | Two baselines: B1 (spec rule: top contribution if headline anomalous) and B2 (scan + tests, no LLM) | B1 is the naive analyst; B2 isolates what the LLM adds on top of the same tools |
 | Resumable JSONL runs, throttle, backoff on 429 | Free-tier limits |
-| A scenario that ends with an error and no report (API down, quota, timeout) is retried on the next run; failed attempts stay in the file and are counted as `infra_failed_attempts`; only the latest attempt per scenario is scored | An outage is not a model failure, but hiding it would be dishonest. The run stops after 2 such scenarios in a row (likely a daily quota) |
+| A scenario whose LLM calls failed after all retries (API down, quota) is retried on the next run; model failures such as "no report after the step limit" are scored as failures, not retried; failed attempts stay in the file and are counted as `infra_failed_attempts`; only the latest attempt per scenario is scored | An outage is not a model failure, but hiding it would be dishonest. The run stops after 2 such scenarios in a row (likely a daily quota) |
 | Headline cost reported as **$0 actual plus tokens per run** | The NVIDIA API catalog free tier has no list price. The Gemini and Mistral presets keep an estimated cost at their paid list prices (Gemini Flash $0.75 / $3.75, Mistral Small 4 $0.15 / $0.60, Mistral Medium 3.5 $1.50 / $7.50 per 1M tokens) |
 | Spending guard: `BUDGET_USD` (8) on the estimated list-price spend of every run file in `results/` | Protects any paid comparison run; it never triggers for the free NVIDIA runs |
 | The gateway's own `est_cost_usd` log field uses the Gemini list price for every provider | Left as it is: the gateway is a separate project, and all costs reported here come from the agent's own per-model accounting |
 | A model run on fewer scenarios than the manifest is labelled "subset" and kept out of the charts and the per-type table | Two Gemini smoke-test rows stay in `results/` for transparency, but must not read as a full result |
+
+## v2 changes
+
+Each change is general (not tied to any scenario) and was developed on the 50-scenario DEV set only; the
+held-out TEST set was built and run once after the code was frozen.
+
+| Decision | Why |
+|---|---|
+| **Drop guard** (`agent/guards.py`): after the report passes the verifier, a root cause with no significant test on the same dimension and segment is removed; the LLM's order is kept | A cause the tools never confirmed should not reach the report. Which test counts: cited tests first, then tests whose effect matches the label (mix = share, rate = rate) |
+| **Consistency guard**: if a significant cause remains, `anomaly_confirmed` is set to true; if none remains, `root_causes` is empty | A correctness fix: on DEV the model once named the right, significant cause but set anomaly_confirmed=false (s06) |
+| **Evidence re-ranking tried and rejected** (`agent/rerank.py`, `--reorder`, off by default): order causes by significance, then \|hist_z\|, then q | On DEV it changed 2 of 50 reports and both got worse: s22 (garden_tools mix moved above the true seller_state SP rate) and s24 (customer_state SP moved above the true main_payment_type credit_card). \|hist_z\| measures how unusual a segment is, not how much of the KPI change it explains, so this rule inherits the statistical baseline's mistakes. DEV top-1: 50.0% with re-ordering vs 55.0% without, on the same LLM outputs |
+| The LLM's raw report is stored next to the guarded report in every run row (`report_raw`), with the full evidence | Any later ranking or guard idea can be scored on stored runs without new API calls |
+| **Prompt rules 7 and 8**: rank causes by evidence strength and label mix/rate by the matching test; for AOV, also scan avg_item_price. A longer price-drop rule (decompose first, then drill avg_item_price by category) was tried in DEV round 2 and **rejected**: price-drop top-1 stayed at 1 of 7 and the agent used avg_item_price in only 2 of 50 runs | Makes the LLM's own ordering and labels consistent with the tools; kept to two short sentences |
+| **v1 reproduction switch** (`--agent-version v1`): the v1 prompt verbatim, `avg_item_price` hidden from the tools, no re-ranking | Lets v1 and v2 run on the same new TEST scenarios with the same injection code, so the comparison is fair |
+| Faster pacing: gateway per-key limit raised to about 24 requests/min (`REFILL_PER_SEC=0.4`, `BUCKET_CAPACITY=20`); the nvidia client paces at 6/min | The old 10/min gateway limit made a full run take about two hours. 20/min and then 12/min were tried, but NVIDIA returned frequent 429s (enough to trip the gateway circuit breaker; only about 5 calls/min succeeded), so the pace is 6/min |
+| **Step limit 15 for v2** (v1 keeps 12) | 34 of 50 v2 DEV round-1 runs (68%) hit the limit of 12 (v1: 28 of 50, 56%); the rule was to raise it if more than 10% did |
+| **"v2 + B2 fallback"** scored offline as a separate investigator, never merged into v2: when v2 names no significant cause and B2 found one, B2's top cause is used (flagged `source=fallback`) | Shows what a simple hybrid would add without changing the agent; reported next to v2 on TEST |
+
+## Held-out TEST set
+
+| Decision | Why |
+|---|---|
+| DEV = the original 50 scenarios (used freely for debugging); TEST = `inject/manifest_test.json`, new master seed, built after v2 was frozen and run once per investigator | Every v2 choice was made on DEV; TEST numbers are unseen by construction |
+| 20 scenarios per planted type (7 types, 140 planted) + 15 clean and 15 noisy control weeks | Enough per type for 95% intervals that mean something; severities cycle small / medium / large |
+| New chained type **delay_then_reviews**: deliveries of one seller_state delayed in week W, reviews of that seller_state's orders drop in week W+1 (the investigated week, metric avg_review_score); truth = that seller_state, rate | Tests the "downstream effect" expectation (delay then reviews) |
+| TEST target weeks never overlap DEV weeks; the pool therefore also includes early 2017 weeks (from the first week the detector can score) | Only about 8 standard-pool weeks were free of DEV; early weeks have lower order volume, noted as a limitation. 13 distinct weeks in total |
+| Target segments drawn by rule from the largest segments of each dimension (mix shifts: large low-AOV categories), so most TEST segments never appeared on DEV | A held-out test of the method, not of memorised segments |
+| A planted scenario must change its target metric; otherwise its week is redrawn (1 case) | Data validity: an injection that touches no rows would be impossible to solve |
+| No recalibration: the segment-scan threshold stays 4.25 | Thresholds are set on natural weeks only |
+| Headline intervals are **week-clustered bootstrap** 95% CIs (resample the 13 target weeks with replacement, 2,000 draws) for top-1, top-3 and F1; Wilson intervals are also reported | Scenarios sharing a week share its data, so they are correlated; treating them as independent (Wilson) would give intervals that are too narrow |
+| Stability: v2 rerun on 50 random TEST scenarios with the gateway cache bypassed; cache rerun on 30 other random scenarios | Measures run-to-run agreement and cache behaviour on the same code |
 
 ## Model and provider
 

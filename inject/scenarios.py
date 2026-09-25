@@ -98,6 +98,18 @@ def apply_scenario(base: Store, sc: dict) -> Store:
         o.loc[m, "delay_days"] = o.loc[m, "delay_days"] + p["days"]
         o.loc[m, "is_on_time"] = (o.loc[m, "delay_days"] <= 0).astype(int)
 
+    elif t == "delay_then_reviews":
+        # chained (TEST set only): deliveries of one seller_state are delayed in week W, and reviews of that
+        # seller_state's orders drop in week W+1 (the target week). Ground truth: that seller_state, rate.
+        w0 = w - pd.Timedelta(weeks=1)
+        m = (o["week"] == w0) & (o["main_seller_state"] == p["segment"]) & (o["is_delivered"] == 1)
+        o.loc[m, "delivered_ts"] = o.loc[m, "delivered_ts"] + pd.Timedelta(days=p["days"])
+        o.loc[m, "delay_days"] = o.loc[m, "delay_days"] + p["days"]
+        o.loc[m, "is_on_time"] = (o.loc[m, "delay_days"] <= 0).astype(int)
+        cand = o.index[in_week & (o["main_seller_state"] == p["segment"]) & o["review_score"].notna()]
+        idx = rng.choice(cand, size=int(round(len(cand) * p["pct"])), replace=False)
+        o.loc[idx, "review_score"] = 1.0
+
     elif t == "cancellation_spike":
         cand = o.loc[in_week & (o["main_payment_type"] == p["segment"]) & (o["is_canceled"] == 0), "order_id"].to_numpy()
         ids = rng.choice(cand, size=int(round(len(cand) * p["pct"])), replace=False)
@@ -191,8 +203,8 @@ def build_manifest(store: Store | None = None) -> list[dict]:
     return out
 
 
-def load_manifest() -> list[dict]:
-    with open(MANIFEST, encoding="utf-8") as f:
+def load_manifest(path=None) -> list[dict]:
+    with open(path or MANIFEST, encoding="utf-8") as f:
         return json.load(f)["scenarios"]
 
 

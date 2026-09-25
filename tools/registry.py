@@ -21,7 +21,7 @@ from tools.sql_guard import run_sql
 from tools.segscan import scan_segments
 from tools.stats import significance_test
 
-MetricName = Literal["gmv", "orders", "aov", "on_time_rate", "avg_delay_days", "avg_review_score",
+MetricName = Literal["gmv", "orders", "aov", "avg_item_price", "on_time_rate", "avg_delay_days", "avg_review_score",
                      "cancellation_rate", "repeat_customer_rate"]
 DimName = Literal["customer_state", "product_category", "seller_state", "seller_id",
                   "main_payment_type", "is_repeat_customer"]
@@ -104,7 +104,7 @@ class ChartArgs(BaseModel):
 def _list_metrics(inv: Investigation) -> dict:
     cat = load_catalog()
     return {"metrics": {k: {"label": v["label"], "description": v["description"], "unit": v["unit"]}
-                        for k, v in cat["metrics"].items()},
+                        for k, v in cat["metrics"].items() if k not in inv.hidden_metrics},
             "dimensions": list(cat["dimensions"]),
             "data_window": "weekly, 2017-01-02 to 2018-08-27 (Olist, R$)"}
 
@@ -169,10 +169,23 @@ def _inline_refs(schema: dict) -> dict:
     return walk(schema)
 
 
-def openai_tools(extra: list[dict] | None = None) -> list[dict]:
+def _hide(node, hidden: set):
+    """Remove hidden metric names from every enum in a schema (v1 reproduction)."""
+    if isinstance(node, dict):
+        if isinstance(node.get("enum"), list):
+            node["enum"] = [v for v in node["enum"] if v not in hidden]
+        for v in node.values():
+            _hide(v, hidden)
+    elif isinstance(node, list):
+        for v in node:
+            _hide(v, hidden)
+    return node
+
+
+def openai_tools(extra: list[dict] | None = None, hidden_metrics: set | None = None) -> list[dict]:
     specs = []
     for name, (_, model, desc) in TOOLS.items():
-        params = _inline_refs(model.model_json_schema())
+        params = _hide(_inline_refs(model.model_json_schema()), set(hidden_metrics or ()))
         params.setdefault("properties", {})
         params["type"] = "object"
         specs.append({"type": "function", "function": {"name": name, "description": desc, "parameters": params}})
@@ -192,6 +205,8 @@ def execute(inv: Investigation, name: str, raw_args) -> dict:
             parsed["filters"] = {fd: fs}
     except (ValidationError, json.JSONDecodeError, TypeError) as e:
         return {"error": f"Invalid arguments for {name}: {e}"}
+    if parsed.get("metric") in inv.hidden_metrics:
+        return {"error": f"Unknown metric '{parsed['metric']}'."}
     try:
         result = fn(inv, **parsed)
     except Exception as e:  # tool errors go back to the model as data
