@@ -23,7 +23,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 import traceback
 from pathlib import Path
 
@@ -144,6 +146,45 @@ def run_one(model: str, sc: dict, base, llm=None, version: str = "v2", run_name:
     return row
 
 
+def run_scenarios(model: str, scs: list[dict], base, path: Path, llm_factory, workers: int = 1,
+                  version: str = "v2", run_name: str | None = None, reorder: bool = False,
+                  before=None, after=None) -> list[dict]:
+    """Run scenarios with `workers` threads. Each thread has its own LLM client (its own pacing); each scenario
+    builds its own Investigation on its own copy of the data. One JSONL line per finished scenario, written under
+    a lock, so resume works and results do not depend on order. `before(sc)` and `after(row)` run under the
+    lock; either may return False to stop new scenarios from starting (budget or outage)."""
+    lock, stop, local = threading.Lock(), threading.Event(), threading.local()
+    rows: list[dict] = []
+
+    def work(sc):
+        if stop.is_set():
+            return None
+        with lock:
+            if before and before(sc) is False:
+                stop.set()
+                return None
+        if llm_factory is not None and not hasattr(local, "llm"):
+            local.llm = llm_factory()
+        row = run_one(model, sc, base, getattr(local, "llm", None), version, run_name, reorder)
+        with lock:
+            with open(path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(row, default=str) + "\n")
+            rows.append(row)
+            if after and after(row) is False:
+                stop.set()
+        return row
+
+    if workers <= 1:
+        for sc in scs:
+            work(sc)
+            if stop.is_set():
+                break
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            list(pool.map(work, scs))
+    return rows
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", required=True,
@@ -165,6 +206,8 @@ def main(argv=None):
     ap.add_argument("--results-dir", help="base results folder (default: results/); the TEST set uses results/v2")
     ap.add_argument("--only-file", help="JSON list of scenario ids to run (fixed subsets: repeat, cache rerun)")
     ap.add_argument("--no-cache", action="store_true", help="bypass the gateway cache (stability repeats)")
+    ap.add_argument("--workers", type=int, default=int(os.getenv("EVAL_WORKERS", "1")),
+                    help="scenarios run concurrently (each worker has its own LLM client and pacing)")
     args = ap.parse_args(argv)
     from dotenv import load_dotenv
     load_dotenv(ROOT / ".env")
@@ -185,21 +228,23 @@ def main(argv=None):
     if args.limit:
         scs = scs[: args.limit]
     base = default_store()
-    llm = None if args.model in BASELINES else make_llm(args.model)
-    print(f"{args.model}: {len(done)} done, {len(scs)} to run -> {path}")
-    streak = 0
-    for i, sc in enumerate(scs, 1):
+    llm_factory = None if args.model in BASELINES else (lambda: make_llm(args.model))
+    print(f"{args.model}: {len(done)} done, {len(scs)} to run -> {path} (workers {args.workers})", flush=True)
+    state = {"i": 0, "streak": 0}
+
+    def before(sc):
         if guarded:
             spent, worst = sum(spend_by_file().values()), worst_case_usd(args.model, path)
             if spent + worst > budget:
                 print(f"STOPPED (budget): estimated spend so far ${spent:.4f}; the next scenario could cost up to "
                       f"${worst:.4f}, which would pass BUDGET_USD=${budget:.2f}. Nothing else was sent.", flush=True)
-                break
-        row = run_one(args.model, sc, base, llm, args.agent_version, args.run_name, args.reorder)
-        with open(path, "a", encoding="utf-8") as f:
-            f.write(json.dumps(row, default=str) + "\n")
-        s = row["score"]
-        print(f"[{i}/{len(scs)}] {sc['id']:<32} top1={s['top1']} top3={s['top3']} "
+                return False
+        return True
+
+    def after(row):
+        state["i"] += 1
+        i, s = state["i"], row["score"]
+        print(f"[{i}/{len(scs)}] {row['id']:<32} top1={s['top1']} top3={s['top3']} "
               f"false_alarm={s['false_alarm']} steps={row.get('steps')} "
               f"err={(row.get('error') or '')[:80]}", flush=True)
         if guarded:
@@ -210,12 +255,16 @@ def main(argv=None):
         if i % 10 == 0 or i == len(scs):
             print(progress_line(path), flush=True)
         # each failed scenario already retried for several minutes, so a per-minute limit would have cleared
-        streak = streak + 1 if is_infra_failure(row) else 0
-        if args.max_infra_streak and streak >= args.max_infra_streak:
-            print(f"STOPPED: {streak} scenarios in a row failed with no report (last error: "
+        state["streak"] = state["streak"] + 1 if is_infra_failure(row) else 0
+        if args.max_infra_streak and state["streak"] >= args.max_infra_streak:
+            print(f"STOPPED: {state['streak']} scenarios in a row failed with no report (last error: "
                   f"{(row.get('error') or '')[:120]}). Likely the daily quota or an outage. "
                   f"Rerun the same command later; failed scenarios will be retried.", flush=True)
-            break
+            return False
+        return True
+
+    run_scenarios(args.model, scs, base, path, llm_factory, args.workers, args.agent_version, args.run_name,
+                  args.reorder, before, after)
     if not args.results_dir:  # the TEST set (results/v2) has its own metrics script
         from eval.report_tables import main as tables
         tables()

@@ -7,7 +7,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2017-08-07",
+      "week": "2017-07-24",
       "params": {
         "dimension": "customer_state",
         "segment": "PR",
@@ -27,7 +27,7 @@
       "type": "volume_drop",
       "severity": "medium",
       "metric": "gmv",
-      "week": "2017-07-10",
+      "week": "2017-04-03",
       "params": {
         "dimension": "product_category",
         "segment": "housewares",
@@ -47,7 +47,7 @@
       "type": "volume_drop",
       "severity": "large",
       "metric": "gmv",
-      "week": "2018-07-30",
+      "week": "2018-04-23",
       "params": {
         "dimension": "customer_state",
         "segment": "SC",
@@ -67,7 +67,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
         "segment": "sports_leisure",
@@ -107,7 +107,7 @@
       "type": "volume_drop",
       "severity": "large",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-03-27",
       "params": {
         "dimension": "customer_state",
         "segment": "BA",
@@ -127,7 +127,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-04-03",
       "params": {
         "dimension": "product_category",
         "segment": "telephony",
@@ -147,7 +147,7 @@
       "type": "volume_drop",
       "severity": "medium",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-03-27",
       "params": {
         "dimension": "customer_state",
         "segment": "RJ",
@@ -167,7 +167,7 @@
       "type": "volume_drop",
       "severity": "large",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-04-03",
       "params": {
         "dimension": "product_category",
         "segment": "computers_accessories",
@@ -187,7 +187,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2018-07-30",
+      "week": "2018-04-23",
       "params": {
         "dimension": "customer_state",
         "segment": "SP",
@@ -207,7 +207,7 @@
       "type": "volume_drop",
       "severity": "medium",
       "metric": "gmv",
-      "week": "2017-08-07",
+      "week": "2017-05-29",
       "params": {
         "dimension": "customer_state",
         "segment": "MG",
@@ -227,7 +227,7 @@
       "type": "volume_drop",
       "severity": "large",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-03-27",
       "params": {
         "dimension": "customer_state",
         "segment": "DF",
@@ -247,7 +247,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-04-03",
       "params": {
         "dimension": "customer_state",
         "segment": "RS",
@@ -307,7 +307,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
         "segment": "watches_gifts",
@@ -327,7 +327,7 @@
       "type": "volume_drop",
       "severity": "medium",
       "metric": "gmv",
-      "week": "2017-08-14",
+      "week": "2017-08-07",
       "params": {
         "dimension": "customer_state",
         "segment": "PR",
@@ -347,7 +347,7 @@
       "type": "volume_drop",
       "severity": "large",
       "metric": "gmv",
-      "week": "2018-07-30",
+      "week": "2018-04-23",
       "params": {
         "dimension": "product_category",
         "segment": "housewares",
@@ -367,7 +367,7 @@
       "type": "volume_drop",
       "severity": "small",
       "metric": "gmv",
-      "week": "2017-07-24",
+      "week": "2017-04-24",
       "params": {
         "dimension": "customer_state",
         "segment": "SC",
@@ -427,7 +427,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2018-07-30",
+      "week": "2018-04-23",
       "params": {
         "dimension": "product_category",
         "segment": "garden_tools",
@@ -447,7 +447,7 @@
       "type": "price_drop",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-05-29",
+      "week": "2017-04-17",
       "params": {
         "dimension": "product_category",
         "segment": "computers_accessories",
@@ -467,7 +467,7 @@
       "type": "price_drop",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-05-29",
+      "week": "2017-04-10",
       "params": {
         "dimension": "product_category",
         "segment": "sports_leisure",
@@ -487,7 +487,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
         "segment": "auto",
@@ -507,7 +507,7 @@
       "type": "price_drop",
       "severity": "large",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
         "segment": "toys",
@@ -547,7 +547,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
         "segment": "cool_stuff",
@@ -567,7 +567,7 @@
       "type": "price_drop",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-08-14",
+      "week": "2017-07-10",
       "params": {
         "dimension": "product_category",
         "segment": "furniture_decor",
@@ -587,7 +587,7 @@
       "type": "price_drop",
       "severity": "small",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
         "segment": "telephony",
@@ -607,7 +607,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
         "segment": "health_beauty",
@@ -627,7 +627,7 @@
       "type": "price_drop",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-07-24",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
         "segment": "housewares",
@@ -647,7 +647,7 @@
       "type": "price_drop",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-05-29",
+      "week": "2017-04-17",
       "params": {
         "dimension": "product_category",
         "segment": "bed_bath_table",
@@ -667,7 +667,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-04-03",
       "params": {
         "dimension": "product_category",
         "segment": "garden_tools",
@@ -687,7 +687,7 @@
       "type": "price_drop",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-04-03",
       "params": {
         "dimension": "product_category",
         "segment": "computers_accessories",
@@ -707,7 +707,7 @@
       "type": "price_drop",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
         "segment": "sports_leisure",
@@ -727,7 +727,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-08-14",
+      "week": "2017-07-10",
       "params": {
         "dimension": "product_category",
         "segment": "auto",
@@ -747,7 +747,7 @@
       "type": "price_drop",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
         "segment": "toys",
@@ -767,7 +767,7 @@
       "type": "price_drop",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
         "segment": "watches_gifts",
@@ -787,7 +787,7 @@
       "type": "price_drop",
       "severity": "medium",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
         "segment": "cool_stuff",
@@ -827,7 +827,7 @@
       "type": "delivery_delay",
       "severity": "medium",
       "metric": "on_time_rate",
-      "week": "2018-04-23",
+      "week": "2017-08-14",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -847,7 +847,7 @@
       "type": "delivery_delay",
       "severity": "large",
       "metric": "on_time_rate",
-      "week": "2017-07-10",
+      "week": "2017-05-08",
       "params": {
         "dimension": "seller_state",
         "segment": "SP",
@@ -867,7 +867,7 @@
       "type": "delivery_delay",
       "severity": "small",
       "metric": "on_time_rate",
-      "week": "2017-05-29",
+      "week": "2017-04-10",
       "params": {
         "dimension": "seller_state",
         "segment": "MG",
@@ -907,7 +907,7 @@
       "type": "delivery_delay",
       "severity": "large",
       "metric": "on_time_rate",
-      "week": "2017-05-08",
+      "week": "2017-03-27",
       "params": {
         "dimension": "seller_state",
         "segment": "SC",
@@ -927,7 +927,7 @@
       "type": "delivery_delay",
       "severity": "small",
       "metric": "on_time_rate",
-      "week": "2017-05-08",
+      "week": "2017-08-07",
       "params": {
         "dimension": "seller_state",
         "segment": "PR",
@@ -947,7 +947,7 @@
       "type": "delivery_delay",
       "severity": "medium",
       "metric": "on_time_rate",
-      "week": "2017-08-14",
+      "week": "2017-04-03",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -967,7 +967,7 @@
       "type": "delivery_delay",
       "severity": "large",
       "metric": "on_time_rate",
-      "week": "2018-04-23",
+      "week": "2017-08-14",
       "params": {
         "dimension": "seller_state",
         "segment": "SP",
@@ -987,7 +987,7 @@
       "type": "delivery_delay",
       "severity": "small",
       "metric": "on_time_rate",
-      "week": "2017-08-14",
+      "week": "2018-04-23",
       "params": {
         "dimension": "seller_state",
         "segment": "MG",
@@ -1007,7 +1007,7 @@
       "type": "delivery_delay",
       "severity": "medium",
       "metric": "on_time_rate",
-      "week": "2018-04-23",
+      "week": "2017-08-07",
       "params": {
         "dimension": "seller_state",
         "segment": "RJ",
@@ -1027,7 +1027,7 @@
       "type": "delivery_delay",
       "severity": "large",
       "metric": "on_time_rate",
-      "week": "2017-08-14",
+      "week": "2017-08-07",
       "params": {
         "dimension": "seller_state",
         "segment": "SC",
@@ -1047,7 +1047,7 @@
       "type": "delivery_delay",
       "severity": "small",
       "metric": "on_time_rate",
-      "week": "2017-07-10",
+      "week": "2018-04-23",
       "params": {
         "dimension": "seller_state",
         "segment": "PR",
@@ -1067,7 +1067,7 @@
       "type": "delivery_delay",
       "severity": "medium",
       "metric": "on_time_rate",
-      "week": "2017-05-29",
+      "week": "2017-05-08",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -1087,7 +1087,7 @@
       "type": "delivery_delay",
       "severity": "large",
       "metric": "on_time_rate",
-      "week": "2017-07-24",
+      "week": "2017-04-03",
       "params": {
         "dimension": "seller_state",
         "segment": "SP",
@@ -1107,7 +1107,7 @@
       "type": "delivery_delay",
       "severity": "small",
       "metric": "on_time_rate",
-      "week": "2017-07-10",
+      "week": "2017-05-08",
       "params": {
         "dimension": "seller_state",
         "segment": "MG",
@@ -1127,7 +1127,7 @@
       "type": "delivery_delay",
       "severity": "medium",
       "metric": "on_time_rate",
-      "week": "2017-07-10",
+      "week": "2017-05-29",
       "params": {
         "dimension": "seller_state",
         "segment": "RJ",
@@ -1167,7 +1167,7 @@
       "type": "delivery_delay",
       "severity": "small",
       "metric": "on_time_rate",
-      "week": "2018-04-23",
+      "week": "2017-05-08",
       "params": {
         "dimension": "seller_state",
         "segment": "PR",
@@ -1187,7 +1187,7 @@
       "type": "delivery_delay",
       "severity": "medium",
       "metric": "on_time_rate",
-      "week": "2017-07-10",
+      "week": "2018-04-23",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -1207,10 +1207,10 @@
       "type": "cancellation_spike",
       "severity": "small",
       "metric": "cancellation_rate",
-      "week": "2018-07-30",
+      "week": "2017-04-24",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "pct": 0.1
       },
       "seed": 20270162,
@@ -1218,7 +1218,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "effect": "rate"
       }
     },
@@ -1227,10 +1227,10 @@
       "type": "cancellation_spike",
       "severity": "medium",
       "metric": "cancellation_rate",
-      "week": "2017-07-24",
+      "week": "2018-04-23",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "pct": 0.2
       },
       "seed": 20270163,
@@ -1238,7 +1238,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "effect": "rate"
       }
     },
@@ -1247,10 +1247,10 @@
       "type": "cancellation_spike",
       "severity": "large",
       "metric": "cancellation_rate",
-      "week": "2017-08-07",
+      "week": "2017-05-29",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "pct": 0.35
       },
       "seed": 20270164,
@@ -1258,7 +1258,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "effect": "rate"
       }
     },
@@ -1267,10 +1267,10 @@
       "type": "cancellation_spike",
       "severity": "small",
       "metric": "cancellation_rate",
-      "week": "2017-08-14",
+      "week": "2017-07-10",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "pct": 0.1
       },
       "seed": 20270165,
@@ -1278,7 +1278,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "effect": "rate"
       }
     },
@@ -1287,10 +1287,10 @@
       "type": "cancellation_spike",
       "severity": "medium",
       "metric": "cancellation_rate",
-      "week": "2017-07-10",
+      "week": "2017-08-07",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "pct": 0.2
       },
       "seed": 20270166,
@@ -1298,7 +1298,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "effect": "rate"
       }
     },
@@ -1307,10 +1307,10 @@
       "type": "cancellation_spike",
       "severity": "large",
       "metric": "cancellation_rate",
-      "week": "2017-05-29",
+      "week": "2017-04-24",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "pct": 0.35
       },
       "seed": 20270167,
@@ -1318,7 +1318,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "effect": "rate"
       }
     },
@@ -1327,10 +1327,10 @@
       "type": "cancellation_spike",
       "severity": "small",
       "metric": "cancellation_rate",
-      "week": "2017-05-29",
+      "week": "2017-04-10",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "pct": 0.1
       },
       "seed": 20270168,
@@ -1338,7 +1338,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "effect": "rate"
       }
     },
@@ -1347,10 +1347,10 @@
       "type": "cancellation_spike",
       "severity": "medium",
       "metric": "cancellation_rate",
-      "week": "2017-07-10",
+      "week": "2017-04-10",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "pct": 0.2
       },
       "seed": 20270169,
@@ -1358,7 +1358,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "effect": "rate"
       }
     },
@@ -1367,10 +1367,10 @@
       "type": "cancellation_spike",
       "severity": "large",
       "metric": "cancellation_rate",
-      "week": "2017-08-07",
+      "week": "2017-04-17",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "pct": 0.35
       },
       "seed": 20270170,
@@ -1378,72 +1378,12 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "effect": "rate"
       }
     },
     {
       "id": "t070_cancellation_spike_small",
-      "type": "cancellation_spike",
-      "severity": "small",
-      "metric": "cancellation_rate",
-      "week": "2017-08-14",
-      "params": {
-        "dimension": "main_payment_type",
-        "segment": "boleto",
-        "pct": 0.1
-      },
-      "seed": 20270171,
-      "is_control": false,
-      "ground_truth": {
-        "anomaly": true,
-        "dimension": "main_payment_type",
-        "segment": "boleto",
-        "effect": "rate"
-      }
-    },
-    {
-      "id": "t071_cancellation_spike_medium",
-      "type": "cancellation_spike",
-      "severity": "medium",
-      "metric": "cancellation_rate",
-      "week": "2017-08-14",
-      "params": {
-        "dimension": "main_payment_type",
-        "segment": "debit_card",
-        "pct": 0.2
-      },
-      "seed": 20270172,
-      "is_control": false,
-      "ground_truth": {
-        "anomaly": true,
-        "dimension": "main_payment_type",
-        "segment": "debit_card",
-        "effect": "rate"
-      }
-    },
-    {
-      "id": "t072_cancellation_spike_large",
-      "type": "cancellation_spike",
-      "severity": "large",
-      "metric": "cancellation_rate",
-      "week": "2018-07-30",
-      "params": {
-        "dimension": "main_payment_type",
-        "segment": "credit_card",
-        "pct": 0.35
-      },
-      "seed": 20270173,
-      "is_control": false,
-      "ground_truth": {
-        "anomaly": true,
-        "dimension": "main_payment_type",
-        "segment": "credit_card",
-        "effect": "rate"
-      }
-    },
-    {
-      "id": "t073_cancellation_spike_small",
       "type": "cancellation_spike",
       "severity": "small",
       "metric": "cancellation_rate",
@@ -1453,7 +1393,7 @@
         "segment": "voucher",
         "pct": 0.1
       },
-      "seed": 20270174,
+      "seed": 20270171,
       "is_control": false,
       "ground_truth": {
         "anomaly": true,
@@ -1463,14 +1403,74 @@
       }
     },
     {
-      "id": "t074_cancellation_spike_medium",
+      "id": "t071_cancellation_spike_medium",
       "type": "cancellation_spike",
       "severity": "medium",
+      "metric": "cancellation_rate",
+      "week": "2017-08-07",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "credit_card",
+        "pct": 0.2
+      },
+      "seed": 20270172,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "credit_card",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "t072_cancellation_spike_large",
+      "type": "cancellation_spike",
+      "severity": "large",
+      "metric": "cancellation_rate",
+      "week": "2017-08-07",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "boleto",
+        "pct": 0.35
+      },
+      "seed": 20270173,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "boleto",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "t073_cancellation_spike_small",
+      "type": "cancellation_spike",
+      "severity": "small",
       "metric": "cancellation_rate",
       "week": "2018-07-30",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "debit_card",
+        "pct": 0.1
+      },
+      "seed": 20270174,
+      "is_control": false,
+      "ground_truth": {
+        "anomaly": true,
+        "dimension": "main_payment_type",
+        "segment": "debit_card",
+        "effect": "rate"
+      }
+    },
+    {
+      "id": "t074_cancellation_spike_medium",
+      "type": "cancellation_spike",
+      "severity": "medium",
+      "metric": "cancellation_rate",
+      "week": "2017-07-10",
+      "params": {
+        "dimension": "main_payment_type",
+        "segment": "voucher",
         "pct": 0.2
       },
       "seed": 20270175,
@@ -1478,7 +1478,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "effect": "rate"
       }
     },
@@ -1490,7 +1490,7 @@
       "week": "2018-07-30",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "pct": 0.35
       },
       "seed": 20270176,
@@ -1498,7 +1498,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "effect": "rate"
       }
     },
@@ -1507,10 +1507,10 @@
       "type": "cancellation_spike",
       "severity": "small",
       "metric": "cancellation_rate",
-      "week": "2017-07-24",
+      "week": "2018-07-30",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "pct": 0.1
       },
       "seed": 20270177,
@@ -1518,7 +1518,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "effect": "rate"
       }
     },
@@ -1527,10 +1527,10 @@
       "type": "cancellation_spike",
       "severity": "medium",
       "metric": "cancellation_rate",
-      "week": "2017-08-14",
+      "week": "2017-05-29",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "pct": 0.2
       },
       "seed": 20270178,
@@ -1538,7 +1538,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "voucher",
+        "segment": "debit_card",
         "effect": "rate"
       }
     },
@@ -1547,10 +1547,10 @@
       "type": "cancellation_spike",
       "severity": "large",
       "metric": "cancellation_rate",
-      "week": "2017-08-07",
+      "week": "2017-08-14",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "pct": 0.35
       },
       "seed": 20270179,
@@ -1558,7 +1558,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "boleto",
+        "segment": "voucher",
         "effect": "rate"
       }
     },
@@ -1567,10 +1567,10 @@
       "type": "cancellation_spike",
       "severity": "small",
       "metric": "cancellation_rate",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "pct": 0.1
       },
       "seed": 20270180,
@@ -1578,7 +1578,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "debit_card",
+        "segment": "credit_card",
         "effect": "rate"
       }
     },
@@ -1587,10 +1587,10 @@
       "type": "cancellation_spike",
       "severity": "medium",
       "metric": "cancellation_rate",
-      "week": "2018-04-23",
+      "week": "2017-04-17",
       "params": {
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "pct": 0.2
       },
       "seed": 20270181,
@@ -1598,7 +1598,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "main_payment_type",
-        "segment": "credit_card",
+        "segment": "boleto",
         "effect": "rate"
       }
     },
@@ -1607,7 +1607,7 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
         "segment": "bed_bath_table",
@@ -1627,10 +1627,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-07-10",
+      "week": "2018-04-23",
       "params": {
         "dimension": "product_category",
-        "segment": "sports_leisure",
+        "segment": "watches_gifts",
         "pct": 0.4
       },
       "seed": 20270183,
@@ -1638,7 +1638,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "sports_leisure",
+        "segment": "watches_gifts",
         "effect": "rate"
       }
     },
@@ -1650,7 +1650,7 @@
       "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
-        "segment": "cool_stuff",
+        "segment": "garden_tools",
         "pct": 0.6
       },
       "seed": 20270184,
@@ -1658,7 +1658,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "cool_stuff",
+        "segment": "garden_tools",
         "effect": "rate"
       }
     },
@@ -1667,10 +1667,10 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-07-10",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
-        "segment": "furniture_decor",
+        "segment": "auto",
         "pct": 0.2
       },
       "seed": 20270185,
@@ -1678,7 +1678,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "furniture_decor",
+        "segment": "auto",
         "effect": "rate"
       }
     },
@@ -1687,10 +1687,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-07-10",
       "params": {
         "dimension": "product_category",
-        "segment": "watches_gifts",
+        "segment": "cool_stuff",
         "pct": 0.4
       },
       "seed": 20270186,
@@ -1698,7 +1698,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "watches_gifts",
+        "segment": "cool_stuff",
         "effect": "rate"
       }
     },
@@ -1707,10 +1707,10 @@
       "type": "review_drop",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
-        "segment": "auto",
+        "segment": "furniture_decor",
         "pct": 0.6
       },
       "seed": 20270187,
@@ -1718,7 +1718,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "auto",
+        "segment": "furniture_decor",
         "effect": "rate"
       }
     },
@@ -1727,10 +1727,10 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-05-29",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
-        "segment": "computers_accessories",
+        "segment": "toys",
         "pct": 0.2
       },
       "seed": 20270188,
@@ -1738,7 +1738,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "computers_accessories",
+        "segment": "toys",
         "effect": "rate"
       }
     },
@@ -1747,10 +1747,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "computers_accessories",
         "pct": 0.4
       },
       "seed": 20270189,
@@ -1758,7 +1758,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "computers_accessories",
         "effect": "rate"
       }
     },
@@ -1767,7 +1767,7 @@
       "type": "review_drop",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-05-08",
+      "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
         "segment": "housewares",
@@ -1787,10 +1787,10 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-05-08",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "health_beauty",
+        "segment": "sports_leisure",
         "pct": 0.2
       },
       "seed": 20270191,
@@ -1798,7 +1798,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "health_beauty",
+        "segment": "sports_leisure",
         "effect": "rate"
       }
     },
@@ -1807,10 +1807,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-07-10",
       "params": {
         "dimension": "product_category",
-        "segment": "garden_tools",
+        "segment": "health_beauty",
         "pct": 0.4
       },
       "seed": 20270192,
@@ -1818,7 +1818,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "garden_tools",
+        "segment": "health_beauty",
         "effect": "rate"
       }
     },
@@ -1827,10 +1827,10 @@
       "type": "review_drop",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-07-10",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "toys",
+        "segment": "telephony",
         "pct": 0.6
       },
       "seed": 20270193,
@@ -1838,7 +1838,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "toys",
+        "segment": "telephony",
         "effect": "rate"
       }
     },
@@ -1847,7 +1847,7 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
         "segment": "bed_bath_table",
@@ -1867,10 +1867,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-05-08",
       "params": {
         "dimension": "product_category",
-        "segment": "sports_leisure",
+        "segment": "watches_gifts",
         "pct": 0.4
       },
       "seed": 20270195,
@@ -1878,7 +1878,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "sports_leisure",
+        "segment": "watches_gifts",
         "effect": "rate"
       }
     },
@@ -1887,10 +1887,10 @@
       "type": "review_drop",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "cool_stuff",
+        "segment": "garden_tools",
         "pct": 0.6
       },
       "seed": 20270196,
@@ -1898,7 +1898,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "cool_stuff",
+        "segment": "garden_tools",
         "effect": "rate"
       }
     },
@@ -1907,10 +1907,10 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2018-04-23",
       "params": {
         "dimension": "product_category",
-        "segment": "furniture_decor",
+        "segment": "auto",
         "pct": 0.2
       },
       "seed": 20270197,
@@ -1918,7 +1918,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "furniture_decor",
+        "segment": "auto",
         "effect": "rate"
       }
     },
@@ -1927,10 +1927,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2017-04-24",
       "params": {
         "dimension": "product_category",
-        "segment": "watches_gifts",
+        "segment": "cool_stuff",
         "pct": 0.4
       },
       "seed": 20270198,
@@ -1938,7 +1938,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "watches_gifts",
+        "segment": "cool_stuff",
         "effect": "rate"
       }
     },
@@ -1947,10 +1947,10 @@
       "type": "review_drop",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2018-04-23",
       "params": {
         "dimension": "product_category",
-        "segment": "auto",
+        "segment": "furniture_decor",
         "pct": 0.6
       },
       "seed": 20270199,
@@ -1958,7 +1958,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "auto",
+        "segment": "furniture_decor",
         "effect": "rate"
       }
     },
@@ -1967,10 +1967,10 @@
       "type": "review_drop",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-07-10",
       "params": {
         "dimension": "product_category",
-        "segment": "computers_accessories",
+        "segment": "toys",
         "pct": 0.2
       },
       "seed": 20270200,
@@ -1978,7 +1978,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "computers_accessories",
+        "segment": "toys",
         "effect": "rate"
       }
     },
@@ -1987,10 +1987,10 @@
       "type": "review_drop",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "computers_accessories",
         "pct": 0.4
       },
       "seed": 20270201,
@@ -1998,7 +1998,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "computers_accessories",
         "effect": "rate"
       }
     },
@@ -2007,10 +2007,10 @@
       "type": "mix_shift",
       "severity": "small",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "pct": 0.1
       },
       "seed": 20270202,
@@ -2018,7 +2018,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "effect": "mix"
       }
     },
@@ -2027,10 +2027,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2018-07-30",
+      "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "pct": 0.2
       },
       "seed": 20270203,
@@ -2038,7 +2038,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "effect": "mix"
       }
     },
@@ -2047,10 +2047,10 @@
       "type": "mix_shift",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-07-10",
       "params": {
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "pct": 0.35
       },
       "seed": 20270204,
@@ -2058,7 +2058,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "effect": "mix"
       }
     },
@@ -2067,10 +2067,10 @@
       "type": "mix_shift",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "pct": 0.1
       },
       "seed": 20270205,
@@ -2078,7 +2078,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "effect": "mix"
       }
     },
@@ -2087,10 +2087,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "pct": 0.2
       },
       "seed": 20270206,
@@ -2098,7 +2098,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "effect": "mix"
       }
     },
@@ -2107,10 +2107,10 @@
       "type": "mix_shift",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-08-14",
+      "week": "2017-04-10",
       "params": {
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "pct": 0.35
       },
       "seed": 20270207,
@@ -2118,7 +2118,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "effect": "mix"
       }
     },
@@ -2127,10 +2127,10 @@
       "type": "mix_shift",
       "severity": "small",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-04-17",
       "params": {
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "pct": 0.1
       },
       "seed": 20270208,
@@ -2138,7 +2138,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "effect": "mix"
       }
     },
@@ -2147,10 +2147,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-05-29",
+      "week": "2017-04-17",
       "params": {
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "pct": 0.2
       },
       "seed": 20270209,
@@ -2158,7 +2158,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "effect": "mix"
       }
     },
@@ -2167,10 +2167,10 @@
       "type": "mix_shift",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-05-29",
+      "week": "2017-04-10",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "pct": 0.35
       },
       "seed": 20270210,
@@ -2178,7 +2178,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "effect": "mix"
       }
     },
@@ -2190,7 +2190,7 @@
       "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "pct": 0.1
       },
       "seed": 20270211,
@@ -2198,7 +2198,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "effect": "mix"
       }
     },
@@ -2207,10 +2207,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-07-24",
+      "week": "2018-07-30",
       "params": {
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "pct": 0.2
       },
       "seed": 20270212,
@@ -2218,7 +2218,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "effect": "mix"
       }
     },
@@ -2227,10 +2227,10 @@
       "type": "mix_shift",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-04-03",
       "params": {
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "pct": 0.35
       },
       "seed": 20270213,
@@ -2238,7 +2238,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "effect": "mix"
       }
     },
@@ -2247,10 +2247,10 @@
       "type": "mix_shift",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-07-24",
+      "week": "2017-04-17",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "pct": 0.1
       },
       "seed": 20270214,
@@ -2258,7 +2258,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "effect": "mix"
       }
     },
@@ -2267,10 +2267,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "pct": 0.2
       },
       "seed": 20270215,
@@ -2278,7 +2278,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "effect": "mix"
       }
     },
@@ -2287,10 +2287,10 @@
       "type": "mix_shift",
       "severity": "large",
       "metric": "aov",
-      "week": "2017-08-14",
+      "week": "2017-07-24",
       "params": {
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "pct": 0.35
       },
       "seed": 20270216,
@@ -2298,7 +2298,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "effect": "mix"
       }
     },
@@ -2307,10 +2307,10 @@
       "type": "mix_shift",
       "severity": "small",
       "metric": "aov",
-      "week": "2017-07-24",
+      "week": "2017-08-14",
       "params": {
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "pct": 0.1
       },
       "seed": 20270217,
@@ -2318,7 +2318,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "effect": "mix"
       }
     },
@@ -2327,10 +2327,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "pct": 0.2
       },
       "seed": 20270218,
@@ -2338,7 +2338,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "telephony",
+        "segment": "stationery",
         "effect": "mix"
       }
     },
@@ -2350,7 +2350,7 @@
       "week": "2017-05-29",
       "params": {
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "pct": 0.35
       },
       "seed": 20270219,
@@ -2358,7 +2358,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "fashion_bags_accessories",
+        "segment": "electronics",
         "effect": "mix"
       }
     },
@@ -2367,10 +2367,10 @@
       "type": "mix_shift",
       "severity": "small",
       "metric": "aov",
-      "week": "2018-07-30",
+      "week": "2017-04-10",
       "params": {
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "pct": 0.1
       },
       "seed": 20270220,
@@ -2378,7 +2378,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "stationery",
+        "segment": "fashion_bags_accessories",
         "effect": "mix"
       }
     },
@@ -2387,10 +2387,10 @@
       "type": "mix_shift",
       "severity": "medium",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2017-03-27",
       "params": {
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "pct": 0.2
       },
       "seed": 20270221,
@@ -2398,7 +2398,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "product_category",
-        "segment": "electronics",
+        "segment": "telephony",
         "effect": "mix"
       }
     },
@@ -2407,10 +2407,10 @@
       "type": "delay_then_reviews",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-07-10",
+      "week": "2017-03-27",
       "params": {
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "days": 5,
         "pct": 0.2
       },
@@ -2419,7 +2419,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "effect": "rate"
       }
     },
@@ -2428,7 +2428,7 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-05-29",
       "params": {
         "dimension": "seller_state",
         "segment": "SC",
@@ -2449,7 +2449,7 @@
       "type": "delay_then_reviews",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2017-04-24",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -2473,7 +2473,7 @@
       "week": "2017-07-10",
       "params": {
         "dimension": "seller_state",
-        "segment": "RJ",
+        "segment": "PR",
         "days": 5,
         "pct": 0.2
       },
@@ -2482,7 +2482,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "RJ",
+        "segment": "PR",
         "effect": "rate"
       }
     },
@@ -2491,10 +2491,10 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-05-08",
+      "week": "2017-04-03",
       "params": {
         "dimension": "seller_state",
-        "segment": "SP",
+        "segment": "MG",
         "days": 10,
         "pct": 0.4
       },
@@ -2503,7 +2503,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "SP",
+        "segment": "MG",
         "effect": "rate"
       }
     },
@@ -2512,10 +2512,10 @@
       "type": "delay_then_reviews",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2018-04-23",
       "params": {
         "dimension": "seller_state",
-        "segment": "MG",
+        "segment": "SP",
         "days": 15,
         "pct": 0.6
       },
@@ -2524,7 +2524,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "MG",
+        "segment": "SP",
         "effect": "rate"
       }
     },
@@ -2533,10 +2533,10 @@
       "type": "delay_then_reviews",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-05-08",
       "params": {
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "days": 5,
         "pct": 0.2
       },
@@ -2545,7 +2545,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "effect": "rate"
       }
     },
@@ -2554,7 +2554,7 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-07-10",
+      "week": "2017-04-24",
       "params": {
         "dimension": "seller_state",
         "segment": "SC",
@@ -2575,7 +2575,7 @@
       "type": "delay_then_reviews",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-07-10",
+      "week": "2017-08-14",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -2596,10 +2596,10 @@
       "type": "delay_then_reviews",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-05-29",
+      "week": "2017-04-24",
       "params": {
         "dimension": "seller_state",
-        "segment": "RJ",
+        "segment": "PR",
         "days": 5,
         "pct": 0.2
       },
@@ -2608,7 +2608,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "RJ",
+        "segment": "PR",
         "effect": "rate"
       }
     },
@@ -2617,10 +2617,10 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-07-10",
       "params": {
         "dimension": "seller_state",
-        "segment": "SP",
+        "segment": "MG",
         "days": 10,
         "pct": 0.4
       },
@@ -2629,7 +2629,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "SP",
+        "segment": "MG",
         "effect": "rate"
       }
     },
@@ -2638,10 +2638,10 @@
       "type": "delay_then_reviews",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-05-29",
       "params": {
         "dimension": "seller_state",
-        "segment": "MG",
+        "segment": "SP",
         "days": 15,
         "pct": 0.6
       },
@@ -2650,7 +2650,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "MG",
+        "segment": "SP",
         "effect": "rate"
       }
     },
@@ -2659,10 +2659,10 @@
       "type": "delay_then_reviews",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-07-10",
       "params": {
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "days": 5,
         "pct": 0.2
       },
@@ -2671,7 +2671,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "effect": "rate"
       }
     },
@@ -2680,7 +2680,7 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-05-08",
+      "week": "2017-04-03",
       "params": {
         "dimension": "seller_state",
         "segment": "SC",
@@ -2701,7 +2701,7 @@
       "type": "delay_then_reviews",
       "severity": "large",
       "metric": "avg_review_score",
-      "week": "2017-05-29",
+      "week": "2018-04-23",
       "params": {
         "dimension": "seller_state",
         "segment": "RS",
@@ -2722,10 +2722,10 @@
       "type": "delay_then_reviews",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-05-08",
       "params": {
         "dimension": "seller_state",
-        "segment": "RJ",
+        "segment": "PR",
         "days": 5,
         "pct": 0.2
       },
@@ -2734,7 +2734,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "RJ",
+        "segment": "PR",
         "effect": "rate"
       }
     },
@@ -2743,10 +2743,10 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2017-05-29",
       "params": {
         "dimension": "seller_state",
-        "segment": "SP",
+        "segment": "MG",
         "days": 10,
         "pct": 0.4
       },
@@ -2755,7 +2755,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "SP",
+        "segment": "MG",
         "effect": "rate"
       }
     },
@@ -2767,7 +2767,7 @@
       "week": "2017-07-24",
       "params": {
         "dimension": "seller_state",
-        "segment": "MG",
+        "segment": "SP",
         "days": 15,
         "pct": 0.6
       },
@@ -2776,7 +2776,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "MG",
+        "segment": "SP",
         "effect": "rate"
       }
     },
@@ -2785,10 +2785,10 @@
       "type": "delay_then_reviews",
       "severity": "small",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2017-04-03",
       "params": {
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "days": 5,
         "pct": 0.2
       },
@@ -2797,7 +2797,7 @@
       "ground_truth": {
         "anomaly": true,
         "dimension": "seller_state",
-        "segment": "PR",
+        "segment": "RJ",
         "effect": "rate"
       }
     },
@@ -2806,7 +2806,7 @@
       "type": "delay_then_reviews",
       "severity": "medium",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-07-24",
       "params": {
         "dimension": "seller_state",
         "segment": "SC",
@@ -2827,7 +2827,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "gmv",
-      "week": "2017-08-07",
+      "week": "2017-05-29",
       "params": {},
       "seed": 20270242,
       "is_control": true,
@@ -2843,7 +2843,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "aov",
-      "week": "2017-05-08",
+      "week": "2017-04-24",
       "params": {},
       "seed": 20270243,
       "is_control": true,
@@ -2859,7 +2859,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "on_time_rate",
-      "week": "2018-04-23",
+      "week": "2017-05-08",
       "params": {},
       "seed": 20270244,
       "is_control": true,
@@ -2875,7 +2875,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "cancellation_rate",
-      "week": "2017-08-07",
+      "week": "2017-04-24",
       "params": {},
       "seed": 20270245,
       "is_control": true,
@@ -2891,7 +2891,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "avg_review_score",
-      "week": "2017-08-14",
+      "week": "2018-07-30",
       "params": {},
       "seed": 20270246,
       "is_control": true,
@@ -2907,7 +2907,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "gmv",
-      "week": "2017-07-10",
+      "week": "2018-07-30",
       "params": {},
       "seed": 20270247,
       "is_control": true,
@@ -2923,7 +2923,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "aov",
-      "week": "2017-05-29",
+      "week": "2018-07-30",
       "params": {},
       "seed": 20270248,
       "is_control": true,
@@ -2939,7 +2939,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "on_time_rate",
-      "week": "2017-07-24",
+      "week": "2017-05-29",
       "params": {},
       "seed": 20270249,
       "is_control": true,
@@ -2955,7 +2955,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "cancellation_rate",
-      "week": "2017-08-14",
+      "week": "2017-04-03",
       "params": {},
       "seed": 20270250,
       "is_control": true,
@@ -2971,7 +2971,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "avg_review_score",
-      "week": "2017-05-29",
+      "week": "2017-04-24",
       "params": {},
       "seed": 20270251,
       "is_control": true,
@@ -3003,7 +3003,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "aov",
-      "week": "2018-07-30",
+      "week": "2017-04-10",
       "params": {},
       "seed": 20270253,
       "is_control": true,
@@ -3019,7 +3019,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "on_time_rate",
-      "week": "2017-08-07",
+      "week": "2017-07-24",
       "params": {},
       "seed": 20270254,
       "is_control": true,
@@ -3035,7 +3035,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "cancellation_rate",
-      "week": "2017-05-08",
+      "week": "2017-08-07",
       "params": {},
       "seed": 20270255,
       "is_control": true,
@@ -3051,7 +3051,7 @@
       "type": "control_clean",
       "severity": "none",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-07-10",
       "params": {},
       "seed": 20270256,
       "is_control": true,
@@ -3067,7 +3067,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "gmv",
-      "week": "2018-04-23",
+      "week": "2017-08-14",
       "params": {
         "pct": 0.05
       },
@@ -3085,7 +3085,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "aov",
-      "week": "2018-04-23",
+      "week": "2018-07-30",
       "params": {
         "pct": 0.05
       },
@@ -3103,7 +3103,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "on_time_rate",
-      "week": "2017-08-14",
+      "week": "2017-05-29",
       "params": {
         "pct": 0.05
       },
@@ -3121,7 +3121,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "cancellation_rate",
-      "week": "2017-05-29",
+      "week": "2017-04-03",
       "params": {
         "pct": 0.05
       },
@@ -3139,7 +3139,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "avg_review_score",
-      "week": "2017-08-07",
+      "week": "2018-04-23",
       "params": {
         "pct": 0.05
       },
@@ -3157,7 +3157,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "gmv",
-      "week": "2018-07-30",
+      "week": "2017-07-10",
       "params": {
         "pct": 0.05
       },
@@ -3175,7 +3175,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "aov",
-      "week": "2017-07-10",
+      "week": "2017-08-07",
       "params": {
         "pct": 0.05
       },
@@ -3193,7 +3193,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "on_time_rate",
-      "week": "2017-05-08",
+      "week": "2017-04-24",
       "params": {
         "pct": 0.05
       },
@@ -3211,7 +3211,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "cancellation_rate",
-      "week": "2017-08-14",
+      "week": "2017-04-24",
       "params": {
         "pct": 0.05
       },
@@ -3229,7 +3229,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "avg_review_score",
-      "week": "2018-04-23",
+      "week": "2017-08-07",
       "params": {
         "pct": 0.05
       },
@@ -3247,7 +3247,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "gmv",
-      "week": "2017-05-29",
+      "week": "2017-04-17",
       "params": {
         "pct": 0.05
       },
@@ -3265,7 +3265,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "aov",
-      "week": "2017-08-07",
+      "week": "2017-05-08",
       "params": {
         "pct": 0.05
       },
@@ -3283,7 +3283,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "on_time_rate",
-      "week": "2018-04-23",
+      "week": "2017-04-10",
       "params": {
         "pct": 0.05
       },
@@ -3301,7 +3301,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "cancellation_rate",
-      "week": "2017-07-24",
+      "week": "2018-07-30",
       "params": {
         "pct": 0.05
       },
@@ -3319,7 +3319,7 @@
       "type": "control_noise",
       "severity": "none",
       "metric": "avg_review_score",
-      "week": "2017-07-24",
+      "week": "2017-07-10",
       "params": {
         "pct": 0.05
       },

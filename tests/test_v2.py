@@ -129,3 +129,18 @@ def test_consistency_guard_sets_confirmed_or_empties_causes():
 
 def test_v2_uses_15_steps_and_v1_keeps_12():
     assert V2_MAX_STEPS == 15 and AgentConfig().max_steps == 12
+
+
+def test_test_manifest_uses_the_dev_pool_and_never_dev_weeks():
+    import pandas as pd
+
+    from inject.scenarios import POOL_START, load_manifest
+    from inject.test_set import MIN_HISTORY_WEEKS, TEST_MANIFEST
+    if not TEST_MANIFEST.exists():
+        pytest.skip("TEST manifest not built")
+    test, dev = load_manifest(TEST_MANIFEST), {s["week"] for s in load_manifest()}
+    weeks = {s["week"] for s in test}
+    assert not weeks & dev                                   # held out: no DEV week is reused
+    assert min(weeks) >= POOL_START                          # same pool as DEV (no launch weeks)
+    first = pd.Timestamp("2017-01-02")                       # first week of the data window
+    assert min((pd.Timestamp(w) - first).days // 7 for w in weeks) >= MIN_HISTORY_WEEKS

@@ -24,13 +24,22 @@ def read() -> tuple[str, str, int, str]:
     return phase, done, failed, s
 
 
+ALERT = STATUS.parent / "v2" / "ALERT.txt"
+
+
 def main():
+    import sys
+    until_all = "--until-all" in sys.argv  # only wake when everything is done or something breaks
+    alert0 = ALERT.stat().st_mtime if ALERT.exists() else 0
     phase0, done0, _, _ = read()
     last_change, last_done = time.time(), done0
     while True:
         time.sleep(60)
         phase, done, failed, line = read()
-        if "all phases complete" in line or (phase and phase != phase0):
+        if ALERT.exists() and ALERT.stat().st_mtime != alert0:
+            print(f"ATTENTION alert: {ALERT.read_text(encoding='utf-8').strip()} | {line}")
+            return
+        if "all phases complete" in line or (not until_all and phase and phase != phase0):
             print(f"PHASE DONE: {phase0} -> now: {line}")
             return
         if failed:
