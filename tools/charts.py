@@ -16,8 +16,19 @@ from tools.drilldown import drill_table  # noqa: E402
 BLUE, RED, GREY = "#2B6CB0", "#C53030", "#A0AEC0"
 
 
+import threading  # noqa: E402
+
+_CHART_LOCK = threading.Lock()  # pyplot is not thread-safe (parallel evaluation workers)
+
+
 def make_chart(inv: Investigation, kind: str, metric: str, week: str, dimension: str | None = None,
                n_baseline: int = 4, weeks_back: int = 16, top_k: int = 8) -> dict:
+    with _CHART_LOCK:
+        return _make_chart(inv, kind, metric, week, dimension, n_baseline, weeks_back, top_k)
+
+
+def _make_chart(inv: Investigation, kind: str, metric: str, week: str, dimension: str | None = None,
+                n_baseline: int = 4, weeks_back: int = 16, top_k: int = 8) -> dict:
     m = metric_def(metric)
     w = to_week(week)
     inv.chart_dir.mkdir(parents=True, exist_ok=True)

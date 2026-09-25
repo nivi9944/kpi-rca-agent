@@ -22,6 +22,14 @@ DEV_MANIFEST = ROOT / "inject" / "manifest.json"
 TEST_MANIFEST = ROOT / "inject" / "manifest_test.json"
 STATUS = ROOT / "results" / "progress_status.txt"
 REFRESH_S = 30
+WORKERS = V2 / "workers.txt"
+
+
+def _workers() -> int:
+    try:
+        return max(1, int(WORKERS.read_text().strip()))
+    except (OSError, ValueError):
+        return 1
 
 # (phase, run file, manifest, optional subset file) in execution order
 PHASES = [
@@ -88,7 +96,9 @@ def snapshot() -> tuple[str, str]:
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     lines.append(f"KPI RCA agent: evaluation progress        updated {now}   (refresh {REFRESH_S} s)")
     lines.append("=" * 88)
-    lines.append(f"Gateway: upstream 429s in the last 5 min: {_gateway_429s()}")
+    nw = _workers()
+    lines.append(f"Gateway: upstream 429s in the last 5 min: {_gateway_429s()}    workers: {nw}"
+                 f"    (ETAs are wall-clock: time per scenario / workers)")
     lines.append("")
     avg_min_llm = []
     for name, path, ids, rows, done in phase_info:
@@ -111,22 +121,25 @@ def snapshot() -> tuple[str, str]:
         planted = [r for r in rs if not r["score"]["is_control"]]
         t1 = sum(bool(r["score"]["top1"]) for r in planted)
         t3 = sum(bool(r["score"]["top3"]) for r in planted)
-        failed = sum(1 for r in rs if r.get("error"))
+        api_fail = sum(1 for r in rs if str(r.get("error") or "").startswith("llm error"))
+        model_fail = sum(1 for r in rs if r.get("error") and not str(r.get("error")).startswith("llm error"))
+        failed = api_fail
         nxt = next((i for i in ids if i not in done), "-")
         lat = [r.get("latency_s") or 0 for r in rs]
         avg_min = (sum(lat) / len(lat) / 60) if lat else (sum(avg_min_llm) / len(avg_min_llm) if avg_min_llm else 2.5)
         if name not in LLM_PHASES:
             avg_min = 0.02
-        eta_run = (len(ids) - len(done)) * avg_min
+        eta_run = (len(ids) - len(done)) * avg_min / nw
         # whole TEST phase: remaining scenarios of every LLM phase at the observed pace
         pace = sum(avg_min_llm) / len(avg_min_llm) if avg_min_llm else avg_min
         rem = 0.0
         for n2, _, ids2, _, done2 in phase_info:
             if n2.startswith("TEST") and ids2:
-                rem += (len(ids2) - len(done2)) * (pace if n2 in LLM_PHASES else 0.02) * (0.1 if "cache" in n2 else 1)
+                rem += (len(ids2) - len(done2)) * (pace if n2 in LLM_PHASES else 0.02) * (0.1 if "cache" in n2 else 1) / nw
         pct = lambda k: f"{100 * k / len(planted):.1f}%" if planted else "n/a"
         lines.append(f"Current run: {name}   scenario in progress: {nxt}")
-        lines.append(f"  running top-1 {pct(t1)} ({t1}/{len(planted)} planted)   top-3 {pct(t3)}   failed runs {failed}")
+        lines.append(f"  running top-1 {pct(t1)} ({t1}/{len(planted)} planted)   top-3 {pct(t3)}   "
+                     f"API failures {api_fail}   model failures (no report) {model_fail}")
         lines.append(f"  avg {avg_min:.2f} min/scenario   ETA this run {eta_run / 60:.1f} h   ETA whole TEST phase {rem / 60:.1f} h")
         lines.append("  last 5 scenarios:")
         for r in rs[-5:]:
@@ -134,7 +147,7 @@ def snapshot() -> tuple[str, str]:
             res = ("no alarm (correct)" if not s["false_alarm"] else "FALSE ALARM") if s["is_control"] else \
                 ("correct" if s["top1"] else "wrong")
             lines.append(f"    {r['id']:34} {res}{'  ERROR: ' + str(r['error'])[:40] if r.get('error') else ''}")
-        status = (f"{now} | {name} {len(done)}/{len(ids)} | top-1 {pct(t1)} | failed {failed} | "
+        status = (f"{now} | {name} {len(done)}/{len(ids)} | top-1 {pct(t1)} | failed {failed} | workers {nw} | "
                   f"ETA run {eta_run / 60:.1f} h, TEST {rem / 60:.1f} h | next {nxt}")
     else:
         lines.append("All phases complete.")

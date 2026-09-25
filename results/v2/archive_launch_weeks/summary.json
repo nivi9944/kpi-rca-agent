@@ -1,0 +1,46 @@
+{
+  "why_archived": "The first TEST manifest included 5 weeks from Olist's launch period (2017-03-27 to 2017-04-24), before the DEV pool start (2017-05-01). Those weeks have only 12 to 16 weeks of prior data, covering the launch ramp-up, and tiny segments. The TEST set was rebuilt with the DEV pool rule; these runs are kept for transparency.",
+  "launch_weeks": [
+    "2017-03-27",
+    "2017-04-03",
+    "2017-04-10",
+    "2017-04-17",
+    "2017-04-24"
+  ],
+  "test_b1": {
+    "launch_weeks": {
+      "planted_run": 51,
+      "top1_correct": 2,
+      "top1_pct": 3.9
+    },
+    "standard_pool_weeks": {
+      "planted_run": 89,
+      "top1_correct": 12,
+      "top1_pct": 13.5
+    }
+  },
+  "test_b2": {
+    "launch_weeks": {
+      "planted_run": 51,
+      "top1_correct": 4,
+      "top1_pct": 7.8
+    },
+    "standard_pool_weeks": {
+      "planted_run": 89,
+      "top1_correct": 47,
+      "top1_pct": 52.8
+    }
+  },
+  "test_v2": {
+    "launch_weeks": {
+      "planted_run": 11,
+      "top1_correct": 0,
+      "top1_pct": 0.0
+    },
+    "standard_pool_weeks": {
+      "planted_run": 12,
+      "top1_correct": 2,
+      "top1_pct": 16.7
+    }
+  }
+}

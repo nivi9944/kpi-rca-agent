@@ -3,9 +3,10 @@
   python -m inject.test_set      writes inject/manifest_test.json
 
 Differences from the DEV manifest (inject/manifest.json), all by rule, none tuned on results:
-- Target weeks never overlap DEV target weeks. Only about 8 standard-pool weeks are free, so the pool also
-  includes early 2017 weeks from the first week the detector can score (enough history for its 4-week
-  baseline and 8 trailing changes). Those weeks have lower order volume.
+- Target weeks never overlap DEV target weeks and come from the same pool as DEV (from POOL_START, 2017-05-01,
+  with the same excluded event weeks), each with at least MIN_HISTORY_WEEKS of prior data. A first version
+  also used Olist's launch weeks (2017-03-27 to 2017-04-24); scenarios there were undetectable even for the
+  statistical baseline (thin, ramp-up history), so the set was rebuilt (results/v2/archive_launch_weeks).
 - Target segments are drawn from the largest segments of each dimension (by volume in the whole window), so
   most TEST segments were never used on DEV.
 - A planted scenario must change its target metric in the target week; otherwise its week is redrawn
@@ -21,14 +22,15 @@ from collections import Counter
 import numpy as np
 import pandas as pd
 
-from inject.scenarios import (EXCLUDED_RANGES, MANIFEST, POOL_END, SEV_CYCLE, SEVERITY, apply_scenario,
-                              load_manifest)
+from inject.scenarios import (EXCLUDED_RANGES, MANIFEST, POOL_END, POOL_START, SEV_CYCLE, SEVERITY,
+                              apply_scenario, load_manifest)
 from metrics.metrics import default_store, to_week
 from tools.anomaly import score_series
 
 TEST_MANIFEST = MANIFEST.parent / "manifest_test.json"
 MASTER_SEED_TEST = 20270101
-TEST_POOL_START = "2017-01-02"  # every week the detector can score (z defined) is a candidate
+TEST_POOL_START = POOL_START  # same pool as DEV (the launch weeks before it have too little history)
+MIN_HISTORY_WEEKS = 8
 N_PER_TYPE = 20
 N_CLEAN, N_NOISE = 15, 15
 CHAINED_SEVERITY = {"small": (5, 0.20), "medium": (10, 0.40), "large": (15, 0.60)}  # (delay days, share 1-star)
@@ -43,6 +45,8 @@ def free_weeks(store, metric: str, dev_weeks: set, max_abs_z: float | None = 2.0
     s = score_series(store, metric)
     s = s[(s["week"] >= to_week(TEST_POOL_START)) & (s["week"] <= to_week(POOL_END)) & s["z"].notna()]
     s = s[~s["week"].apply(_excluded) & ~s["week"].isin(dev_weeks)]
+    first = store.orders["week"].min()
+    s = s[(s["week"] - first).dt.days // 7 >= MIN_HISTORY_WEEKS]
     if max_abs_z is not None:
         s = s[s["z"].abs() < max_abs_z]
     return list(s["week"])
