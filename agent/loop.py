@@ -14,8 +14,8 @@ from dataclasses import dataclass, field
 from pydantic import ValidationError
 
 from agent.compact import Compactor, dumps
-from agent.prompts import CORRECTION_PROMPT, SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
-from agent.guards import apply_guards
+from agent.prompts import CANDIDATE_PROMPT, CORRECTION_PROMPT, SYSTEM_PROMPT_V1, SYSTEM_PROMPT_V2
+from agent.guards import apply_guards, candidate_violations, enforce_candidates
 from agent.schemas import Report
 from agent.verifier import verify
 from tools.context import Investigation
@@ -62,6 +62,7 @@ class AgentResult:
     version: str = "v2"                                # agent version (v1 = the v1.0.0 behaviour)
     rerank: dict | None = None                         # v2: what the guards changed (dropped causes, confirmed flag)
     report_raw: dict | None = None                     # the report exactly as the LLM submitted it (before guards)
+    candidate_guard: dict | None = None                # v3: causes the candidate guard warned about / dropped
 
     @property
     def total_tokens(self) -> int:
@@ -117,6 +118,7 @@ def run_agent(llm, inv: Investigation, task: str, inv_id: str = "adhoc",
                       model_name=getattr(llm, "model", None), version=version)
     t_start = time.time()
     retried = False
+    cand_warned = False
     final_forced = False
 
     def emit(ev):
@@ -177,6 +179,18 @@ def run_agent(llm, inv: Investigation, task: str, inv_id: str = "adhoc",
                     emit({"type": "report_invalid", "error": str(e)[:500]})
                     messages.append({"role": "tool", "tool_call_id": tc["id"], "content": _truncate(out)})
                     continue
+                if version == "v3":  # v3 candidate guard: only causes this investigation verified as significant
+                    bad = candidate_violations(report, inv.evidence)
+                    if bad and not cand_warned:
+                        cand_warned = True
+                        res.candidate_guard = {"warned": bad, "dropped": []}
+                        emit({"type": "candidate_guard", "violations": bad})
+                        messages.append({"role": "tool", "tool_call_id": tc["id"],
+                                         "content": CANDIDATE_PROMPT.format(bad=", ".join(bad))})
+                        continue
+                    if bad:
+                        report, dropped = enforce_candidates(report, inv.evidence)
+                        res.candidate_guard = {**(res.candidate_guard or {"warned": []}), "dropped": dropped}
                 v = verify(report, inv)
                 emit({"type": "report", "verification": v})
                 if v["ungrounded"] and not retried:

@@ -7,6 +7,7 @@ Which test:
       because it asks whether this segment moved differently from everything else.
   effect="rate" (default for mean metrics):
       binary metrics (on-time, cancellation, repeat) -> two-proportion z-test, week vs baseline
+      money metrics (AOV, avg item price), v3 engine -> Yuen trimmed-mean t-test (20% trimmed; robust to big tickets)
       continuous metrics (AOV, delay, review)        -> Welch t-test (Mann-Whitney U reported too)
 
 Benjamini-Hochberg: every test in one investigation is added to a list; q-values are recomputed
@@ -78,15 +79,25 @@ def run_test(store, metric: str, dimension: str, segment: str, week, n_baseline:
         z, p = proportions_ztest([k1, k0], [len(x1), len(x0)])
         res.update({"test": "two-proportion z-test", "statistic": z, "p_value": p})
     else:
-        t, p = sps.ttest_ind(x1, x0, equal_var=False)
+        from tools.engine import TRIM, money_rate_test
         u_p = sps.mannwhitneyu(x1, x0, alternative="two-sided").pvalue
-        res.update({"test": "Welch t-test", "statistic": t, "p_value": p, "mann_whitney_p": u_p})
+        if m.get("money") and money_rate_test() == "yuen":
+            # v3: a few big-ticket orders dominate a week's mean price; the 20% trimmed mean is robust to them
+            t, p = sps.ttest_ind(x1, x0, equal_var=False, trim=TRIM)
+            res.update({"test": f"Yuen trimmed-mean t-test ({int(TRIM * 100)}% trimmed; money metric)", "statistic": t,
+                        "p_value": p, "mann_whitney_p": u_p,
+                        "trimmed_mean_current": float(sps.trim_mean(x1, TRIM)),
+                        "trimmed_mean_baseline": float(sps.trim_mean(x0, TRIM))})
+        else:
+            t, p = sps.ttest_ind(x1, x0, equal_var=False)
+            res.update({"test": "Welch t-test", "statistic": t, "p_value": p, "mann_whitney_p": u_p})
     return res
 
 
 def significance_test(inv: Investigation, metric: str, dimension: str, segment: str, week: str,
                       n_baseline: int = 4, effect: str | None = None, filters: dict | None = None) -> dict:
-    from tools.segscan import HIST_Z, segment_history_z
+    from tools.engine import hist_z
+    from tools.segscan import segment_history_z
 
     res = run_test(inv.store, metric, dimension, segment, week, n_baseline, effect, filters)
     p = float(res["p_value"]) if res["p_value"] == res["p_value"] else 1.0
@@ -98,7 +109,7 @@ def significance_test(inv: Investigation, metric: str, dimension: str, segment: 
     res["q_value_bh"] = q[-1]
     res["n_tests_so_far"] = len(inv.tests)
     res["hist_z"] = hz
-    res["significant"] = bool(q[-1] <= Q and hz is not None and abs(hz) >= HIST_Z)
+    res["significant"] = bool(q[-1] <= Q and hz is not None and abs(hz) >= hist_z())
     res["rule"] = (f"significant = BH q<={Q} (over all {len(inv.tests)} tests in this investigation) "
-                   f"AND |hist_z|>={HIST_Z} (change unusual vs the segment's own weekly history)")
+                   f"AND |hist_z|>={hist_z()} (change unusual vs the segment's own weekly history)")
     return res

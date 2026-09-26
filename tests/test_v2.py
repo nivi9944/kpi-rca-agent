@@ -144,3 +144,28 @@ def test_test_manifest_uses_the_dev_pool_and_never_dev_weeks():
     assert min(weeks) >= POOL_START                          # same pool as DEV (no launch weeks)
     first = pd.Timestamp("2017-01-02")                       # first week of the data window
     assert min((pd.Timestamp(w) - first).days // 7 for w in weeks) >= MIN_HISTORY_WEEKS
+
+
+# ---- v3: candidate guard (only causes the investigation itself verified as significant)
+from agent.guards import candidate_violations, enforce_candidates, significant_candidates  # noqa: E402
+
+
+def test_candidate_guard_allows_only_significant_tested_segments():
+    ev = sig_evidence([("seller_state", "SP", "rate", True, 4.5, 1e-3), ("seller_state", "MG", "rate", False, 1.0, 0.4)])
+    assert significant_candidates(ev) == {("seller_state", "sp")}
+    report = {"root_causes": [rc("seller_state", " sp ", "rate", 1, []), rc("seller_state", "MG", "rate", 2, []),
+                              rc("customer_state", "RJ", "rate", 3, [])]}
+    assert candidate_violations(report, ev) == ["seller_state=MG", "customer_state=RJ"]  # case/space-insensitive
+    out, dropped = enforce_candidates(report, ev)
+    assert [(c["segment"], c["rank"]) for c in out["root_causes"]] == [(" sp ", 1)] and len(dropped) == 2
+
+
+def test_v3_loop_warns_once_then_drops_unverified_causes():
+    report = {"metric": "gmv", "week": W, "anomaly_confirmed": True, "change_pct": -30.0, "evidence_ids": ["e1"],
+              "root_causes": [{"rank": 1, "dimension": "customer_state", "segment": "A", "effect": "volume",
+                               "evidence_ids": ["e1"]}], "narrative": "GMV fell (e1)."}
+    llm = ScriptedLLM([_call("detect_anomalies", {"metric": "gmv", "week": W}, 0), _call("submit_report", report, 1),
+                       _call("submit_report", report, 2)])  # ignores the warning and resubmits
+    r = run_agent(llm, Investigation(store=make_store({LAST: {"n_a": 30}})), "task", version="v3")
+    assert r.candidate_guard == {"warned": ["customer_state=A"], "dropped": ["customer_state=A"]}
+    assert r.report["root_causes"] == [] and r.llm_calls == 3

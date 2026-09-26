@@ -34,6 +34,8 @@ its rate test is.
 
 Investigation id:""")
 
+CANDIDATE_PROMPT = """These root causes are not among the candidates you verified as significant with significance_test in this investigation: {bad}. Run significance_test on them first, or remove them, then call submit_report again. Causes that are still not verified will be removed."""
+
 CORRECTION_PROMPT = """The report failed the grounding check. These numbers do not appear in any tool \
 output you cited: {bad}. Resubmit with submit_report, quoting numbers exactly as the tools returned them \
 and citing the right evidence_ids (or remove those numbers)."""

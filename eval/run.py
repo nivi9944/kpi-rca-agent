@@ -34,6 +34,7 @@ from eval.score import score_one
 from inject.scenarios import apply_scenario, load_manifest, task_text
 from metrics.metrics import default_store
 from tools.context import Investigation
+from tools.engine import engine_name
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -135,6 +136,7 @@ def run_one(model: str, sc: dict, base, llm=None, version: str = "v2", run_name:
                         "est_spend_usd": d["est_spend_usd"], "est_price_usd_per_m": list(r.price_per_m),
                         "model_name": r.model_name, "served_models": r.served_models,
                         "agent_version": r.version, "rerank": r.rerank, "report_raw": r.report_raw,
+                        "candidate_guard": r.candidate_guard, "engine": engine_name(),
                         "latency_s": round(r.latency_s, 2), "llm_latency_s": round(r.llm_latency_s, 2),
                         "cache_hits": r.cache_hits, "ungrounded": r.ungrounded, "corrected": r.corrected,
                         "grounding_rate_pct": (r.verification or {}).get("grounding_rate_pct"),
@@ -197,7 +199,7 @@ def main(argv=None):
                     help="write to results/runs_cache/ instead: a second pass to measure gateway cache hits")
     ap.add_argument("--max-infra-streak", type=int, default=2,
                     help="stop after this many scenarios in a row fail with no report (likely daily quota)")
-    ap.add_argument("--agent-version", choices=["v1", "v2"], default="v2",
+    ap.add_argument("--agent-version", choices=["v1", "v2", "v3"], default="v2",
                     help="v1 reproduces the v1.0.0 agent (old prompt, no avg_item_price, no re-ranking)")
     ap.add_argument("--reorder", action="store_true",
                     help="v2 only: evidence re-ranking of causes (tried on DEV and rejected; off by default)")
@@ -206,6 +208,8 @@ def main(argv=None):
     ap.add_argument("--results-dir", help="base results folder (default: results/); the TEST set uses results/v2")
     ap.add_argument("--only-file", help="JSON list of scenario ids to run (fixed subsets: repeat, cache rerun)")
     ap.add_argument("--no-cache", action="store_true", help="bypass the gateway cache (stability repeats)")
+    ap.add_argument("--engine", choices=["v2", "v3"], help="analysis engine (threshold, money test); default v3")
+    ap.add_argument("--deadline", help="ISO time: do not start a scenario that would likely finish after it")
     ap.add_argument("--workers", type=int, default=int(os.getenv("EVAL_WORKERS", "1")),
                     help="scenarios run concurrently (each worker has its own LLM client and pacing)")
     args = ap.parse_args(argv)
@@ -214,6 +218,9 @@ def main(argv=None):
     budget = float(os.getenv("BUDGET_USD", "8"))
     guarded = args.model not in BASELINES and args.model != "scripted"
 
+    if args.engine:
+        from tools.engine import set_engine
+        set_engine(args.engine)
     if args.no_cache:
         os.environ["LLM_CACHE_BYPASS"] = "true"
     base_dir = Path(args.results_dir) if args.results_dir else out_dir(args.model)
@@ -233,6 +240,16 @@ def main(argv=None):
     state = {"i": 0, "streak": 0}
 
     def before(sc):
+        if args.deadline:
+            from datetime import datetime
+            done_rows = [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines() if x.strip()]                 if path.exists() else []
+            lat = [r.get("latency_s") or 0 for r in done_rows if r.get("latency_s")]
+            expected = (sum(lat) / len(lat)) if lat else 240.0
+            left = (datetime.fromisoformat(args.deadline) - datetime.now()).total_seconds()
+            if left < expected:
+                print(f"STOPPED (time budget): {left / 60:.1f} min left before the deadline, an average scenario "
+                      f"takes {expected / 60:.1f} min. Finished scenarios are saved; this is not an error.", flush=True)
+                return False
         if guarded:
             spent, worst = sum(spend_by_file().values()), worst_case_usd(args.model, path)
             if spent + worst > budget:
