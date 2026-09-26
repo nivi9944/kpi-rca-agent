@@ -28,3 +28,7 @@ scratch/
 DEV_CHECK.md
 V2_SUMMARY.md
 results/progress_status.txt
+results/v2/ALERT.txt
+results/v2/workers.txt
+results/v2/phase_start.txt
+results/v2/paused_at.txt

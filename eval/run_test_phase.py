@@ -108,7 +108,9 @@ def run_step(name: str, args: list[str], env: dict) -> None:
             hist = [h for h in hist if time.time() - h[0] <= 15 * 60 + 30]
             done_15 = hist[-1][1] - hist[0][1] if len(hist) > 1 else 0
             r429 = upstream_429s("15m")
-            spike = len(hist) >= 3 and r429 > 3 * max(1, done_15)
+            # at 1 worker there is nothing to drop to (Ultra gets steady 429s even then), so a restart would
+            # only kill the scenario in progress: spikes only count with more than 1 worker
+            spike = n > 1 and len(hist) >= 3 and r429 > 3 * max(1, done_15)
             if api_failures(path) > fails0 or spike:
                 why = "new API failure" if api_failures(path) > fails0 else f"429 spike ({r429} in 15 min for {done_15} scenarios)"
                 p.terminate()

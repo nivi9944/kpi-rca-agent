@@ -1,0 +1,1691 @@
+{
+  "B1": {
+    "n_scenarios": 170,
+    "n_planted": 140,
+    "n_controls": 30,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 12.9,
+      "lo": 8.3,
+      "hi": 19.4,
+      "k": 18,
+      "n": 140
+    },
+    "top3": {
+      "pct": 15.7,
+      "lo": 10.6,
+      "hi": 22.6,
+      "k": 22,
+      "n": 140
+    },
+    "mrr": 0.1417,
+    "precision": {
+      "pct": 25.9,
+      "lo": 17.8,
+      "hi": 36.1,
+      "k": 22,
+      "n": 85
+    },
+    "recall": {
+      "pct": 15.7,
+      "lo": 10.6,
+      "hi": 22.6,
+      "k": 22,
+      "n": 140
+    },
+    "f1_pct": 19.6,
+    "tp": 22,
+    "fp": 63,
+    "fn": 118,
+    "week_clustered_ci": {
+      "n_weeks": 8,
+      "draws": 2000,
+      "top1": {
+        "lo": 8.0,
+        "hi": 17.5
+      },
+      "top3": {
+        "lo": 10.1,
+        "hi": 21.0
+      },
+      "f1": {
+        "lo": 14.5,
+        "hi": 23.0
+      }
+    },
+    "specificity": {
+      "pct": 96.7,
+      "lo": 83.3,
+      "hi": 99.4,
+      "k": 29,
+      "n": 30
+    },
+    "false_alarm": {
+      "pct": 3.3,
+      "lo": 0.6,
+      "hi": 16.7,
+      "k": 1,
+      "n": 30
+    },
+    "detection_recall": {
+      "pct": 20.0,
+      "lo": 14.2,
+      "hi": 27.4,
+      "k": 28,
+      "n": 140
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 10.2,
+        "lo": 4.4,
+        "hi": 21.8,
+        "k": 5,
+        "n": 49
+      },
+      "medium": {
+        "pct": 22.4,
+        "lo": 13.0,
+        "hi": 35.9,
+        "k": 11,
+        "n": 49
+      },
+      "large": {
+        "pct": 28.6,
+        "lo": 17.2,
+        "hi": 43.6,
+        "k": 12,
+        "n": 42
+      }
+    },
+    "top1_given_detected": {
+      "pct": 64.3,
+      "lo": 45.8,
+      "hi": 79.3,
+      "k": 18,
+      "n": 28
+    },
+    "planted_undetected": 112,
+    "causes_per_planted_report": {
+      "0": 112,
+      "3": 28
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 85.1,
+      "hi": 100.0,
+      "k": 22,
+      "n": 22
+    },
+    "impact_mape_pct": null,
+    "impact_n": 0,
+    "grounding_rate_pct": null,
+    "ungrounded_reports": 0,
+    "ungrounded_numbers": {},
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 0.08,
+      "p50": 0.04,
+      "p95": 0.3
+    },
+    "avg_tokens": null,
+    "avg_tool_calls": 1.85,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 40.0,
+        "lo": 21.9,
+        "hi": 61.3,
+        "k": 8,
+        "n": 20
+      },
+      "delay_then_reviews": {
+        "pct": 25.0,
+        "lo": 11.2,
+        "hi": 46.9,
+        "k": 5,
+        "n": 20
+      },
+      "delivery_delay": {
+        "pct": 20.0,
+        "lo": 8.1,
+        "hi": 41.6,
+        "k": 4,
+        "n": 20
+      },
+      "mix_shift": {
+        "pct": 0.0,
+        "lo": -0.0,
+        "hi": 16.1,
+        "k": 0,
+        "n": 20
+      },
+      "price_drop": {
+        "pct": 0.0,
+        "lo": -0.0,
+        "hi": 16.1,
+        "k": 0,
+        "n": 20
+      },
+      "review_drop": {
+        "pct": 5.0,
+        "lo": 0.9,
+        "hi": 23.6,
+        "k": 1,
+        "n": 20
+      },
+      "volume_drop": {
+        "pct": 0.0,
+        "lo": -0.0,
+        "hi": 16.1,
+        "k": 0,
+        "n": 20
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 33.3,
+        "lo": 9.7,
+        "hi": 70.0,
+        "k": 2,
+        "n": 6
+      },
+      "cancellation_spike|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "cancellation_spike|small": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "delay_then_reviews|large": {
+        "pct": 33.3,
+        "lo": 9.7,
+        "hi": 70.0,
+        "k": 2,
+        "n": 6
+      },
+      "delay_then_reviews|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "delay_then_reviews|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "delivery_delay|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "delivery_delay|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "mix_shift|large": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 39.0,
+        "k": 0,
+        "n": 6
+      },
+      "mix_shift|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "mix_shift|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "price_drop|large": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 39.0,
+        "k": 0,
+        "n": 6
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "price_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "review_drop|large": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 39.0,
+        "k": 0,
+        "n": 6
+      },
+      "review_drop|medium": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "volume_drop|large": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 39.0,
+        "k": 0,
+        "n": 6
+      },
+      "volume_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "volume_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      }
+    },
+    "fallback_used": 0,
+    "label": "Baseline B1: top contribution"
+  },
+  "B2": {
+    "n_scenarios": 170,
+    "n_planted": 140,
+    "n_controls": 30,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 45.0,
+      "lo": 37.0,
+      "hi": 53.3,
+      "k": 63,
+      "n": 140
+    },
+    "top3": {
+      "pct": 45.7,
+      "lo": 37.7,
+      "hi": 54.0,
+      "k": 64,
+      "n": 140
+    },
+    "mrr": 0.4536,
+    "precision": {
+      "pct": 54.7,
+      "lo": 45.7,
+      "hi": 63.4,
+      "k": 64,
+      "n": 117
+    },
+    "recall": {
+      "pct": 45.7,
+      "lo": 37.7,
+      "hi": 54.0,
+      "k": 64,
+      "n": 140
+    },
+    "f1_pct": 49.8,
+    "tp": 64,
+    "fp": 53,
+    "fn": 76,
+    "week_clustered_ci": {
+      "n_weeks": 8,
+      "draws": 2000,
+      "top1": {
+        "lo": 39.3,
+        "hi": 51.5
+      },
+      "top3": {
+        "lo": 39.6,
+        "hi": 52.0
+      },
+      "f1": {
+        "lo": 46.0,
+        "hi": 54.1
+      }
+    },
+    "specificity": {
+      "pct": 96.7,
+      "lo": 83.3,
+      "hi": 99.4,
+      "k": 29,
+      "n": 30
+    },
+    "false_alarm": {
+      "pct": 3.3,
+      "lo": 0.6,
+      "hi": 16.7,
+      "k": 1,
+      "n": 30
+    },
+    "detection_recall": {
+      "pct": 47.9,
+      "lo": 39.8,
+      "hi": 56.1,
+      "k": 67,
+      "n": 140
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 26.5,
+        "lo": 16.2,
+        "hi": 40.3,
+        "k": 13,
+        "n": 49
+      },
+      "medium": {
+        "pct": 49.0,
+        "lo": 35.6,
+        "hi": 62.5,
+        "k": 24,
+        "n": 49
+      },
+      "large": {
+        "pct": 71.4,
+        "lo": 56.4,
+        "hi": 82.8,
+        "k": 30,
+        "n": 42
+      }
+    },
+    "top1_given_detected": {
+      "pct": 94.0,
+      "lo": 85.6,
+      "hi": 97.7,
+      "k": 63,
+      "n": 67
+    },
+    "planted_undetected": 73,
+    "causes_per_planted_report": {
+      "0": 73,
+      "1": 40,
+      "2": 5,
+      "3": 22
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 93.7,
+      "hi": 100.0,
+      "k": 57,
+      "n": 57
+    },
+    "impact_mape_pct": null,
+    "impact_n": 0,
+    "grounding_rate_pct": null,
+    "ungrounded_reports": 0,
+    "ungrounded_numbers": {},
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 1.25,
+      "p50": 1.22,
+      "p95": 1.97
+    },
+    "avg_tokens": null,
+    "avg_tool_calls": 3.35,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 70.0,
+        "lo": 48.1,
+        "hi": 85.5,
+        "k": 14,
+        "n": 20
+      },
+      "delay_then_reviews": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "delivery_delay": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "mix_shift": {
+        "pct": 100.0,
+        "lo": 83.9,
+        "hi": 100.0,
+        "k": 20,
+        "n": 20
+      },
+      "price_drop": {
+        "pct": 10.0,
+        "lo": 2.8,
+        "hi": 30.1,
+        "k": 2,
+        "n": 20
+      },
+      "review_drop": {
+        "pct": 40.0,
+        "lo": 21.9,
+        "hi": 61.3,
+        "k": 8,
+        "n": 20
+      },
+      "volume_drop": {
+        "pct": 35.0,
+        "lo": 18.1,
+        "hi": 56.7,
+        "k": 7,
+        "n": 20
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "cancellation_spike|medium": {
+        "pct": 71.4,
+        "lo": 35.9,
+        "hi": 91.8,
+        "k": 5,
+        "n": 7
+      },
+      "cancellation_spike|small": {
+        "pct": 57.1,
+        "lo": 25.0,
+        "hi": 84.2,
+        "k": 4,
+        "n": 7
+      },
+      "delay_then_reviews|large": {
+        "pct": 50.0,
+        "lo": 18.8,
+        "hi": 81.2,
+        "k": 3,
+        "n": 6
+      },
+      "delay_then_reviews|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "delay_then_reviews|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "delivery_delay|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay|medium": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "mix_shift|large": {
+        "pct": 100.0,
+        "lo": 61.0,
+        "hi": 100.0,
+        "k": 6,
+        "n": 6
+      },
+      "mix_shift|medium": {
+        "pct": 100.0,
+        "lo": 64.6,
+        "hi": 100.0,
+        "k": 7,
+        "n": 7
+      },
+      "mix_shift|small": {
+        "pct": 100.0,
+        "lo": 64.6,
+        "hi": 100.0,
+        "k": 7,
+        "n": 7
+      },
+      "price_drop|large": {
+        "pct": 16.7,
+        "lo": 3.0,
+        "hi": 56.4,
+        "k": 1,
+        "n": 6
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "price_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "review_drop|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "volume_drop|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop|medium": {
+        "pct": 28.6,
+        "lo": 8.2,
+        "hi": 64.1,
+        "k": 2,
+        "n": 7
+      },
+      "volume_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      }
+    },
+    "fallback_used": 0,
+    "label": "Baseline B2: scan + test"
+  },
+  "v1": {
+    "n_scenarios": 170,
+    "n_planted": 140,
+    "n_controls": 30,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 40.7,
+      "lo": 32.9,
+      "hi": 49.0,
+      "k": 57,
+      "n": 140
+    },
+    "top3": {
+      "pct": 44.3,
+      "lo": 36.3,
+      "hi": 52.6,
+      "k": 62,
+      "n": 140
+    },
+    "mrr": 0.4264,
+    "precision": {
+      "pct": 41.7,
+      "lo": 34.2,
+      "hi": 49.7,
+      "k": 63,
+      "n": 151
+    },
+    "recall": {
+      "pct": 45.0,
+      "lo": 37.0,
+      "hi": 53.3,
+      "k": 63,
+      "n": 140
+    },
+    "f1_pct": 43.3,
+    "tp": 63,
+    "fp": 88,
+    "fn": 77,
+    "week_clustered_ci": {
+      "n_weeks": 8,
+      "draws": 2000,
+      "top1": {
+        "lo": 33.8,
+        "hi": 48.9
+      },
+      "top3": {
+        "lo": 37.2,
+        "hi": 51.2
+      },
+      "f1": {
+        "lo": 38.9,
+        "hi": 47.1
+      }
+    },
+    "specificity": {
+      "pct": 96.7,
+      "lo": 83.3,
+      "hi": 99.4,
+      "k": 29,
+      "n": 30
+    },
+    "false_alarm": {
+      "pct": 3.3,
+      "lo": 0.6,
+      "hi": 16.7,
+      "k": 1,
+      "n": 30
+    },
+    "detection_recall": {
+      "pct": 45.7,
+      "lo": 37.7,
+      "hi": 54.0,
+      "k": 64,
+      "n": 140
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 26.5,
+        "lo": 16.2,
+        "hi": 40.3,
+        "k": 13,
+        "n": 49
+      },
+      "medium": {
+        "pct": 44.9,
+        "lo": 31.9,
+        "hi": 58.7,
+        "k": 22,
+        "n": 49
+      },
+      "large": {
+        "pct": 69.0,
+        "lo": 54.0,
+        "hi": 80.9,
+        "k": 29,
+        "n": 42
+      }
+    },
+    "top1_given_detected": {
+      "pct": 89.1,
+      "lo": 79.1,
+      "hi": 94.6,
+      "k": 57,
+      "n": 64
+    },
+    "planted_undetected": 76,
+    "causes_per_planted_report": {
+      "0": 76,
+      "1": 35,
+      "2": 6,
+      "3": 3,
+      "4": 6,
+      "5": 14
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 93.6,
+      "hi": 100.0,
+      "k": 56,
+      "n": 56
+    },
+    "impact_mape_pct": 27.6,
+    "impact_n": 27,
+    "grounding_rate_pct": 99.68,
+    "ungrounded_reports": 5,
+    "ungrounded_numbers": {
+      "derived": 7,
+      "threshold_notation": 2,
+      "field": 2
+    },
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 164.41,
+      "p50": 166.22,
+      "p95": 264.35
+    },
+    "avg_tokens": 72310.7,
+    "avg_tool_calls": 10.14,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 70.0,
+        "lo": 48.1,
+        "hi": 85.5,
+        "k": 14,
+        "n": 20
+      },
+      "delay_then_reviews": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "delivery_delay": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "mix_shift": {
+        "pct": 75.0,
+        "lo": 53.1,
+        "hi": 88.8,
+        "k": 15,
+        "n": 20
+      },
+      "price_drop": {
+        "pct": 10.0,
+        "lo": 2.8,
+        "hi": 30.1,
+        "k": 2,
+        "n": 20
+      },
+      "review_drop": {
+        "pct": 35.0,
+        "lo": 18.1,
+        "hi": 56.7,
+        "k": 7,
+        "n": 20
+      },
+      "volume_drop": {
+        "pct": 35.0,
+        "lo": 18.1,
+        "hi": 56.7,
+        "k": 7,
+        "n": 20
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "cancellation_spike|medium": {
+        "pct": 71.4,
+        "lo": 35.9,
+        "hi": 91.8,
+        "k": 5,
+        "n": 7
+      },
+      "cancellation_spike|small": {
+        "pct": 57.1,
+        "lo": 25.0,
+        "hi": 84.2,
+        "k": 4,
+        "n": 7
+      },
+      "delay_then_reviews|large": {
+        "pct": 50.0,
+        "lo": 18.8,
+        "hi": 81.2,
+        "k": 3,
+        "n": 6
+      },
+      "delay_then_reviews|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "delay_then_reviews|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "delivery_delay|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay|medium": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "mix_shift|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "mix_shift|medium": {
+        "pct": 71.4,
+        "lo": 35.9,
+        "hi": 91.8,
+        "k": 5,
+        "n": 7
+      },
+      "mix_shift|small": {
+        "pct": 85.7,
+        "lo": 48.7,
+        "hi": 97.4,
+        "k": 6,
+        "n": 7
+      },
+      "price_drop|large": {
+        "pct": 16.7,
+        "lo": 3.0,
+        "hi": 56.4,
+        "k": 1,
+        "n": 6
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "price_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "review_drop|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "volume_drop|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop|medium": {
+        "pct": 28.6,
+        "lo": 8.2,
+        "hi": 64.1,
+        "k": 2,
+        "n": 7
+      },
+      "volume_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      }
+    },
+    "fallback_used": 0,
+    "label": "Agent v1"
+  },
+  "v2": {
+    "n_scenarios": 170,
+    "n_planted": 140,
+    "n_controls": 30,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 43.6,
+      "lo": 35.6,
+      "hi": 51.8,
+      "k": 61,
+      "n": 140
+    },
+    "top3": {
+      "pct": 46.4,
+      "lo": 38.4,
+      "hi": 54.7,
+      "k": 65,
+      "n": 140
+    },
+    "mrr": 0.4518,
+    "precision": {
+      "pct": 42.3,
+      "lo": 34.8,
+      "hi": 50.2,
+      "k": 66,
+      "n": 156
+    },
+    "recall": {
+      "pct": 47.1,
+      "lo": 39.1,
+      "hi": 55.4,
+      "k": 66,
+      "n": 140
+    },
+    "f1_pct": 44.6,
+    "tp": 66,
+    "fp": 90,
+    "fn": 74,
+    "week_clustered_ci": {
+      "n_weeks": 8,
+      "draws": 2000,
+      "top1": {
+        "lo": 36.9,
+        "hi": 50.7
+      },
+      "top3": {
+        "lo": 39.7,
+        "hi": 53.0
+      },
+      "f1": {
+        "lo": 40.9,
+        "hi": 47.7
+      }
+    },
+    "specificity": {
+      "pct": 96.7,
+      "lo": 83.3,
+      "hi": 99.4,
+      "k": 29,
+      "n": 30
+    },
+    "false_alarm": {
+      "pct": 3.3,
+      "lo": 0.6,
+      "hi": 16.7,
+      "k": 1,
+      "n": 30
+    },
+    "detection_recall": {
+      "pct": 47.9,
+      "lo": 39.8,
+      "hi": 56.1,
+      "k": 67,
+      "n": 140
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 26.5,
+        "lo": 16.2,
+        "hi": 40.3,
+        "k": 13,
+        "n": 49
+      },
+      "medium": {
+        "pct": 49.0,
+        "lo": 35.6,
+        "hi": 62.5,
+        "k": 24,
+        "n": 49
+      },
+      "large": {
+        "pct": 71.4,
+        "lo": 56.4,
+        "hi": 82.8,
+        "k": 30,
+        "n": 42
+      }
+    },
+    "top1_given_detected": {
+      "pct": 91.0,
+      "lo": 81.8,
+      "hi": 95.8,
+      "k": 61,
+      "n": 67
+    },
+    "planted_undetected": 73,
+    "causes_per_planted_report": {
+      "0": 73,
+      "1": 38,
+      "2": 6,
+      "3": 4,
+      "4": 2,
+      "5": 17
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 93.9,
+      "hi": 100.0,
+      "k": 59,
+      "n": 59
+    },
+    "impact_mape_pct": 26.2,
+    "impact_n": 29,
+    "grounding_rate_pct": 99.67,
+    "ungrounded_reports": 8,
+    "ungrounded_numbers": {
+      "derived": 5,
+      "threshold_notation": 3
+    },
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 205.44,
+      "p50": 194.89,
+      "p95": 350.19
+    },
+    "avg_tokens": 91659.5,
+    "avg_tool_calls": 12.15,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 70.0,
+        "lo": 48.1,
+        "hi": 85.5,
+        "k": 14,
+        "n": 20
+      },
+      "delay_then_reviews": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "delivery_delay": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "mix_shift": {
+        "pct": 90.0,
+        "lo": 69.9,
+        "hi": 97.2,
+        "k": 18,
+        "n": 20
+      },
+      "price_drop": {
+        "pct": 10.0,
+        "lo": 2.8,
+        "hi": 30.1,
+        "k": 2,
+        "n": 20
+      },
+      "review_drop": {
+        "pct": 40.0,
+        "lo": 21.9,
+        "hi": 61.3,
+        "k": 8,
+        "n": 20
+      },
+      "volume_drop": {
+        "pct": 35.0,
+        "lo": 18.1,
+        "hi": 56.7,
+        "k": 7,
+        "n": 20
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "cancellation_spike|medium": {
+        "pct": 71.4,
+        "lo": 35.9,
+        "hi": 91.8,
+        "k": 5,
+        "n": 7
+      },
+      "cancellation_spike|small": {
+        "pct": 57.1,
+        "lo": 25.0,
+        "hi": 84.2,
+        "k": 4,
+        "n": 7
+      },
+      "delay_then_reviews|large": {
+        "pct": 50.0,
+        "lo": 18.8,
+        "hi": 81.2,
+        "k": 3,
+        "n": 6
+      },
+      "delay_then_reviews|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "delay_then_reviews|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "delivery_delay|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay|medium": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "mix_shift|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "mix_shift|medium": {
+        "pct": 100.0,
+        "lo": 64.6,
+        "hi": 100.0,
+        "k": 7,
+        "n": 7
+      },
+      "mix_shift|small": {
+        "pct": 85.7,
+        "lo": 48.7,
+        "hi": 97.4,
+        "k": 6,
+        "n": 7
+      },
+      "price_drop|large": {
+        "pct": 16.7,
+        "lo": 3.0,
+        "hi": 56.4,
+        "k": 1,
+        "n": 6
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "price_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "review_drop|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "volume_drop|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop|medium": {
+        "pct": 28.6,
+        "lo": 8.2,
+        "hi": 64.1,
+        "k": 2,
+        "n": 7
+      },
+      "volume_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      }
+    },
+    "fallback_used": 0,
+    "label": "Agent v2"
+  },
+  "v2+fallback": {
+    "n_scenarios": 170,
+    "n_planted": 140,
+    "n_controls": 30,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 43.6,
+      "lo": 35.6,
+      "hi": 51.8,
+      "k": 61,
+      "n": 140
+    },
+    "top3": {
+      "pct": 46.4,
+      "lo": 38.4,
+      "hi": 54.7,
+      "k": 65,
+      "n": 140
+    },
+    "mrr": 0.4518,
+    "precision": {
+      "pct": 42.3,
+      "lo": 34.8,
+      "hi": 50.2,
+      "k": 66,
+      "n": 156
+    },
+    "recall": {
+      "pct": 47.1,
+      "lo": 39.1,
+      "hi": 55.4,
+      "k": 66,
+      "n": 140
+    },
+    "f1_pct": 44.6,
+    "tp": 66,
+    "fp": 90,
+    "fn": 74,
+    "week_clustered_ci": {
+      "n_weeks": 8,
+      "draws": 2000,
+      "top1": {
+        "lo": 36.9,
+        "hi": 50.7
+      },
+      "top3": {
+        "lo": 39.7,
+        "hi": 53.0
+      },
+      "f1": {
+        "lo": 40.9,
+        "hi": 47.7
+      }
+    },
+    "specificity": {
+      "pct": 96.7,
+      "lo": 83.3,
+      "hi": 99.4,
+      "k": 29,
+      "n": 30
+    },
+    "false_alarm": {
+      "pct": 3.3,
+      "lo": 0.6,
+      "hi": 16.7,
+      "k": 1,
+      "n": 30
+    },
+    "detection_recall": {
+      "pct": 47.9,
+      "lo": 39.8,
+      "hi": 56.1,
+      "k": 67,
+      "n": 140
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 26.5,
+        "lo": 16.2,
+        "hi": 40.3,
+        "k": 13,
+        "n": 49
+      },
+      "medium": {
+        "pct": 49.0,
+        "lo": 35.6,
+        "hi": 62.5,
+        "k": 24,
+        "n": 49
+      },
+      "large": {
+        "pct": 71.4,
+        "lo": 56.4,
+        "hi": 82.8,
+        "k": 30,
+        "n": 42
+      }
+    },
+    "top1_given_detected": {
+      "pct": 91.0,
+      "lo": 81.8,
+      "hi": 95.8,
+      "k": 61,
+      "n": 67
+    },
+    "planted_undetected": 73,
+    "causes_per_planted_report": {
+      "0": 73,
+      "1": 38,
+      "2": 6,
+      "3": 4,
+      "4": 2,
+      "5": 17
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 93.9,
+      "hi": 100.0,
+      "k": 59,
+      "n": 59
+    },
+    "impact_mape_pct": 26.2,
+    "impact_n": 29,
+    "grounding_rate_pct": 99.67,
+    "ungrounded_reports": 8,
+    "ungrounded_numbers": {
+      "derived": 5,
+      "threshold_notation": 3
+    },
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 205.44,
+      "p50": 194.89,
+      "p95": 350.19
+    },
+    "avg_tokens": 91659.5,
+    "avg_tool_calls": 12.15,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 70.0,
+        "lo": 48.1,
+        "hi": 85.5,
+        "k": 14,
+        "n": 20
+      },
+      "delay_then_reviews": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "delivery_delay": {
+        "pct": 30.0,
+        "lo": 14.5,
+        "hi": 51.9,
+        "k": 6,
+        "n": 20
+      },
+      "mix_shift": {
+        "pct": 90.0,
+        "lo": 69.9,
+        "hi": 97.2,
+        "k": 18,
+        "n": 20
+      },
+      "price_drop": {
+        "pct": 10.0,
+        "lo": 2.8,
+        "hi": 30.1,
+        "k": 2,
+        "n": 20
+      },
+      "review_drop": {
+        "pct": 40.0,
+        "lo": 21.9,
+        "hi": 61.3,
+        "k": 8,
+        "n": 20
+      },
+      "volume_drop": {
+        "pct": 35.0,
+        "lo": 18.1,
+        "hi": 56.7,
+        "k": 7,
+        "n": 20
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "cancellation_spike|medium": {
+        "pct": 71.4,
+        "lo": 35.9,
+        "hi": 91.8,
+        "k": 5,
+        "n": 7
+      },
+      "cancellation_spike|small": {
+        "pct": 57.1,
+        "lo": 25.0,
+        "hi": 84.2,
+        "k": 4,
+        "n": 7
+      },
+      "delay_then_reviews|large": {
+        "pct": 50.0,
+        "lo": 18.8,
+        "hi": 81.2,
+        "k": 3,
+        "n": 6
+      },
+      "delay_then_reviews|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "delay_then_reviews|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "delivery_delay|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay|medium": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "mix_shift|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "mix_shift|medium": {
+        "pct": 100.0,
+        "lo": 64.6,
+        "hi": 100.0,
+        "k": 7,
+        "n": 7
+      },
+      "mix_shift|small": {
+        "pct": 85.7,
+        "lo": 48.7,
+        "hi": 97.4,
+        "k": 6,
+        "n": 7
+      },
+      "price_drop|large": {
+        "pct": 16.7,
+        "lo": 3.0,
+        "hi": 56.4,
+        "k": 1,
+        "n": 6
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "price_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop|large": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "review_drop|medium": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 35.4,
+        "k": 0,
+        "n": 7
+      },
+      "volume_drop|large": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop|medium": {
+        "pct": 28.6,
+        "lo": 8.2,
+        "hi": 64.1,
+        "k": 2,
+        "n": 7
+      },
+      "volume_drop|small": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      }
+    },
+    "fallback_used": 0,
+    "label": "Agent v2 + B2 fallback"
+  }
+}
