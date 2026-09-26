@@ -94,6 +94,24 @@ held-out TEST set was built and run once after the code was frozen.
 | Stability: v2 rerun on 50 random TEST scenarios with the gateway cache bypassed; cache rerun on 30 other random scenarios | Measures run-to-run agreement and cache behaviour on the same code |
 | Parallel workers (`--workers N`) tried on TEST and dropped back to 1 | With 2 workers NVIDIA returned 99 rate-limit errors in 15 minutes for 5 scenarios: the free tier limits Ultra per model per minute, so concurrency cannot raise throughput. A budget guard in the TEST orchestrator detected the spike and dropped to 1 worker automatically; the option stays for providers with more headroom (a unit test checks workers=1 and workers=2 give identical rows) |
 
+## v3 changes (attempted after the v2 TEST evaluation)
+
+v3 = the frozen v2 agent (prompt, guards, 15 steps) plus three changes, run under a hard 15-hour wall-clock
+ceiling. Judgment calls made during the autonomous run are marked **(call)**.
+
+| Decision | Why |
+|---|---|
+| **Scan threshold \|hist_z\| 4.25 to 4.0** (v3 engine) | Detection was the bottleneck on TEST (73 of 140 planted anomalies never flagged). 4.0 is a row of the existing natural-week calibration table: natural alarm rate 11.2% instead of 8.2% (`results/calibration.json`), an accepted trade-off of false alarms for recall. Not tuned on planted scenarios |
+| **Candidate guard** (`agent/guards.py`), enforced at `submit_report`: a cause is allowed only if its dimension and segment (case- and space-insensitive) have a significant (BH q and history check) `significance_test` in the investigation's own trace | Stops the model from reporting segments it never verified. **(call)** Enforced at submission time with one corrective message (the model can still test or remove the cause), then remaining violations are dropped, like the grounding verifier's single retry. It overlaps with the v2 drop guard, which still runs after the verifier |
+| **Trimmed-mean test for money metrics** (v3 engine): Yuen's test with 20% trimming replaces Welch's t for AOV and avg_item_price rate tests; Mann-Whitney still reported | Price drops were found in 2 of 20 TEST scenarios. A week's mean price is dominated by a few big-ticket orders; the trimmed mean is robust to them (unit test: one huge order hides a 30% cut from Welch, not from Yuen). **(call)** The engine cannot know the scenario type, so the test applies to every money-metric rate test, which is where price drops are tested |
+| **Engine switch** (`tools/engine.py`, `KPI_ENGINE`): v2 = 4.25 and Welch, v3 = 4.0 and Yuen (default) | Earlier results stay exactly reproducible; every v3 run row records its engine |
+| **TEST reuse caveat (call)**: v3's changes were chosen after seeing v2's TEST failure analysis, and v3 is evaluated on the same TEST set | v3's TEST numbers are therefore **not a clean held-out estimate**; they are reported as "v3, after TEST-informed changes". A fresh TEST set would be needed for a clean claim |
+| Reused, not rerun: Agent v1 (DEV and TEST), B1 (DEV and TEST), Agent v2 (DEV v2-final, TEST) | v1 and v2 are frozen historical comparisons; B1 does not use the scan threshold or the tests. B2 is rerun on DEV and TEST with the v3 engine because it shares both |
+| No v3 stability repeat or cache rerun | Established in v2; out of scope for this round |
+| **1 worker on every phase, hard-locked** | 2 workers produced sustained NVIDIA 429s without speed-up in v2 |
+| **15-hour ceiling (call)**: the runner stops starting new scenarios when now + the average scenario time would pass the deadline, which is the start time + 15 h minus 45 min reserved for metrics and the summary | A graceful stop keeps every finished scenario (resumable JSONL); the number completed is logged |
+| **DEV verdict rule (call)**: PASS if v3 is at least as good as v2-final on DEV for that metric (same 50 DEV scenarios), FAIL otherwise | A plain, pre-declared rule; the run proceeds to TEST whatever the verdict |
+
 ## Model and provider
 
 | Decision | Why |

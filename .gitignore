@@ -32,3 +32,9 @@ results/v2/ALERT.txt
 results/v2/workers.txt
 results/v2/phase_start.txt
 results/v2/paused_at.txt
+V3_SUMMARY.md
+results/v3/ALERT.txt
+results/v3/status.json
+results/v3/run_start.txt
+results/v3/FINALIZED
+results/v3/logs/

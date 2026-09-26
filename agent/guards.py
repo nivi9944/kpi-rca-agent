@@ -28,3 +28,33 @@ def apply_guards(report: dict, evidence: dict, reorder: bool = False) -> tuple[d
     log["confirmed_set_true"] = bool(out["root_causes"]) and not confirmed_before
     log["reorder"] = reorder
     return out, log
+
+
+# ---- v3: candidate guard, enforced at submit_report time
+def _norm(x) -> str:
+    return str(x).strip().lower()
+
+
+def significant_candidates(evidence: dict) -> set[tuple[str, str]]:
+    """(dimension, segment) pairs this investigation itself verified as significant (BH q and history check)."""
+    out = set()
+    for e in evidence.values():
+        r = e.get("result") or {}
+        if e.get("tool") == "significance_test" and r.get("significant"):
+            out.add((_norm(r.get("dimension")), _norm(r.get("segment"))))
+    return out
+
+
+def candidate_violations(report: dict, evidence: dict) -> list[str]:
+    allowed = significant_candidates(evidence)
+    return [f"{c.get('dimension')}={c.get('segment')}" for c in report.get("root_causes") or []
+            if (_norm(c.get("dimension")), _norm(c.get("segment"))) not in allowed]
+
+
+def enforce_candidates(report: dict, evidence: dict) -> tuple[dict, list[str]]:
+    """Drop causes that are not among the investigation's own significant candidates (ranks renumbered)."""
+    allowed = significant_candidates(evidence)
+    rcs = sorted(report.get("root_causes") or [], key=lambda r: r.get("rank", 99))
+    keep = [c for c in rcs if (_norm(c.get("dimension")), _norm(c.get("segment"))) in allowed]
+    dropped = [f"{c.get('dimension')}={c.get('segment')}" for c in rcs if c not in keep]
+    return {**report, "root_causes": [{**c, "rank": i} for i, c in enumerate(keep, 1)]}, dropped

@@ -186,3 +186,46 @@ def test_segment_scan_share_for_volume_drop():
     from tools.segscan import HIST_Z, segment_history_z
     h = segment_history_z(make_store({LAST: {"n_a": 10}}), "gmv", "customer_state", W, "share")
     assert h.iloc[0]["segment"] in ("A", "B") and abs(h.iloc[0]["hist_z"]) >= HIST_Z
+
+
+def test_v3_engine_threshold_is_4_and_v2_is_reproducible():
+    from tools import engine
+    from tools.segscan import scan_segments
+    from tools.context import Investigation
+    from tests.fixtures.synth import TARGET, make_store
+    assert engine.engine_name() == "v3" and engine.hist_z() == 4.0
+    inv = Investigation(store=make_store())
+    assert scan_segments(inv, "gmv", TARGET.strftime("%Y-%m-%d"))["hist_z_threshold"] == 4.0
+    engine.set_engine("v2")
+    try:
+        assert engine.hist_z() == 4.25 and engine.money_rate_test() == "welch"
+        assert scan_segments(Investigation(store=make_store()), "gmv", TARGET.strftime("%Y-%m-%d"))["hist_z_threshold"] == 4.25
+    finally:
+        engine.set_engine("v3")
+
+
+def test_v3_money_rate_test_is_trimmed_mean_and_robust_to_big_tickets():
+    import numpy as np
+    import pandas as pd
+    import scipy.stats as sps
+
+    from tools import engine
+    from tools.stats import run_test
+    from tests.fixtures.synth import TARGET, make_store
+    st = make_store()
+    w = TARGET.strftime("%Y-%m-%d")
+    # AOV rate test on state A: v3 uses Yuen's trimmed-mean test, v2 keeps Welch
+    r3 = run_test(st, "aov", "customer_state", "A", w, effect="rate")
+    assert r3["test"].startswith("Yuen") and "trimmed_mean_current" in r3
+    engine.set_engine("v2")
+    try:
+        assert run_test(st, "aov", "customer_state", "A", w, effect="rate")["test"] == "Welch t-test"
+    finally:
+        engine.set_engine("v3")
+    # the reason: one huge order hides a 30% price cut from the plain mean, not from the trimmed mean
+    rng = np.random.default_rng(0)
+    base = rng.normal(100, 5, 60)
+    cut = np.r_[rng.normal(70, 5, 59), 20000.0]
+    assert sps.ttest_ind(cut, base, equal_var=False).pvalue > 0.05
+    assert sps.ttest_ind(cut, base, equal_var=False, trim=0.2).pvalue < 1e-10
+    assert run_test(st, "on_time_rate", "customer_state", "A", w)["test"] == "two-proportion z-test"  # binary unchanged

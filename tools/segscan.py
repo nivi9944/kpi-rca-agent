@@ -18,7 +18,11 @@ import pandas as pd
 from metrics.metrics import dimension_col, metric_def, to_week
 from tools.context import Investigation
 
-HIST_Z = 4.25     # calibrated on natural (un-planted) weeks only (~8% natural alarm rate): results/calibration.json
+from tools.engine import hist_z as _hist_z  # noqa: E402
+
+# threshold from the calibration table on natural (un-planted) weeks only (results/calibration.json):
+# v2 used 4.25 (8.2% natural alarm rate), v3 uses 4.0 (11.2%); see tools/engine.py
+HIST_Z = 4.0
 MIN_WEEKLY_N = 20  # a segment needs this many rows per week (on average) to be scored
 BASE, TRAIL = 4, 16
 SCAN_DIMS = ["customer_state", "product_category", "seller_state", "main_payment_type", "is_repeat_customer"]
@@ -110,9 +114,9 @@ def scan_segments(inv: Investigation, metric: str, week: str, dimensions: list[s
                 found.append({"dimension": dim, "segment": r.segment, "effect_scanned": eff,
                               "hist_z": r.hist_z, "value_current": r.current, "value_baseline_prev4": r.baseline_prev4,
                               "contribution_pct": contrib.get(r.segment), "weekly_n": r.weekly_n,
-                              "unusual": bool(abs(r.hist_z) >= HIST_Z)})
+                              "unusual": bool(abs(r.hist_z) >= _hist_z())})
     found.sort(key=lambda d: -abs(d["hist_z"]))
-    return {"metric": metric, "week": to_week(week), "hist_z_threshold": HIST_Z,
+    return {"metric": metric, "week": to_week(week), "hist_z_threshold": _hist_z(),
             "value_meaning": "share of the metric (share scans) or segment metric value (rate scans)",
             "candidates": found[:12],
             "n_unusual": sum(d["unusual"] for d in found),
