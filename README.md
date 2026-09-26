@@ -2,13 +2,13 @@
 
 An LLM agent that investigates why a business KPI moved: it confirms the anomaly, decomposes the metric, scans every segment, tests significance and writes a short incident report in which every number is checked against a tool output.
 
-**Highlights**
+**Highlights** (held-out TEST set, 140 planted anomalies + 30 control weeks)
 
 <!-- HIGHLIGHTS:START -->
 
-- **52.5%** top-1 / **57.5%** top-3 root-cause accuracy on 40 planted anomalies, vs **17.5%** for a naive top-contribution rule.
-- **99.31%** of report figures verified against cited tool outputs; **0%** false alarms on 10 anomaly-free control weeks.
-- All LLM calls go through my LLM gateway: **100.0%** exact-cache hits (570 of 570 calls) when the full evaluation was rerun.
+- **43.6%** top-1 root-cause accuracy (week-clustered 95% CI [36.9, 50.7]); **91.0%** when the anomaly is detected.
+- **99.67%** of report figures verified against tool outputs, **0** invented numbers, **96.7%** specificity on control weeks.
+- **98.0%** identical top cause on a repeat run (kappa 0.96); **98.5%** gateway cache hits on a rerun.
 
 <!-- HIGHLIGHTS:END -->
 
@@ -23,42 +23,89 @@ An LLM agent that investigates why a business KPI moved: it confirms the anomaly
 ## Overview
 
 When GMV, average order value or on-time delivery moves unexpectedly, an analyst has to find out which
-segment caused it, whether the effect is real, and what it is worth. This project hands that investigation
-to an LLM agent with a strict division of labour: **the LLM plans and explains, deterministic Python
-computes.** The model chooses which of 10 typed tools to call, and every figure in its final report must
-match a cited tool output, or the grounding verifier rejects it.
+segment caused it, whether the effect is real, and what it is worth. This project hands that investigation to
+an LLM agent with a strict division of labour: **the LLM plans and explains, deterministic Python computes.**
+The model chooses which of 10 typed tools to call; every figure in its final report must match a cited tool
+output or the grounding verifier rejects it; deterministic guards then drop any cause that has no significant
+test.
 
-The data is the public [Olist Brazilian e-commerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce):
-98,353 real orders from 2017-01 to 2018-08, aggregated weekly. The agent is evaluated on 50 scenarios with
-known answers (40 planted anomalies + 10 control weeks) and compared against two rule-based baselines.
+Data: the public [Olist Brazilian e-commerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce),
+98,353 orders and 112,279 items over 87 weeks (2017-01-02 to 2018-08-27),
+aggregated weekly (`results/data_summary.json`).
 
-**Model:** NVIDIA Nemotron 3 Ultra (`nvidia/nemotron-3-ultra-550b-a55b`, NVIDIA API catalog free tier,
-thinking off), called through my [LLM API Gateway](https://github.com/nivi9944/llm-gateway). It was chosen
-because the Gemini free tier allows only 20 requests per day and Mistral's free API returned a 0 requests/min
-limit (details in [DECISIONS.md](DECISIONS.md)).
+**Model:** NVIDIA Nemotron 3 Ultra (`nvidia/nemotron-3-ultra-550b-a55b`, NVIDIA API catalog free tier, thinking
+off), called through my [LLM API Gateway](https://github.com/nivi9944/llm-gateway). Chosen because the Gemini free
+tier allows only 20 requests per day and Mistral's free API returned a 0 requests/min limit
+([DECISIONS.md](DECISIONS.md)).
 
-## Key results
+## Key results (held-out TEST set)
 
-| Metric | Agent (Nemotron 3 Ultra) | Baseline B2: scan + test | Baseline B1: top contribution | Source |
+140 planted anomalies (7 types x 20) and 30 control weeks, built with a new seed after
+all v2 code was frozen, in 8 target weeks that never overlap the development set. Headline intervals are
+**week-clustered bootstrap 95% CIs** (scenarios sharing a week are correlated); Wilson intervals are in
+`results/v2/summary.json`.
+
+| Investigator | Top-1 | Top-3 | MRR | Precision | Recall | F1 | Specificity |
+|---|---|---|---|---|---|---|---|
+| Agent v2 | **43.6%** (61/140) [36.9, 50.7] | 46.4% [39.7, 53.0] | 0.4518 | 42.3% | 47.1% | 44.6 [40.9, 47.7] | 96.7% (29/30) |
+| Agent v2 + B2 fallback | **43.6%** (61/140) [36.9, 50.7] | 46.4% [39.7, 53.0] | 0.4518 | 42.3% | 47.1% | 44.6 [40.9, 47.7] | 96.7% (29/30) |
+| Agent v1 | **40.7%** (57/140) [33.8, 48.9] | 44.3% [37.2, 51.2] | 0.4264 | 41.7% | 45.0% | 43.3 [38.9, 47.1] | 96.7% (29/30) |
+| Baseline B2: scan + test | **45.0%** (63/140) [39.3, 51.5] | 45.7% [39.6, 52.0] | 0.4536 | 54.7% | 45.7% | 49.8 [46.0, 54.1] | 96.7% (29/30) |
+| Baseline B1: top contribution | **12.9%** (18/140) [8.0, 17.5] | 15.7% [10.1, 21.0] | 0.1417 | 25.9% | 15.7% | 19.6 [14.5, 23.0] | 96.7% (29/30) |
+
+**Significance** (exact McNemar on paired top-1, `results/v2/mcnemar.json`): v2 vs v1 4 vs 0, p = 0.125;
+v2 vs B2 0 vs 2, p = 0.5; v1 vs B2 0 vs 6, p = 0.0312.
+
+**Reading the table honestly.**
+- **v2 vs v1:** v2 improves on v1 on unseen scenarios, but the gain is **not statistically significant**.
+- **v2 vs B2:** v2 **ties** the strong statistical baseline B2 on accuracy, while B2 has higher precision (the agent sometimes lists extra causes).
+- **Fallback:** the B2 fallback never triggered (v2 never left a planted scenario empty while B2 had an answer), so that row equals v2.
+- **What the agent adds over B2** is what a rule cannot produce: a readable incident report with business framing, R$ impact and actions, in which 99.67% of the figures are machine-verified.
+- **Both far exceed the naive rule (B1).**
+
+![Agent vs baselines on TEST](results/v2/agent_vs_baselines.png)
+
+### Detection and sensitivity
+
+The binding limit is detection, shared by every investigator that uses the segment scan:
+- **73 of 140** planted anomalies are never flagged: the scan threshold is set for a low false-alarm rate.
+- **When v2 does detect an anomaly, its top cause is right 91.0% of the time** [81.8, 95.8] (B2: 94.0%).
+- **Detection recall by severity** (small / medium / large): v2 26.5% / 49.0% / 71.4%; B2 26.5% / 49.0% / 71.4%; B1 10.2% / 22.4% / 28.6%.
+
+![Sensitivity curve](results/v2/sensitivity_curve.png)
+
+### Accuracy by anomaly type (top-1, out of 20 each)
+
+| Type | Agent v2 | Agent v1 | B2 | B1 |
 |---|---|---|---|---|
-| Top-1 root-cause accuracy (40 planted) | 52.5% | 52.5% | 17.5% | `results/eval_summary.json`, `results/baseline_summary.json` |
-| Top-3 root-cause accuracy | 57.5% | 57.5% | 20.0% | same |
-| Detection recall | 65.0% | 65.0% | 25.0% | same |
-| False-alarm rate (10 control weeks) | 0.0% | 0.0% | 0.0% | same |
-| Grounding rate (report numbers verified) | 99.31% | n/a (no text) | n/a (no text) | `results/eval_summary.json` |
-| Avg tool calls / tokens / latency per investigation | 9.96 / 72,574.38 / 127.09 s | 3.46 / none / 0.8 s | 2.0 / none / 0.06 s | same |
-| Cost per investigation | $0 (free tier) | $0 | $0 | `results/eval_summary.json` |
-| Gateway exact-cache hit rate on a full rerun | 100.0% (570 of 570 calls) | | | `results/cache_rerun.json` |
-| Avg latency per investigation on the cached rerun | 75.66 s (first run 127.09 s) | | | `results/cache_rerun.json` |
+| cancellation_spike | 14/20 | 14/20 | 14/20 | 8/20 |
+| delay_then_reviews | 6/20 | 6/20 | 6/20 | 5/20 |
+| delivery_delay | 6/20 | 6/20 | 6/20 | 4/20 |
+| mix_shift | 18/20 | 15/20 | 20/20 | 0/20 |
+| price_drop | 2/20 | 2/20 | 2/20 | 0/20 |
+| review_drop | 8/20 | 7/20 | 8/20 | 1/20 |
+| volume_drop | 7/20 | 7/20 | 7/20 | 0/20 |
 
-**Reading the table honestly.** The agent uses the same scan and tests as B2, so it matches B2's
-detection exactly and ties it on accuracy: it wins two scenarios B2 ranks wrongly (s22, s24) and loses
-two B2 ranks correctly (s35, s36). What the agent adds over B2 is the part a rule cannot produce: a
-readable incident report with business framing, R$ impact and actions, in which 99.31% of the figures are
-machine-verified. Both are far ahead of the naive rule (B1). See [Failure analysis](#failure-analysis).
+`delay_then_reviews` is a chained scenario: deliveries of one seller state are delayed in week W and that
+state's reviews drop in week W+1 (the investigated week). Full type x severity table: `results/v2/by_type_severity.csv`.
 
-![Agent vs baselines](results/agent_vs_baseline.png)
-![Top-1 accuracy by severity](results/accuracy_by_severity.png)
+![Accuracy by type](results/v2/accuracy_by_type.png)
+
+### Grounding, impact, cost, stability and caching
+
+| Investigator | Latency avg / p50 / p95 | Tool calls | Tokens | Grounding | Invented numbers |
+|---|---|---|---|---|---|
+| Agent v2 | 205.44 s / 194.89 s / 350.19 s | 12.15 | 91659.5 | 99.67% | 0 |
+| Agent v1 | 164.41 s / 166.22 s / 264.35 s | 10.14 | 72310.7 | 99.68% | 0 |
+| Baseline B2: scan + test | 1.25 s / 1.22 s / 1.97 s | 3.35 | none (no LLM) | n/a | n/a |
+| Baseline B1: top contribution | 0.08 s / 0.04 s / 0.3 s | 1.85 | none (no LLM) | n/a | n/a |
+
+- **Ungrounded numbers (v2):** 8 numbers were flagged, **none invented**: 5 were values the model derived from two tool values, 3 were "p < 0.001" threshold notation.
+- **Effect label:** the effect label (mix vs rate) was right in 100.0% of the 59 cases where the right segment was named.
+- **R$ impact error:** 26.2% MAPE against the true planted impact, over 29 scenarios (v1: 27.6%).
+- **Stability:** v2 rerun on 50 random TEST scenarios with the gateway cache bypassed gave the same top cause in **98.0%** [89.5, 99.6], Cohen's kappa 0.96 on correctness (`results/v2/stability.json`).
+- **Caching:** a cache rerun of 30 scenarios hit the exact cache on 393 of 399 calls (98.5%); median cache-hit call 0.05 s, average scenario 200.56 s to 39.85 s (`results/v2/cache_rerun.json`).
+- **Cost:** $0 actual (free tier).
 
 ## Architecture
 
@@ -67,142 +114,89 @@ flowchart LR
     U[Task: why did GMV change in week W?] --> L[Agent loop<br/>agent/loop.py]
     L -- chat + tool specs --> G[LLM Gateway<br/>cache, rate limit, routing]
     G --> NV[Nemotron 3 Ultra<br/>NVIDIA API, free tier]
-    G -.optional comparison.-> OL[Ollama Qwen 2.5, local]
     L -- tool calls --> T[10 typed tools<br/>detect, decompose, scan,<br/>drill-down, test, impact, SQL, chart]
     T --> D[(DuckDB<br/>fact_orders, fact_items)]
     T -- JSON + evidence_id --> L
     L --> R[Report<br/>Pydantic schema]
     R --> V{Grounding verifier}
     V -- ungrounded: 1 retry --> L
-    V -- ok --> OUT[Incident report + charts]
+    V -- ok --> GD[Guards: drop causes without<br/>a significant test; consistency]
+    GD --> OUT[Incident report + charts]
 ```
 
 ## How the agent investigates
 
-The system prompt enforces a recipe, and the verifier checks the result:
-
 1. `detect_anomalies`: robust z-score of the week's change vs the previous 4-week average, scored against the 8 trailing weekly changes (median/MAD).
-2. `decompose_metric`: GMV = Orders x AOV, an exact log split.
-3. `scan_segments`: every segment of every dimension scored against its own weekly history (share and rate), with a sampling-noise floor. This finds problems that are invisible in the total.
-4. `drill_down`: contribution of each segment; for ratio metrics the exact split `delta = sum (w1 - w0)(r0 - R0) [mix] + sum w1 (r1 - r0) [rate]`, which separates Simpson-style mix shifts from real behaviour changes.
-5. `significance_test`: chi-square on share, two-proportion z or Welch t on rate. A root cause must pass **Benjamini-Hochberg q <= 0.05 and |hist_z| >= 4.25**.
-6. `estimate_impact`, optional `run_sql` (read-only, single statement, row and time limits) and `make_chart`, then `submit_report`.
+2. `decompose_metric`: GMV = Orders x AOV (exact log split); AOV = items per order x value per item.
+3. `scan_segments`: every segment of every dimension against its own weekly history (share and rate), with a sampling-noise floor; also on `avg_item_price` (item-level price) for AOV.
+4. `drill_down`: contribution of each segment, with the exact mix vs rate split `delta = sum (w1 - w0)(r0 - R0) [mix] + sum w1 (r1 - r0) [rate]`.
+5. `significance_test`: chi-square on share, two-proportion z or Welch t on rate; a cause must pass **Benjamini-Hochberg q <= 0.05 and |hist_z| >= 4.25** (threshold calibrated on 170 natural weeks only, `results/calibration.json`).
+6. `estimate_impact` (R$), optional read-only `run_sql` and `make_chart`, then `submit_report`.
 
-The loop is bounded (12 tool calls, token budget, timeout), runs at temperature 0, validates the final
-report against a Pydantic schema, and gives the model one corrective retry if the verifier finds a number
-it cannot trace. Tool results are sent to the model as compact JSON; the verifier always checks against the
-full stored evidence. Example reports: [mix shift](results/examples/s40_mix_shift_large_nvidia.md),
-[delivery delay](results/examples/s22_delivery_delay_small_nvidia.md),
-[control week](results/examples/s45_control_clean_nvidia.md).
+The loop is bounded (15 tool calls, token budget, timeout) and runs at temperature 0. The report is validated
+against a Pydantic schema, and the model gets one corrective retry if the verifier finds an untraceable number.
+Example reports: `results/examples/`.
 
-## Evaluation
+## Methodology: DEV and held-out TEST
 
-**Scenarios** (`inject/manifest.json`, fixed seeds): 6 anomaly types x 3 severities planted into real
-weeks (volume drop, price drop, delivery delay, cancellation spike, review drop, mix shift), plus 5 clean
-control weeks and 5 with 5% uniform random order loss. Severities are calibrated per type, and target weeks
-avoid real events (Black Friday, the 2018 truckers' strike, the World Cup).
+- **DEV:** the original 50 scenarios (40 planted + 10 controls) were used freely to develop v2 (2 rounds). Each change and its evidence is in [DECISIONS.md](DECISIONS.md), including ideas that were **tried and rejected**: evidence-based re-ranking of causes, and a longer price-drop prompt.
+- **TEST:** built once, after v2 was frozen and committed, with a new seed: 20 scenarios per type, severities cycling small / medium / large, target weeks disjoint from DEV, segments drawn by rule from the largest segments. Each investigator ran on TEST once. No threshold was recalibrated.
+- **A test-set construction error was caught and fixed before any agent result was used.** The first TEST build also used Olist's launch weeks, which have too little history. Even B2 found only 4 of 51 planted causes there (7.8%), so the set was rebuilt with the DEV pool rule and all runs restarted (`results/v2/archive_launch_weeks/`).
+- **v1 on TEST** is reproduced exactly with `--agent-version v1` (the v1 prompt verbatim, no new metric, no guards, 12 steps).
 
-**Metrics:** top-1 (rank-1 cause matches dimension and segment, and effect type for mix/rate cases), top-3,
-detection recall (anomaly confirmed), false-alarm rate (a control week reported with a root cause), and
-grounding rate (share of report numbers found in cited tool outputs).
+DEV results (`results/runs/`, 40 planted):
 
-**Threshold calibration:** the segment-scan threshold was set on natural, un-planted weeks only
-(`results/calibration.json`), never on the planted scenarios.
+| Investigator | Top-1 | Top-3 | MRR |
+|---|---|---|---|
+| Agent v2 | 55.0% (22/40) | 57.5% | 0.5625 |
+| Agent v1 | 52.5% (21/40) | 57.5% | 0.5500 |
+| B2: scan + test | 52.5% (21/40) | 57.5% | 0.5458 |
+| B1: top contribution | 17.5% (7/40) | 20.0% | 0.1833 |
 
-<!-- RESULTS:START -->
-Scenarios: **40 planted anomalies + 10 controls** (inject/manifest.json). Source files: `results/eval_summary.json`, `results/baseline_summary.json`.
+The v2 DEV to TEST gap is 11.4 points of top-1 (55.0% on DEV vs 43.6% on TEST,
+`results/v2/dev_test_gap.json`): part is DEV selection, part is that TEST uses mostly new segments and a new
+chained type.
 
-| Investigator | Top-1 | Top-3 | Detection recall | False alarms (controls) | Grounding | Avg tool calls | Avg tokens / run | Avg latency | Cost / run |
-|---|---|---|---|---|---|---|---|---|---|
-| Agent (Nemotron 3 Ultra, NVIDIA) | 52.5% | 57.5% | 65.0% | 0.0% | 99.31% | 9.96 | 72574.38 | 127.09 s | $0 (free tier) |
-| Agent (Gemini Flash) (subset: 2 of 50 scenarios) | 100.0% | 100.0% | 100.0% | 0.0% | 100.0% | 8.5 | 66480.5 | 241.91 s | $0.0500 est. |
-| Baseline B2: scan + test | 52.5% | 57.5% | 65.0% | 0.0% | n/a (no text) | 3.46 | n/a | 0.8 s | n/a |
-| Baseline B1: top contribution | 17.5% | 20.0% | 25.0% | 0.0% | n/a (no text) | 2.0 | n/a | 0.06 s | n/a |
+## Failure analysis (TEST)
 
-**Top-1 accuracy by scenario type and severity** (controls: false-alarm rate)
-
-| Type | Severity | n | Agent (Nemotron 3 Ultra, NVIDIA) | Baseline B2: scan + test | Baseline B1: top contribution |
-|---|---|---|---|---|---|
-| volume_drop | large | 2 | 100.0% | 100.0% | 0.0% |
-| volume_drop | medium | 3 | 33.3% | 33.3% | 0.0% |
-| volume_drop | small | 3 | 0.0% | 0.0% | 33.3% |
-| price_drop | large | 2 | 50.0% | 50.0% | 0.0% |
-| price_drop | medium | 2 | 0.0% | 0.0% | 0.0% |
-| price_drop | small | 3 | 0.0% | 0.0% | 0.0% |
-| delivery_delay | large | 2 | 100.0% | 100.0% | 0.0% |
-| delivery_delay | medium | 2 | 0.0% | 0.0% | 0.0% |
-| delivery_delay | small | 3 | 33.3% | 0.0% | 33.3% |
-| cancellation_spike | large | 2 | 100.0% | 100.0% | 0.0% |
-| cancellation_spike | medium | 2 | 100.0% | 50.0% | 100.0% |
-| cancellation_spike | small | 2 | 100.0% | 100.0% | 100.0% |
-| review_drop | large | 2 | 100.0% | 100.0% | 0.0% |
-| review_drop | medium | 2 | 100.0% | 100.0% | 50.0% |
-| review_drop | small | 2 | 0.0% | 0.0% | 0.0% |
-| mix_shift | large | 2 | 100.0% | 100.0% | 0.0% |
-| mix_shift | medium | 2 | 50.0% | 100.0% | 0.0% |
-| mix_shift | small | 2 | 50.0% | 100.0% | 0.0% |
-| control_clean | none | 5 | 0.0% | 0.0% | 0.0% |
-| control_noise | none | 5 | 0.0% | 0.0% | 0.0% |
-
-Segment-scan threshold |hist_z| >= 4.25 was calibrated on 170 natural (un-planted) week x metric pairs: 8.2% natural alarm rate (`results/calibration.json`).
-<!-- RESULTS:END -->
-
-## Failure analysis
-
-All figures below come from `results/runs/nvidia.jsonl` and `results/runs/baseline_scan.jsonl`.
-
-**Mix shifts s35 and s36 (agent wrong, B2 right).** The agent found the true cause with the correct *mix*
-label but ranked it second. In s35 the scan and tests ranked `product_category = telephony` strongest
-(hist_z 5.5545, q 4.105e-23), yet the agent put `is_repeat_customer = 0` (rate, hist_z -4.411, q 0.02035)
-first. In s36 `electronics` was far stronger (hist_z 19.7654, q 2.765e-87) than `seller_state = PR`
-(hist_z 9.2094), which the agent ranked first and labelled *rate* although its test was a share (mix) test.
-The failure is ranking by narrative plausibility instead of evidence strength, not a wrong effect label.
-Mix-shift top-3 is 100% for the agent at every severity.
-
-**Price drops (hard for both).** A price cut inside one category barely moves the headline AOV (s14: a 50%
-cut in `auto`, headline change -0.1479%) and does not make the category unusual against its own noisy
-history (s10: `health_beauty` hist_z -1.76; s13: `sports_leisure` hist_z -2.8831, below the 4.25 threshold).
-Both the agent and B2 get only s11 (a large drop) right; by severity their price-drop top-1 is 50% (large) and 0% (medium, small).
-
-**Where the agent beat B2 (s22, s24).** In s22 (small delivery delay) B2 ranked a `garden_tools` mix effect
-first; the agent ranked `seller_state = SP` (rate), the true cause, first. In s24 (cancellation spike) B2
-ranked `customer_state = SP` first; the agent ranked the true `main_payment_type = credit_card` first.
-
-**Ungrounded reports (6 of 50).** No invented figures were found. Three reports wrote a p-value as
-"p < 0.001", a threshold that does not appear in any tool output; three quoted a value the model derived
-itself (a difference of two tool values in s31, a percentage change in s36, a sum of contributions in s37).
-All six had already used their corrective retry; five were still top-1 correct.
+- **Detection is the bottleneck.** 73 of 140 planted anomalies were never flagged by v2 (B2: 73); small severities are mostly below the noise floor of weekly segment data (detection 26.5% for small vs 71.4% for large).
+- **Price drops** (2/20 for every investigator): a price cut in one category barely moves AOV, and the category's own price history is noisy. The agent used `avg_item_price` in only a few investigations.
+- **Mix shifts:** v2 18/20 vs B2 20/20. In both misses the agent ranked a correlated side effect (a seller state whose share moved with the category) above the true category, which it still listed.
+- **Precision:** v2 sometimes lists up to 5 supported causes where one is planted, so its precision (42.3%) is below B2's (54.7%).
+- **False alarm:** one noisy control week (2018-04-23, GMV) was flagged by every investigator. The same `watches_gifts` movement appears in the untouched data that week, so it is a real event in a control week (controls are deliberately not filtered).
 
 ## Real-world case study
 
 Not part of the score (`results/case_study.json`):
 
-- **2018 Brazilian truckers' strike (week of 2018-05-21):** GMV fell 48.7308% vs the prior 4 weeks
-  (z -25.694), and 96.9752% of the drop came from fewer orders. No single segment passed the tests: the drop
-  was broad, with RJ (-67.2601%) and MG (-53.9815%) falling harder than SP (-32.0423%).
-- **Black Friday 2017 (week of 2017-11-20):** GMV rose 165.12%, while the on-time delivery rate fell from 0.9456
-  to 0.8274 as delivered orders rose 172.62%.
+- **2018 Brazilian truckers' strike (week of 2018-05-21):** GMV fell -48.7308% vs the prior 4 weeks (z -25.694); 96.9752% of the drop came from fewer orders, and no single segment passed the tests (a broad shock).
+- **Black Friday 2017 (week of 2017-11-20):** GMV rose 165.12%, while the on-time delivery rate fell from 0.9456 to 0.8274.
 
 ## Expectations vs results
 
-| Requirement or expectation | Expected | Actual | Status | Evidence |
-|---|---|---|---|---|
-| Numbers only from tools, enforced by a verifier | Verifier on every report | 99.31% of figures verified; 6 reports flagged, none invented | Met | `results/eval_summary.json` |
-| Beat the naive baseline | Higher accuracy than top-contribution rule | 52.5% vs 17.5% top-1 | Met | `results/baseline_summary.json` |
-| Advantage on mix-shift cases | Better than baseline | Top-1 100% / 50% / 50% (large / medium / small), top-3 100% at every severity; B2 100% top-1, B1 0% | Partly met | `results/eval_by_type.csv` |
-| Advantage on downstream effects (delay then reviews) | Better than baseline | No scenario plants a chained effect | Not measured | `inject/manifest.json` |
-| Correctly say "nothing found" on controls | Low false-alarm rate | 0.0% on 10 controls | Met | `results/eval_summary.json` |
-| Readable narrative with business framing and actions | Every report | Narrative, R$ impact and actions in every agent report | Met | `results/examples/` |
-| Reproducible, resumable, rate-limit aware evaluation | Temperature 0, fixed seeds, JSONL checkpoints | Full rerun answered 100.0% from the exact cache; 0 failed runs | Met | `results/cache_rerun.json` |
-| Safe SQL, bounded agent, tested tools, CI | All in place | Read-only SQL guard, step cap, token budget, timeout; unit tests in CI | Met | `tools/sql_guard.py`, `tests/` |
+| Expectation | Result on TEST | Status | Evidence |
+|---|---|---|---|
+| Numbers only from tools, enforced | 99.67% grounded, 0 invented numbers | Met | `results/v2/summary.json` |
+| Beat the naive baseline (B1) | 43.6% vs 12.9% top-1 | Met | `results/v2/summary.json` |
+| Beat the statistical baseline (B2) | 43.6% vs 45.0%, McNemar p = 0.5 | Not met (tie) | `results/v2/mcnemar.json` |
+| v2 better than v1 | 43.6% vs 40.7%, 4 wins and 0 losses, p = 0.125 | Partly met (not significant) | `results/v2/mcnemar.json` |
+| Advantage on mix shifts | v2 18/20 vs B1 0/20, B2 20/20 | Partly met | `results/v2/summary.json` |
+| Downstream effects (delay then reviews) | v2 6/20, same as B2 | Not met (no advantage) | `results/v2/summary.json` |
+| Say "nothing found" on controls | 96.7% specificity; the one alarm is a real event | Met | `results/v2/summary.json` |
+| Readable, business-framed report | narrative, R$ impact (26.2% MAPE), actions | Met | `results/examples/`, `results/v2/summary.json` |
+| Reproducible and stable | 98.0% same top cause on repeat, 98.5% cache hits | Met | `results/v2/stability.json`, `results/v2/cache_rerun.json` |
 
 ## Design decisions
 
-The main choices, each with its reason, are in [DECISIONS.md](DECISIONS.md). In short: an own agent loop
-with plain OpenAI-style function calling (no framework); a Pydantic report schema submitted through a tool;
-median/MAD anomaly scoring against the change history; an exact mix vs rate split; significance with
-Benjamini-Hochberg correction plus a history check calibrated on natural weeks; every run forced to one
-provider through the gateway so no run mixes models.
+The main choices are in [DECISIONS.md](DECISIONS.md), each with its reason and, for v2, the DEV evidence. In short:
+- an own agent loop with plain OpenAI-style function calling (no framework);
+- a Pydantic report schema submitted through a tool;
+- median/MAD anomaly scoring against the change history;
+- an exact mix vs rate split;
+- significance with Benjamini-Hochberg correction, plus a history check calibrated on natural weeks;
+- deterministic post-verifier guards;
+- every run forced to one provider through the gateway;
+- a held-out TEST set built after the code was frozen.
 
 ## Run it in 3 commands
 
@@ -212,34 +206,36 @@ python -m data.load_olist                  # put the Kaggle zip (or CSVs) in dat
 streamlit run app/streamlit_app.py         # demo: pick a scenario or a real week
 ```
 
-Evaluation: `python -m eval.run --model baseline_scan`, `python -m eval.run --model nvidia` (needs the
-gateway with an `NVIDIA_API_KEY`), then `python -m eval.report_tables` and `python -m eval.readme`. Runs are
-resumable (one JSONL line per scenario) and throttled for free-tier limits. Tests:
-`python -m pytest -q` (synthetic fixture with hand-computed answers; no data or key needed).
+Evaluation:
+- `python -m eval.run --model nvidia` runs the DEV set. It needs the gateway with an `NVIDIA_API_KEY`.
+- `python -m eval.run_test_phase` runs the TEST set: resumable, with a budget guard and `--workers`.
+- `python -m eval.metrics_v2` computes the TEST metrics, and `python -m eval.readme_v2` writes this README.
+- Live progress: `python -m eval.progress --watch`.
+- Tests: `python -m pytest -q` (synthetic fixture with hand-computed answers; no data or key needed).
 
 ## Project structure
 
 | Folder | What it holds |
 |---|---|
 | `data/` | CSV to DuckDB build: `fact_orders`, `fact_items` |
-| `metrics/` | Metric catalog (each metric defined once) and the metric engine |
+| `metrics/` | Metric catalog (each metric defined once, incl. `avg_item_price`) and the metric engine |
 | `tools/` | Analysis tools, SQL guard, charts, tool registry (typed schemas) |
-| `inject/` | Anomaly injector and the 50-scenario manifest (fixed seeds) |
-| `agent/` | Loop, prompts, report schema, grounding verifier, compact tool view, LLM client |
+| `inject/` | Anomaly injector, DEV manifest (`manifest.json`) and held-out TEST manifest (`manifest_test.json`) |
+| `agent/` | Loop, prompts, report schema, grounding verifier, guards, compact tool view, LLM client |
 | `baseline/` | Two deterministic baselines |
-| `eval/` | Runner, scoring, tables and charts, README results, threshold calibration, case study |
+| `eval/` | Runner (workers, resume), TEST orchestrator, metrics (bootstrap, McNemar), progress window, README |
 | `app/` | Streamlit demo |
-| `results/` | Every reported number: summaries, per-type CSV, charts, example reports, run logs |
-| `tests/` | Unit tests for tools, verifier, SQL guard, scoring and the agent loop (scripted fake LLM) |
+| `results/` | Every reported number: DEV (`results/`), TEST (`results/v2/`), run logs with full evidence |
+| `tests/` | Unit tests for tools, verifier, guards, SQL guard, scoring, metrics, workers and the agent loop |
 
 ## Limitations and future work
 
-- Anomalies are **synthetic** (planted into real data): clean, single-cause, one-week events. Real incidents are messier.
-- Olist has **no traffic data**, so there is no visit-to-purchase conversion funnel. One marketplace, one currency (R$), weekly grain only.
-- The segment-scan threshold trades recall for a low false-alarm rate; small effects in small segments are often missed (see the severity table).
-- The agent ranks candidates by plausibility rather than evidence strength in some mix-shift cases; ranking by the test statistics is the next improvement.
-- The model runs on a free tier with no list price, so cost is reported as $0 with tokens per run. A full evaluation takes about two hours under the rate limits.
-- Two early smoke-test rows from Gemini Flash remain in `results/runs/gemini.jsonl`; they are labelled as a subset and are not a result.
+- **Only 8 TEST weeks.** To stay disjoint from DEV, the TEST set uses only 8 target weeks, so scenarios are correlated within a week and the week-clustered intervals are wide.
+- **Launch weeks are out of scope.** Scenarios in Olist's launch weeks (thin history, tiny segments) are undetectable even for B2: 4 of 51 (7.8%) in the discarded first TEST build.
+- **Anomalies are synthetic:** clean, single-cause, one-week events planted into real data. Olist has no traffic data (no conversion funnel), one currency (R$) and weekly grain only.
+- **Detection trades recall for a low false-alarm rate;** small effects are mostly missed.
+- **The agent does not beat B2 on accuracy.** Next: rank candidates by their share of the KPI change, not only their unusualness, and add scenario types where reasoning across metrics should matter more.
+- **Throughput:** the model runs on a free tier with a per-model rate limit (about 5 calls/min for Ultra on our key), so a full TEST run takes most of a day.
 
 ## Licence
 

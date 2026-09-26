@@ -1,0 +1,32 @@
+{
+  "v2 vs B2": {
+    "n": 140,
+    "only_first_correct": 0,
+    "only_second_correct": 2,
+    "p_value": 0.5
+  },
+  "v2 vs v1": {
+    "n": 140,
+    "only_first_correct": 4,
+    "only_second_correct": 0,
+    "p_value": 0.125
+  },
+  "v2+fallback vs B2": {
+    "n": 140,
+    "only_first_correct": 0,
+    "only_second_correct": 2,
+    "p_value": 0.5
+  },
+  "v2+fallback vs v1": {
+    "n": 140,
+    "only_first_correct": 4,
+    "only_second_correct": 0,
+    "p_value": 0.125
+  },
+  "v1 vs B2": {
+    "n": 140,
+    "only_first_correct": 0,
+    "only_second_correct": 6,
+    "p_value": 0.0312
+  }
+}

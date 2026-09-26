@@ -92,6 +92,7 @@ held-out TEST set was built and run once after the code was frozen.
 | No recalibration: the segment-scan threshold stays 4.25 | Thresholds are set on natural weeks only |
 | Headline intervals are **week-clustered bootstrap** 95% CIs (resample the 8 target weeks with replacement, 2,000 draws) for top-1, top-3 and F1; Wilson intervals are also reported | Scenarios sharing a week share its data, so they are correlated; treating them as independent (Wilson) would give intervals that are too narrow |
 | Stability: v2 rerun on 50 random TEST scenarios with the gateway cache bypassed; cache rerun on 30 other random scenarios | Measures run-to-run agreement and cache behaviour on the same code |
+| Parallel workers (`--workers N`) tried on TEST and dropped back to 1 | With 2 workers NVIDIA returned 99 rate-limit errors in 15 minutes for 5 scenarios: the free tier limits Ultra per model per minute, so concurrency cannot raise throughput. A budget guard in the TEST orchestrator detected the spike and dropped to 1 worker automatically; the option stays for providers with more headroom (a unit test checks workers=1 and workers=2 give identical rows) |
 
 ## Model and provider
 

@@ -1,0 +1,15 @@
+{
+  "scenarios": 30,
+  "llm_calls": 399,
+  "cache_hits": 393,
+  "hit_rate": {
+    "pct": 98.5,
+    "lo": 96.8,
+    "hi": 99.3,
+    "k": 393,
+    "n": 399
+  },
+  "median_cache_hit_call_latency_s": 0.05,
+  "avg_scenario_latency_first_s": 200.56,
+  "avg_scenario_latency_rerun_s": 39.85
+}

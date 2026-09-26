@@ -1,0 +1,13 @@
+{
+  "n": 50,
+  "same_top1_cause": {
+    "pct": 98.0,
+    "lo": 89.5,
+    "hi": 99.6,
+    "k": 49,
+    "n": 50
+  },
+  "correct_agreement_kappa": 0.96,
+  "correct_first_run": 28,
+  "correct_repeat": 27
+}
