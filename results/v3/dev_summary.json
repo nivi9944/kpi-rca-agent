@@ -1,0 +1,1237 @@
+{
+  "v2_final": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 55.0,
+      "lo": 39.8,
+      "hi": 69.3,
+      "k": 22,
+      "n": 40
+    },
+    "top3": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "mrr": 0.5625,
+    "precision": {
+      "pct": 41.1,
+      "lo": 29.2,
+      "hi": 54.1,
+      "k": 23,
+      "n": 56
+    },
+    "recall": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "f1_pct": 47.9,
+    "tp": 23,
+    "fp": 33,
+    "fn": 17,
+    "week_clustered_ci": {
+      "n_weeks": 26,
+      "draws": 2000,
+      "top1": {
+        "lo": 42.5,
+        "hi": 68.6
+      },
+      "top3": {
+        "lo": 43.9,
+        "hi": 71.4
+      },
+      "f1": {
+        "lo": 39.1,
+        "hi": 59.2
+      }
+    },
+    "specificity": {
+      "pct": 100.0,
+      "lo": 72.2,
+      "hi": 100.0,
+      "k": 10,
+      "n": 10
+    },
+    "false_alarm": {
+      "pct": 0.0,
+      "lo": -0.0,
+      "hi": 27.8,
+      "k": 0,
+      "n": 10
+    },
+    "detection_recall": {
+      "pct": 65.0,
+      "lo": 49.5,
+      "hi": 77.9,
+      "k": 26,
+      "n": 40
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 46.7,
+        "lo": 24.8,
+        "hi": 69.9,
+        "k": 7,
+        "n": 15
+      },
+      "medium": {
+        "pct": 61.5,
+        "lo": 35.5,
+        "hi": 82.3,
+        "k": 8,
+        "n": 13
+      },
+      "large": {
+        "pct": 91.7,
+        "lo": 64.6,
+        "hi": 98.5,
+        "k": 11,
+        "n": 12
+      }
+    },
+    "top1_given_detected": {
+      "pct": 84.6,
+      "lo": 66.5,
+      "hi": 93.9,
+      "k": 22,
+      "n": 26
+    },
+    "planted_undetected": 14,
+    "causes_per_planted_report": {
+      "0": 15,
+      "1": 13,
+      "2": 4,
+      "3": 2,
+      "4": 1,
+      "5": 5
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 83.9,
+      "hi": 100.0,
+      "k": 20,
+      "n": 20
+    },
+    "impact_mape_pct": 26.3,
+    "impact_n": 9,
+    "grounding_rate_pct": 99.2,
+    "ungrounded_reports": 4,
+    "ungrounded_numbers": {
+      "threshold_notation": 3,
+      "derived": 2
+    },
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 197.62,
+      "p50": 193.56,
+      "p95": 330.7
+    },
+    "avg_tokens": 90534.7,
+    "avg_tool_calls": 11.7,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "mix_shift": {
+        "pct": 100.0,
+        "lo": 61.0,
+        "hi": 100.0,
+        "k": 6,
+        "n": 6
+      },
+      "price_drop": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop": {
+        "pct": 37.5,
+        "lo": 13.7,
+        "hi": 69.4,
+        "k": 3,
+        "n": 8
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "cancellation_spike|medium": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "cancellation_spike|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "delivery_delay|small": {
+        "pct": 33.3,
+        "lo": 6.1,
+        "hi": 79.2,
+        "k": 1,
+        "n": 3
+      },
+      "mix_shift|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "price_drop|large": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "price_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      },
+      "review_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "volume_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "volume_drop|medium": {
+        "pct": 33.3,
+        "lo": 6.1,
+        "hi": 79.2,
+        "k": 1,
+        "n": 3
+      },
+      "volume_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      }
+    },
+    "fallback_used": 0
+  },
+  "v3": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 52.5,
+      "lo": 37.5,
+      "hi": 67.1,
+      "k": 21,
+      "n": 40
+    },
+    "top3": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "mrr": 0.55,
+    "precision": {
+      "pct": 38.3,
+      "lo": 27.1,
+      "hi": 51.0,
+      "k": 23,
+      "n": 60
+    },
+    "recall": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "f1_pct": 46.0,
+    "tp": 23,
+    "fp": 37,
+    "fn": 17,
+    "week_clustered_ci": {
+      "n_weeks": 26,
+      "draws": 2000,
+      "top1": {
+        "lo": 39.5,
+        "hi": 67.6
+      },
+      "top3": {
+        "lo": 43.9,
+        "hi": 71.4
+      },
+      "f1": {
+        "lo": 37.4,
+        "hi": 56.8
+      }
+    },
+    "specificity": {
+      "pct": 100.0,
+      "lo": 72.2,
+      "hi": 100.0,
+      "k": 10,
+      "n": 10
+    },
+    "false_alarm": {
+      "pct": 0.0,
+      "lo": -0.0,
+      "hi": 27.8,
+      "k": 0,
+      "n": 10
+    },
+    "detection_recall": {
+      "pct": 65.0,
+      "lo": 49.5,
+      "hi": 77.9,
+      "k": 26,
+      "n": 40
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 46.7,
+        "lo": 24.8,
+        "hi": 69.9,
+        "k": 7,
+        "n": 15
+      },
+      "medium": {
+        "pct": 61.5,
+        "lo": 35.5,
+        "hi": 82.3,
+        "k": 8,
+        "n": 13
+      },
+      "large": {
+        "pct": 91.7,
+        "lo": 64.6,
+        "hi": 98.5,
+        "k": 11,
+        "n": 12
+      }
+    },
+    "top1_given_detected": {
+      "pct": 80.8,
+      "lo": 62.1,
+      "hi": 91.5,
+      "k": 21,
+      "n": 26
+    },
+    "planted_undetected": 14,
+    "causes_per_planted_report": {
+      "0": 14,
+      "1": 13,
+      "2": 4,
+      "3": 2,
+      "4": 2,
+      "5": 5
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 83.9,
+      "hi": 100.0,
+      "k": 20,
+      "n": 20
+    },
+    "impact_mape_pct": 35.1,
+    "impact_n": 10,
+    "grounding_rate_pct": 99.63,
+    "ungrounded_reports": 2,
+    "ungrounded_numbers": {
+      "threshold_notation": 3,
+      "field": 2
+    },
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 163.72,
+      "p50": 154.5,
+      "p95": 299.28
+    },
+    "avg_tokens": 86864.5,
+    "avg_tool_calls": 11.44,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay": {
+        "pct": 42.9,
+        "lo": 15.8,
+        "hi": 75.0,
+        "k": 3,
+        "n": 7
+      },
+      "mix_shift": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "price_drop": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop": {
+        "pct": 37.5,
+        "lo": 13.7,
+        "hi": 69.4,
+        "k": 3,
+        "n": 8
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "cancellation_spike|medium": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "cancellation_spike|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "delivery_delay|small": {
+        "pct": 33.3,
+        "lo": 6.1,
+        "hi": 79.2,
+        "k": 1,
+        "n": 3
+      },
+      "mix_shift|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|medium": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "mix_shift|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "price_drop|large": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "price_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      },
+      "review_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "volume_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "volume_drop|medium": {
+        "pct": 33.3,
+        "lo": 6.1,
+        "hi": 79.2,
+        "k": 1,
+        "n": 3
+      },
+      "volume_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      }
+    },
+    "fallback_used": 0
+  },
+  "b2_v2_engine": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 52.5,
+      "lo": 37.5,
+      "hi": 67.1,
+      "k": 21,
+      "n": 40
+    },
+    "top3": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "mrr": 0.5458,
+    "precision": {
+      "pct": 53.5,
+      "lo": 38.9,
+      "hi": 67.5,
+      "k": 23,
+      "n": 43
+    },
+    "recall": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "f1_pct": 55.4,
+    "tp": 23,
+    "fp": 20,
+    "fn": 17,
+    "week_clustered_ci": {
+      "n_weeks": 26,
+      "draws": 2000,
+      "top1": {
+        "lo": 39.5,
+        "hi": 65.7
+      },
+      "top3": {
+        "lo": 43.9,
+        "hi": 71.4
+      },
+      "f1": {
+        "lo": 45.5,
+        "hi": 65.9
+      }
+    },
+    "specificity": {
+      "pct": 100.0,
+      "lo": 72.2,
+      "hi": 100.0,
+      "k": 10,
+      "n": 10
+    },
+    "false_alarm": {
+      "pct": 0.0,
+      "lo": -0.0,
+      "hi": 27.8,
+      "k": 0,
+      "n": 10
+    },
+    "detection_recall": {
+      "pct": 65.0,
+      "lo": 49.5,
+      "hi": 77.9,
+      "k": 26,
+      "n": 40
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 46.7,
+        "lo": 24.8,
+        "hi": 69.9,
+        "k": 7,
+        "n": 15
+      },
+      "medium": {
+        "pct": 61.5,
+        "lo": 35.5,
+        "hi": 82.3,
+        "k": 8,
+        "n": 13
+      },
+      "large": {
+        "pct": 91.7,
+        "lo": 64.6,
+        "hi": 98.5,
+        "k": 11,
+        "n": 12
+      }
+    },
+    "top1_given_detected": {
+      "pct": 80.8,
+      "lo": 62.1,
+      "hi": 91.5,
+      "k": 21,
+      "n": 26
+    },
+    "planted_undetected": 14,
+    "causes_per_planted_report": {
+      "0": 15,
+      "1": 14,
+      "2": 4,
+      "3": 7
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 83.9,
+      "hi": 100.0,
+      "k": 20,
+      "n": 20
+    },
+    "impact_mape_pct": null,
+    "impact_n": 0,
+    "grounding_rate_pct": null,
+    "ungrounded_reports": 0,
+    "ungrounded_numbers": {},
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 0.8,
+      "p50": 0.85,
+      "p95": 1.26
+    },
+    "avg_tokens": null,
+    "avg_tool_calls": 3.46,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay": {
+        "pct": 28.6,
+        "lo": 8.2,
+        "hi": 64.1,
+        "k": 2,
+        "n": 7
+      },
+      "mix_shift": {
+        "pct": 100.0,
+        "lo": 61.0,
+        "hi": 100.0,
+        "k": 6,
+        "n": 6
+      },
+      "price_drop": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop": {
+        "pct": 37.5,
+        "lo": 13.7,
+        "hi": 69.4,
+        "k": 3,
+        "n": 8
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "cancellation_spike|medium": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "cancellation_spike|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      },
+      "mix_shift|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "price_drop|large": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "price_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      },
+      "review_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "volume_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "volume_drop|medium": {
+        "pct": 33.3,
+        "lo": 6.1,
+        "hi": 79.2,
+        "k": 1,
+        "n": 3
+      },
+      "volume_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      }
+    },
+    "fallback_used": 0
+  },
+  "b2_v3_engine": {
+    "n_scenarios": 50,
+    "n_planted": 40,
+    "n_controls": 10,
+    "failed_runs": 0,
+    "top1": {
+      "pct": 52.5,
+      "lo": 37.5,
+      "hi": 67.1,
+      "k": 21,
+      "n": 40
+    },
+    "top3": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "mrr": 0.5458,
+    "precision": {
+      "pct": 47.9,
+      "lo": 34.5,
+      "hi": 61.7,
+      "k": 23,
+      "n": 48
+    },
+    "recall": {
+      "pct": 57.5,
+      "lo": 42.2,
+      "hi": 71.5,
+      "k": 23,
+      "n": 40
+    },
+    "f1_pct": 52.3,
+    "tp": 23,
+    "fp": 25,
+    "fn": 17,
+    "week_clustered_ci": {
+      "n_weeks": 26,
+      "draws": 2000,
+      "top1": {
+        "lo": 39.5,
+        "hi": 65.7
+      },
+      "top3": {
+        "lo": 43.9,
+        "hi": 71.4
+      },
+      "f1": {
+        "lo": 42.9,
+        "hi": 62.2
+      }
+    },
+    "specificity": {
+      "pct": 100.0,
+      "lo": 72.2,
+      "hi": 100.0,
+      "k": 10,
+      "n": 10
+    },
+    "false_alarm": {
+      "pct": 0.0,
+      "lo": -0.0,
+      "hi": 27.8,
+      "k": 0,
+      "n": 10
+    },
+    "detection_recall": {
+      "pct": 65.0,
+      "lo": 49.5,
+      "hi": 77.9,
+      "k": 26,
+      "n": 40
+    },
+    "detection_by_severity": {
+      "small": {
+        "pct": 46.7,
+        "lo": 24.8,
+        "hi": 69.9,
+        "k": 7,
+        "n": 15
+      },
+      "medium": {
+        "pct": 61.5,
+        "lo": 35.5,
+        "hi": 82.3,
+        "k": 8,
+        "n": 13
+      },
+      "large": {
+        "pct": 91.7,
+        "lo": 64.6,
+        "hi": 98.5,
+        "k": 11,
+        "n": 12
+      }
+    },
+    "top1_given_detected": {
+      "pct": 80.8,
+      "lo": 62.1,
+      "hi": 91.5,
+      "k": 21,
+      "n": 26
+    },
+    "planted_undetected": 14,
+    "causes_per_planted_report": {
+      "0": 14,
+      "1": 13,
+      "2": 4,
+      "3": 9
+    },
+    "effect_label_accuracy": {
+      "pct": 100.0,
+      "lo": 83.9,
+      "hi": 100.0,
+      "k": 20,
+      "n": 20
+    },
+    "impact_mape_pct": null,
+    "impact_n": 0,
+    "grounding_rate_pct": null,
+    "ungrounded_reports": 0,
+    "ungrounded_numbers": {},
+    "invented_numbers": 0,
+    "latency_s": {
+      "avg": 1.06,
+      "p50": 1.06,
+      "p95": 1.8
+    },
+    "avg_tokens": null,
+    "avg_tool_calls": 3.62,
+    "top1_by_type": {
+      "cancellation_spike": {
+        "pct": 83.3,
+        "lo": 43.6,
+        "hi": 97.0,
+        "k": 5,
+        "n": 6
+      },
+      "delivery_delay": {
+        "pct": 28.6,
+        "lo": 8.2,
+        "hi": 64.1,
+        "k": 2,
+        "n": 7
+      },
+      "mix_shift": {
+        "pct": 100.0,
+        "lo": 61.0,
+        "hi": 100.0,
+        "k": 6,
+        "n": 6
+      },
+      "price_drop": {
+        "pct": 14.3,
+        "lo": 2.6,
+        "hi": 51.3,
+        "k": 1,
+        "n": 7
+      },
+      "review_drop": {
+        "pct": 66.7,
+        "lo": 30.0,
+        "hi": 90.3,
+        "k": 4,
+        "n": 6
+      },
+      "volume_drop": {
+        "pct": 37.5,
+        "lo": 13.7,
+        "hi": 69.4,
+        "k": 3,
+        "n": 8
+      }
+    },
+    "top1_by_type_severity": {
+      "cancellation_spike|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "cancellation_spike|medium": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "cancellation_spike|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "delivery_delay|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "delivery_delay|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      },
+      "mix_shift|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "mix_shift|small": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "price_drop|large": {
+        "pct": 50.0,
+        "lo": 9.5,
+        "hi": 90.5,
+        "k": 1,
+        "n": 2
+      },
+      "price_drop|medium": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "price_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      },
+      "review_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|medium": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "review_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 65.8,
+        "k": 0,
+        "n": 2
+      },
+      "volume_drop|large": {
+        "pct": 100.0,
+        "lo": 34.2,
+        "hi": 100.0,
+        "k": 2,
+        "n": 2
+      },
+      "volume_drop|medium": {
+        "pct": 33.3,
+        "lo": 6.1,
+        "hi": 79.2,
+        "k": 1,
+        "n": 3
+      },
+      "volume_drop|small": {
+        "pct": 0.0,
+        "lo": 0.0,
+        "hi": 56.2,
+        "k": 0,
+        "n": 3
+      }
+    },
+    "fallback_used": 0
+  },
+  "n_common": 50
+}
