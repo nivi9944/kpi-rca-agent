@@ -67,10 +67,29 @@ def rows(path: Path) -> dict:
     return out
 
 
+def gateway_ok(timeout_min: int = 30) -> bool:
+    """Wait for the LLM gateway (it is down after a sleep until Docker is back); alert if it stays down."""
+    import urllib.request
+    end = time.time() + 60 * timeout_min
+    while time.time() < end:
+        try:
+            with urllib.request.urlopen("http://localhost:8000/health", timeout=5) as r:
+                if r.status == 200:
+                    return True
+        except Exception:
+            pass
+        time.sleep(20)
+    ALERT.write_text(f"{datetime.now():%Y-%m-%d %H:%M:%S} gateway unreachable for {timeout_min} min\n")
+    return False
+
+
 def run_phase(name: str, args: list[str]) -> None:
     rd = Path(args[args.index("--results-dir") + 1])
     path = ROOT / rd / "runs" / f"{args[args.index('--run-name') + 1]}.jsonl"
     set_status(phase=name, phase_started=datetime.now().isoformat(timespec="seconds"))
+    if "nvidia" in args and not gateway_ok():
+        log(f"gateway down: {name} not started")
+        return
     for attempt in range(3):  # re-pass only to retry API failures (resume skips finished scenarios)
         log(f"start {name} (pass {attempt + 1}, 1 worker, deadline {deadline():%Y-%m-%d %H:%M})")
         out = subprocess.run([sys.executable, "-u", "-m", "eval.run", *args, "--workers", "1", "--engine", "v3",

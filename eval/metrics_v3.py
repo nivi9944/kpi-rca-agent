@@ -93,8 +93,8 @@ def main() -> dict:
     v3_ids = sorted(runs.get("v3", {}))
     partial = 0 < len(v3_ids) < len(man)
     out = {"v3_completed": len(v3_ids), "test_total": len(man), "partial": partial}
-    for scope, ids in [("all", None), ("v3_completed", v3_ids if partial else None)]:
-        if scope == "v3_completed" and not partial:
+    for scope, ids in [("all", None), ("v3_completed_scope", v3_ids if partial else None)]:
+        if scope == "v3_completed_scope" and not partial:
             continue
         summ, t1 = {}, {}
         for k, r in runs.items():
@@ -111,7 +111,7 @@ def main() -> dict:
         out[scope] = {"summary": summ, "mcnemar": tests}
     V3.mkdir(parents=True, exist_ok=True)
     (V3 / "summary.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
-    head = out["v3_completed"] if partial and "v3_completed" in out else out["all"]
+    head = out.get("v3_completed_scope") or out["all"]
     with open(V3 / "by_type_severity.csv", "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["investigator", "type", "severity", "n", "top1_pct", "ci_lo", "ci_hi"])
@@ -131,7 +131,7 @@ def main() -> dict:
 def draft_summary() -> None:
     S = json.loads((V3 / "summary.json").read_text(encoding="utf-8"))
     st = json.loads((V3 / "status.json").read_text(encoding="utf-8")) if (V3 / "status.json").exists() else {}
-    head = S.get("v3_completed") or S["all"]
+    head = S.get("v3_completed_scope") or S["all"]
     L = ["# V3 summary (draft, written automatically; local only, gitignored)", "",
          f"TEST v3 completed: {S['v3_completed']} of {S['test_total']}"
          + (f" (stopped for the 15-hour time budget, not an error: {st.get('time_budget_stop')})" if st.get("time_budget_stop") else ""), "",
@@ -147,7 +147,7 @@ def draft_summary() -> None:
 
 if __name__ == "__main__":
     o = main()
-    h = o.get("v3_completed") or o["all"]
+    h = o.get("v3_completed_scope") or o["all"]
     for k in [x for x in ORDER if x in h["summary"]]:
         s = h["summary"][k]
         print(f"{k:16} top1 {s['top1']['pct']} ({s['top1']['k']}/{s['top1']['n']}) F1 {s['f1_pct']} det {s['detection_recall']['pct']} spec {s['specificity']['pct']}")

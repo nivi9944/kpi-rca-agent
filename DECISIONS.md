@@ -112,6 +112,34 @@ ceiling. Judgment calls made during the autonomous run are marked **(call)**.
 | **15-hour ceiling (call)**: the runner stops starting new scenarios when now + the average scenario time would pass the deadline, which is the start time + 15 h minus 45 min reserved for metrics and the summary | A graceful stop keeps every finished scenario (resumable JSONL); the number completed is logged |
 | **DEV verdict rule (call)**: PASS if v3 is at least as good as v2-final on DEV for that metric (same 50 DEV scenarios), FAIL otherwise | A plain, pre-declared rule; the run proceeds to TEST whatever the verdict |
 
+## v3 DEV verdict
+
+Same 50 DEV scenarios; rule: PASS if v3 is at least as good as v2-final. v3 DEV runs: 50 of 50 completed. Written automatically by eval/run_v3.py.
+
+| Metric | v2-final (DEV) | v3 (DEV) | Delta | Verdict |
+|---|---|---|---|---|
+| Top-1 | 55.0% | 52.5% | -2.5 pts | FAIL |
+| Precision | 41.1% | 38.3% | -2.8 pts | FAIL |
+| Recall | 57.5% | 57.5% | +0.0 pts | PASS |
+| F1 | 47.9% | 46.0% | -1.9 pts | FAIL |
+| Detection recall | 65.0% | 65.0% | +0.0 pts | PASS |
+| Price-drop top-1 | 14.3% | 14.3% | +0.0 pts | PASS |
+
+For reference, B2 on DEV: top-1 52.5% (v2 engine) vs 52.5% (v3 engine); detection 65.0% vs 65.0%; specificity 100.0% vs 100.0%.
+
+## v3 outcomes and decision
+
+DEV = the 50 development scenarios; TEST = the 170-scenario set, reused for v3 (see the caveat above). All numbers from
+`results/v3/dev_summary.json` and `results/v3/summary.json`.
+
+| Change | What was changed, and why | DEV outcome | TEST outcome |
+|---|---|---|---|
+| **Scan threshold 4.25 to 4.0** | Lower \|hist_z\| bar in the segment scan and significance rule (natural false-alarm rate 8.2% to 11.2%), because detection was the bottleneck on v2's TEST run | No effect: detection recall 65.0% for both v2-final and v3; B2 top-1 52.5% on both engines | Detection recall 47.9% to 52.9% for both the agent and B2; specificity unchanged (96.7%). This is the source of v3's gain, and B2 gains the same |
+| **Precision (candidate) guard** | submit_report may only include causes with a significant (BH) test in the investigation's own trace; one correction, then drop | Never fired (0 warnings in 50 runs) | Never fired (0 warnings in 170 runs): the agent always tested its causes before submitting. Precision 42.3% (v2) vs 43.1% (v3), no real change |
+| **Price-drop metric fix** | Yuen's trimmed-mean test (20% trimmed) instead of Welch for money-metric rate tests (AOV, avg_item_price), so big-ticket orders do not hide a price cut | Price-drop top-1 1 of 7 for both v2-final and v3 | Price-drop top-1 2 to 3 of 20 for both the agent and B2 (the extra detection also comes from the lower threshold); still the weakest type |
+| **Overall v3** | The three changes above on the frozen v2 agent | Mostly FAIL: top-1 55.0% to 52.5%, precision 41.1% to 38.3%, F1 47.9 to 46.0; recall, detection and price drop unchanged | Top-1 47.9% vs 43.6% (v2, McNemar p = 0.0312) and 40.7% (v1, p = 0.002); ties B2 (p = 1.0 same engine, p = 0.2188 v2 engine) |
+| **Decision: v2 stays the headline** | README, release v2.0.0 and the resume reference keep v2; v3 is committed as a documented iteration (`V3_SUMMARY.md`, `results/v3/`) | DEV did not support v3 | v3's gain is significant against v1 and v2 but comes mostly from a threshold that helps the baseline equally, it still ties B2, and the TEST set was reused when choosing the changes, so the v3 TEST numbers are not a clean held-out estimate. A fresh TEST set would be needed before promoting v3 |
+
 ## Model and provider
 
 | Decision | Why |
