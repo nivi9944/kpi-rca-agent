@@ -20,9 +20,9 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "inject" / "manifest.json"
 MASTER_SEED = 20260924
 
-# Severity per problem type (small / medium / large). Calibrated so that "small" is near the noise
-# floor of the weekly totals and "large" is clearly visible (see DECISIONS.md). Olist delivers about
-# 11 days BEFORE its estimate on average, so delays must be large to turn orders late.
+# Severity per problem type (small / medium / large), set so that "small" is near the noise floor of
+# the weekly totals and "large" is clearly visible (see DECISIONS.md). Olist delivers about 11 days
+# before its estimate on average, so delays must be large to turn orders late.
 SEVERITY = {
     "volume_drop":        {"small": 0.30, "medium": 0.50, "large": 0.80},  # share of segment orders removed
     "price_drop":         {"small": 0.20, "medium": 0.35, "large": 0.50},  # price cut in the category
@@ -32,7 +32,7 @@ SEVERITY = {
     "mix_shift":          {"small": 0.10, "medium": 0.20, "large": 0.35},  # extra orders (share of week) from a low-AOV category
 }
 
-# Weeks with known real-world events or data edges are never used as targets
+# weeks with known real-world events or data edges are never used as targets
 EXCLUDED_RANGES = [
     ("2017-08-21", "2017-09-11"),  # a real AOV / delay spike late Aug 2017
     ("2017-11-06", "2018-01-08"),  # Black Friday and holiday season
@@ -71,6 +71,7 @@ def _recompute_order_values(orders: pd.DataFrame, items: pd.DataFrame, ids) -> N
 
 
 def apply_scenario(base: Store, sc: dict) -> Store:
+    """Return a copy of the store with the scenario's problem planted; the base store is untouched."""
     st = base.copy(name=sc["id"])
     o, it = st.orders, st.items
     w = to_week(sc["week"])
@@ -99,8 +100,8 @@ def apply_scenario(base: Store, sc: dict) -> Store:
         o.loc[m, "is_on_time"] = (o.loc[m, "delay_days"] <= 0).astype(int)
 
     elif t == "delay_then_reviews":
-        # chained (TEST set only): deliveries of one seller_state are delayed in week W, and reviews of that
-        # seller_state's orders drop in week W+1 (the target week). Ground truth: that seller_state, rate.
+        # chained type, TEST set only: deliveries of one seller_state are delayed in week W, then reviews of
+        # that seller_state's orders drop in week W+1 (the target week). Ground truth: that seller_state, rate.
         w0 = w - pd.Timedelta(weeks=1)
         m = (o["week"] == w0) & (o["main_seller_state"] == p["segment"]) & (o["is_delivered"] == 1)
         o.loc[m, "delivered_ts"] = o.loc[m, "delivered_ts"] + pd.Timedelta(days=p["days"])
@@ -137,7 +138,7 @@ def apply_scenario(base: Store, sc: dict) -> Store:
         st.items = pd.concat([it, new_items[it.columns]], ignore_index=True)
 
     elif t == "control_noise":
-        # remove a small random share of ALL orders in the week (no segment is special)
+        # remove a small random share of all orders in the week, so no segment stands out
         cand = o.loc[in_week, "order_id"].to_numpy()
         drop = rng.choice(cand, size=int(round(len(cand) * p["pct"])), replace=False)
         st.orders = o[~o["order_id"].isin(drop)].reset_index(drop=True)
@@ -157,6 +158,7 @@ def _in_excluded(w: pd.Timestamp) -> bool:
 
 
 def candidate_weeks(store: Store, metric: str, max_abs_z: float | None = 2.0) -> list[pd.Timestamp]:
+    """Pool weeks outside the excluded ranges, optionally only those with |z| below max_abs_z."""
     s = score_series(store, metric)
     s = s[(s["week"] >= to_week(POOL_START)) & (s["week"] <= to_week(POOL_END))]
     s = s[~s["week"].apply(_in_excluded)]
@@ -189,7 +191,7 @@ def build_manifest(store: Store | None = None) -> list[dict]:
                         "week": weeks[chosen[j]].strftime("%Y-%m-%d"), "params": params,
                         "seed": int(MASTER_SEED + i), "is_control": False,
                         "ground_truth": {"anomaly": True, "dimension": dim, "segment": seg, "effect": effect}})
-    # controls: weeks drawn from the same pool WITHOUT filtering on the detector (conservative)
+    # controls: weeks from the same pool with no filter on the detector's z (the conservative choice)
     for k in range(N_CONTROLS_CLEAN + N_CONTROLS_NOISE):
         kind = "control_clean" if k < N_CONTROLS_CLEAN else "control_noise"
         metric = CONTROL_METRICS[k % len(CONTROL_METRICS)]

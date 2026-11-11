@@ -32,6 +32,7 @@ def _split(y0, y1, parts: dict) -> dict:
 
 def decompose_metric(inv: Investigation, metric: str, week: str, n_baseline: int = 4,
                      filters: dict | None = None) -> dict:
+    """Split the target week's change versus the baseline average into multiplicative drivers."""
     st = inv.store
     w1 = to_week(week)
     w0 = st.baseline_weeks(w1, n_baseline)

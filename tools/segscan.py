@@ -1,14 +1,14 @@
-"""Segment scan: find segments whose change in the target week is unusual versus their OWN history.
+"""Segment scan: find segments whose change in the target week is unusual versus their own history.
 
-Why: a problem in one segment (one state, one category) can be invisible in the total, and
-classical tests (z-test, chi-square) treat every order as independent, so on real weekly data they
-call almost every large segment "significant" (weekly data is over-dispersed).
-So each segment gets a robust history z-score, computed exactly like the headline detector:
+A problem in one segment (one state, one category) can be invisible in the total. Classical tests
+(z-test, chi-square) treat every order as independent, so on real weekly data, which is over-dispersed,
+they call almost every large segment "significant". Each segment therefore gets a median/MAD history
+z-score, built like the headline detector:
   x_t     = segment share of rows (effect='share') or segment metric value (effect='rate';
             money metrics use log(1+value) so single big-ticket orders do not dominate)
   c_t     = x_t - mean(x over prev 4 weeks)
-  hist_z  = (c_t - median(c over trailing 8 weeks)) / (1.4826 * MAD)
-A root cause must pass BOTH: classical test q <= 0.05 (after Benjamini-Hochberg) AND |hist_z| >= HIST_Z.
+  hist_z  = (c_t - median(c over trailing TRAIL=16 weeks)) / scale, with scale at least 1.4826 * MAD
+A root cause must pass both the classical test (q <= 0.05 after Benjamini-Hochberg) and |hist_z| >= HIST_Z.
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from tools.context import Investigation
 
 from tools.engine import hist_z as _hist_z  # noqa: E402
 
-# threshold from the calibration table on natural (un-planted) weeks only (results/calibration.json):
+# threshold chosen from the calibration table on natural (unplanted) weeks only (results/calibration.json);
 # v2 used 4.25 (8.2% natural alarm rate), v3 uses 4.0 (11.2%); see tools/engine.py
 HIST_Z = 4.0
 MIN_WEEKLY_N = 20  # a segment needs this many rows per week (on average) to be scored
@@ -29,21 +29,22 @@ SCAN_DIMS = ["customer_state", "product_category", "seller_state", "main_payment
 
 
 def _smoothed_base(panel: pd.DataFrame, n) -> pd.DataFrame:
-    """Expected proportion for this week = prev-4-week mean, pulled slightly toward 1/2 (Laplace
-    smoothing), so a rate of exactly 0 or 1 in the baseline still has a sensible noise level."""
+    """Expected proportion for this week: the prev-4-week mean, pulled slightly toward 1/2 (Laplace
+    smoothing) so a baseline rate of exactly 0 or 1 still gets a sensible noise level."""
     base = panel.shift(1).rolling(BASE, min_periods=1).mean().fillna(panel)
     return (base * n + 1) / (n + 2)
 
 
 def _robust_z(panel: pd.DataFrame, noise_sd: pd.DataFrame, floor: float) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """History z-scores and raw changes for a week x segment panel."""
     base = panel.shift(1).rolling(BASE, min_periods=BASE).mean()
     chg = panel - base
     hist = chg.shift(1)
     med = hist.rolling(TRAIL, min_periods=6).median()
     mad = (hist - med).abs().rolling(TRAIL, min_periods=6).median()
-    # scale = the larger of (a) the segment's own historical spread (robust MAD) and
-    # (b) the sampling noise expected from its size this week (so a tiny segment cannot look
-    #     "unusual" from a handful of orders), and (c) a small absolute floor.
+    # scale is the largest of (a) the segment's own historical spread (MAD), (b) the sampling noise
+    # expected from its size this week, so a tiny segment cannot look "unusual" from a handful of
+    # orders, and (c) a small absolute floor
     samp = noise_sd * np.sqrt(1 + 1 / BASE)
     scale = np.maximum(np.maximum(1.4826 * mad, samp), floor)
     return (chg - med) / scale, chg
@@ -57,8 +58,8 @@ def segment_history_z(store, metric: str, dimension: str, week, effect: str | No
     col = dimension_col(dimension, m["table"])
     df = store.rows(metric, filters)
     if effect == "rate" and m.get("money"):
-        # money values are heavy-tailed (a few big-ticket orders dominate a week), so rate scans
-        # for money metrics run on log(1 + value): a detection device only, reports use real R$
+        # money values are heavy-tailed (a few big-ticket orders dominate a week), so rate scans for
+        # money metrics run on log(1 + value); this is for detection only, reports use real R$
         df = df.assign(value=np.log1p(df["value"].clip(lower=0)))
     df = df.assign(_seg=df[col].astype(str))
     weeks = pd.Index(store.weeks(), name="week")
@@ -66,7 +67,7 @@ def segment_history_z(store, metric: str, dimension: str, week, effect: str | No
     tot = g.sum().unstack(fill_value=0.0).reindex(weeks).fillna(0.0)
     cnt = g.count().unstack(fill_value=0).reindex(weeks).fillna(0.0)
     if effect == "share":
-        # share of ROWS (orders or items), not of value: value shares swing with a few big orders
+        # share of rows (orders or items), not of value: value shares swing with a few big orders
         panel = cnt.div(cnt.sum(axis=1).replace(0, np.nan), axis=0)
         n_all = cnt.sum(axis=1)
         p0 = _smoothed_base(panel, n_all.to_frame().values)
@@ -74,7 +75,7 @@ def segment_history_z(store, metric: str, dimension: str, week, effect: str | No
         floor = 0.002
     else:
         panel = tot / cnt.replace(0, np.nan)
-        panel = panel.where(cnt >= 5)
+        panel = panel.where(cnt >= 5)  # a weekly mean from fewer than 5 rows is too noisy to score
         if m.get("binary"):
             p0 = _smoothed_base(panel, cnt.values)
             noise = np.sqrt(p0 * (1 - p0) / cnt.replace(0, np.nan))
@@ -97,9 +98,10 @@ def segment_history_z(store, metric: str, dimension: str, week, effect: str | No
 
 def scan_segments(inv: Investigation, metric: str, week: str, dimensions: list[str] | None = None,
                   top_k: int = 3) -> dict:
-    """Scan every dimension; return the segments that moved most unusually vs their own history.
+    """Scan every dimension and return the segments that moved most unusually versus their own history.
 
-    For ratio metrics both share (mix) and rate are scanned."""
+    For ratio metrics both share (mix) and rate are scanned.
+    """
     from tools.drilldown import drill_table
 
     m = metric_def(metric)

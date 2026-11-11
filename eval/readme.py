@@ -1,6 +1,7 @@
-"""Fill the README results section and print draft resume bullets, ONLY from files in results/.
+"""Fill the README results section and print draft summary bullets, using only files in results/.
 
   python -m eval.readme
+
 Replaces the text between <!-- RESULTS:START --> and <!-- RESULTS:END --> in README.md.
 """
 from __future__ import annotations
@@ -48,7 +49,7 @@ def build() -> tuple[str, list[str]]:
     n = summ[models[0]] if models else {}
     lines.insert(0, f"Scenarios: **{n.get('n_planted', '?')} planted anomalies + {n.get('n_controls', '?')} controls** "
                     "(inject/manifest.json). Source files: `results/eval_summary.json`, `results/baseline_summary.json`.\n")
-    # by type table (top-1) for each model
+    # top-1 by type and severity, one column per model
     rows = list(csv.DictReader(open(RES / "eval_by_type.csv", encoding="utf-8"))) if (RES / "eval_by_type.csv").exists() else []
     if rows:
         types = []
@@ -56,7 +57,7 @@ def build() -> tuple[str, list[str]]:
             k = (r["type"], r["severity"])
             if k not in types:
                 types.append(k)
-        full = [m for m in models if not summ[m].get("is_subset")]  # subsets (smoke tests) are too small per type
+        full = [m for m in models if not summ[m].get("is_subset")]  # subset runs (smoke tests) are too small per type
         models = full
         head = "| Type | Severity | n | " + " | ".join(summ[m]["label"] for m in models) + " |"
         lines += ["", "**Top-1 accuracy by scenario type and severity** (controls: false-alarm rate)", "", head,
@@ -84,6 +85,7 @@ def build() -> tuple[str, list[str]]:
 
 
 def bullets(summ) -> list[str]:
+    """Draft one-line summaries from the headline agent and B2, each with its length without the ** markers."""
     a = summ.get("nvidia")  # headline agent model
     b = summ.get("baseline_scan")
     if not a:

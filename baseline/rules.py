@@ -1,4 +1,4 @@
-"""Deterministic baselines (no LLM). The agent is compared against both, honestly.
+"""Deterministic baselines (no LLM) that the agent is compared against.
 
 B1 "top_contribution" (the simple rule from the spec):
    1. detect_anomalies on the headline metric; if not flagged -> "no anomaly".
@@ -6,7 +6,7 @@ B1 "top_contribution" (the simple rule from the spec):
 B2 "scan_and_test" (a strong rule that uses the same tools the agent has):
    1. scan_segments over all dimensions (rate and share).
    2. significance_test the unusual candidates (BH across all tests).
-   3. report significant ones ranked by |hist_z|; if none, "no significant root cause".
+   3. report up to 3 significant ones ranked by |hist_z|; if none, "no significant root cause".
 """
 from __future__ import annotations
 

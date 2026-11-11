@@ -118,6 +118,8 @@ def make_llm(model: str):
 
 def run_one(model: str, sc: dict, base, llm=None, version: str = "v2", run_name: str | None = None,
             reorder: bool = False) -> dict:
+    """Run one scenario on its injected copy of the data and return the scored row; an exception becomes an
+    error row with no report."""
     store = apply_scenario(base, sc)
     inv = Investigation(store=store, chart_dir=out_dir(model) / "charts" / model / sc["id"])
     t0 = time.time()
@@ -271,7 +273,8 @@ def main(argv=None):
                   f"{(row.get('latency_s') or 0) / 60:.1f} min", flush=True)
         if i % 10 == 0 or i == len(scs):
             print(progress_line(path), flush=True)
-        # each failed scenario already retried for several minutes, so a per-minute limit would have cleared
+        # each infra failure already retried for several minutes, long enough for a per-minute limit to clear,
+        # so a streak of them points to a daily quota or an outage
         state["streak"] = state["streak"] + 1 if is_infra_failure(row) else 0
         if args.max_infra_streak and state["streak"] >= args.max_infra_streak:
             print(f"STOPPED: {state['streak']} scenarios in a row failed with no report (last error: "

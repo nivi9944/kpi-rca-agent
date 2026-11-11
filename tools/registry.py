@@ -183,6 +183,7 @@ def _hide(node, hidden: set):
 
 
 def openai_tools(extra: list[dict] | None = None, hidden_metrics: set | None = None) -> list[dict]:
+    """Function-calling specs for every registered tool, followed by any extra specs."""
     specs = []
     for name, (_, model, desc) in TOOLS.items():
         params = _hide(_inline_refs(model.model_json_schema()), set(hidden_metrics or ()))
@@ -193,7 +194,7 @@ def openai_tools(extra: list[dict] | None = None, hidden_metrics: set | None = N
 
 
 def execute(inv: Investigation, name: str, raw_args) -> dict:
-    """Validate args, run the tool, record evidence. Errors are returned (not raised) so the LLM can recover."""
+    """Validate args, run the tool and record its evidence. Errors are returned, not raised, so the LLM can recover."""
     if name not in TOOLS:
         return {"error": f"Unknown tool '{name}'. Available: {list(TOOLS)}"}
     fn, model, _ = TOOLS[name]

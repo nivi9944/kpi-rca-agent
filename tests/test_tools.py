@@ -101,6 +101,7 @@ def test_flat_series_not_flagged_and_drop_flagged():
 
 
 def test_robust_z_uses_trailing_history():
+    # every week has 100 orders: each change is 0, so the last week's robust z is 0
     s = score_series(make_store(), "orders")
     assert s["z"].iloc[-1] == pytest.approx(0.0)
 
@@ -109,6 +110,7 @@ def test_robust_z_uses_trailing_history():
 def test_two_proportion_matches_statsmodels():
     inv = inv_for({LAST: {"ontime_b": 0.5}})
     r = run_test(inv.store, "on_time_rate", "customer_state", "B", W, effect="rate")
+    # B in the target week (20 of 40 on time) against 4 baseline weeks of 32 of 40
     z, p = proportions_ztest([20, 4 * 32], [40, 160])
     assert r["test"] == "two-proportion z-test"
     assert r["p_value"] == pytest.approx(p)
@@ -222,7 +224,7 @@ def test_v3_money_rate_test_is_trimmed_mean_and_robust_to_big_tickets():
         assert run_test(st, "aov", "customer_state", "A", w, effect="rate")["test"] == "Welch t-test"
     finally:
         engine.set_engine("v3")
-    # the reason: one huge order hides a 30% price cut from the plain mean, not from the trimmed mean
+    # why: one 20,000 order masks a 30% price cut in Welch's plain-mean test; the 20% trimmed mean still sees it
     rng = np.random.default_rng(0)
     base = rng.normal(100, 5, 60)
     cut = np.r_[rng.normal(70, 5, 59), 20000.0]

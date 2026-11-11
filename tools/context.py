@@ -53,6 +53,7 @@ class Investigation:
     _n: int = 0
 
     def record(self, tool: str, args: dict, result: dict) -> dict:
+        """Store a cleaned tool result under the next evidence id and return it with that id."""
         self._n += 1
         eid = f"e{self._n}"
         out = clean(result)

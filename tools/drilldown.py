@@ -22,6 +22,11 @@ SMALL = "(small segments)"
 
 def drill_table(store, metric: str, dimension: str, week, n_baseline: int = 4,
                 filters: dict | None = None, min_support: int = 30):
+    """Per-segment delta and contribution_pct, plus totals (and mix/rate totals for mean metrics).
+
+    Segments with fewer than min_support rows are pooled into one "(small segments)" row. Rows are
+    sorted so the segments moving in the same direction as the total come first.
+    """
     m = metric_def(metric)
     t = store.segment_table(metric, dimension, week, n_baseline, filters)
     if m["kind"] == "sum":
@@ -62,6 +67,7 @@ def drill_table(store, metric: str, dimension: str, week, n_baseline: int = 4,
 
 def drill_down(inv: Investigation, metric: str, dimension: str, week: str, n_baseline: int = 4,
                filters: dict | None = None, top_k: int = 5, min_support: int = 30) -> dict:
+    """The top_k segments by contribution to the week's change, with totals."""
     m = metric_def(metric)
     t, tot = drill_table(inv.store, metric, dimension, week, n_baseline, filters, min_support)
     rows = []

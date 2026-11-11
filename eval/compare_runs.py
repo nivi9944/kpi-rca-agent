@@ -17,6 +17,8 @@ from inject.scenarios import load_manifest
 
 
 def reciprocal_rank(sc: dict, report: dict | None) -> float:
+    """1 / rank of the first cause matching the truth (averaged into MRR); 0 for controls, unconfirmed
+    reports and misses."""
     rep = report or {}
     if sc["is_control"] or not rep.get("anomaly_confirmed"):
         return 0.0

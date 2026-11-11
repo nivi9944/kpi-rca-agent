@@ -82,6 +82,7 @@ def api_failures(path: Path) -> int:
 
 
 def upstream_429s(since: str) -> int:
+    """Upstream 429 responses in the gateway container log over the `since` window (0 if docker fails)."""
     try:
         out = subprocess.run(["docker", "logs", "--since", since, "llm-gateway-gateway-1"], capture_output=True,
                              text=True, timeout=30, encoding="utf-8", errors="replace")
@@ -91,6 +92,7 @@ def upstream_429s(since: str) -> int:
 
 
 def run_step(name: str, args: list[str], env: dict) -> None:
+    """Run one eval.run step under the budget guard, restarting it on alerts, for at most 6 attempts."""
     path = run_file(args)
     llm = "--cache-rerun" not in args
     for _attempt in range(6):  # bounded: an outage cannot loop forever
@@ -108,8 +110,8 @@ def run_step(name: str, args: list[str], env: dict) -> None:
             hist = [h for h in hist if time.time() - h[0] <= 15 * 60 + 30]
             done_15 = hist[-1][1] - hist[0][1] if len(hist) > 1 else 0
             r429 = upstream_429s("15m")
-            # at 1 worker there is nothing to drop to (Ultra gets steady 429s even then), so a restart would
-            # only kill the scenario in progress: spikes only count with more than 1 worker
+            # With 1 worker there is nothing left to drop to, and Ultra returns steady 429s even then, so a
+            # restart would only kill the scenario in progress. Spikes count only above 1 worker.
             spike = n > 1 and len(hist) >= 3 and r429 > 3 * max(1, done_15)
             if api_failures(path) > fails0 or spike:
                 why = "new API failure" if api_failures(path) > fails0 else f"429 spike ({r429} in 15 min for {done_15} scenarios)"
@@ -125,13 +127,14 @@ def run_step(name: str, args: list[str], env: dict) -> None:
             log(f"end {name}: exit {p.returncode}, rows {len(rows(path))}, API failures left {left}")
             if left == 0 or "--cache-rerun" in args:
                 return
-            # retry API failures (resume skips finished scenarios)
+            # API failures remain: run again (eval.run skips finished scenarios)
     ALERT.write_text(f"{datetime.now():%Y-%m-%d %H:%M:%S} {name}: gave up after 6 attempts; "
                      f"{api_failures(path)} API failures left\n")
     log(f"gave up on {name} after 6 attempts")
 
 
 def project_after_v2() -> None:
+    """Project the phase's total time from the v2 pace; go to 3 workers if it exceeds the budget and 429s are rare."""
     t0 = datetime.fromisoformat(START.read_text().strip())
     elapsed_h = (datetime.now() - t0).total_seconds() / 3600
     v2 = rows(V2 / "runs" / "test_v2.jsonl")

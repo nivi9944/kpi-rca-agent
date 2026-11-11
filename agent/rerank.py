@@ -1,11 +1,11 @@
 """v2: evidence-based final ranking of the root causes the LLM submitted.
 
-The LLM still chooses the candidate causes, their effect labels and the narrative. After its report passes the
-grounding verifier, the causes are re-ordered by the strength of their significance evidence:
+The LLM still chooses the candidate causes, their effect labels and the narrative. After its report
+passes the grounding verifier, the causes are reordered by the strength of their significance evidence:
 significant first, then larger |hist_z|, then smaller q. A cause with no significant test is dropped.
 
-Which test counts for a cause: significance_test evidence on the same dimension and segment, preferring
-tests the cause cites, then tests whose effect matches the cause's label (mix = share, rate = rate).
+The test that counts for a cause is significance_test evidence on the same dimension and segment,
+preferring tests the cause cites, then tests whose effect matches its label (mix = share, rate = rate).
 """
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ EFFECT_OF = {"mix": "share", "rate": "rate", "volume": "volume"}
 
 
 def _tests_for(rc: dict, evidence: dict) -> list[dict]:
+    """Summaries of every significance_test on the cause's dimension and segment."""
     out = []
     cited = set(rc.get("evidence_ids") or [])
     want = EFFECT_OF.get(str(rc.get("effect")))
@@ -36,6 +37,7 @@ def _best(tests: list[dict]) -> dict | None:
 
 
 def _strength(t: dict | None) -> tuple:
+    """Sort key, smaller is stronger: significant first, then larger |hist_z|, then smaller q."""
     if not t:
         return (True, 0.0, 1.0)
     hz = abs(t["hist_z"]) if t.get("hist_z") is not None else 0.0

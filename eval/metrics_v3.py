@@ -34,6 +34,7 @@ def _base():
 
 
 def _strip(s: dict) -> dict:
+    """Copy of a summary without the per-scenario top-1 map (kept only for McNemar pairing)."""
     s = dict(s)
     s.pop("_top1_list", None)
     return s
@@ -41,6 +42,7 @@ def _strip(s: dict) -> dict:
 
 # ------------------------------------------------------------------ DEV verdict
 def dev_verdict() -> str:
+    """Compare v3 with v2-final on the DEV scenarios both completed; write results/v3/dev_verdict.md and return it."""
     base = _base()
     man = {s["id"]: s for s in load_manifest()}
     v2f = read_runs(ROOT / "results" / "runs" / "nvidia_v2final_dev.jsonl")
@@ -86,6 +88,7 @@ def dev_verdict() -> str:
 
 # ------------------------------------------------------------------ TEST metrics
 def main() -> dict:
+    """Score every TEST run with McNemar on PAIRS, over all scenarios and, if v3 stopped early, over v3's only."""
     base = _base()
     man = {s["id"]: s for s in load_manifest(ROOT / "inject" / "manifest_test.json")}
     runs = {k: read_runs(p) for k, p in TEST.items()}
@@ -129,6 +132,7 @@ def main() -> dict:
 
 # ------------------------------------------------------------------ draft summary (fallback)
 def draft_summary() -> None:
+    """Write a draft V3_SUMMARY.md from results/v3/summary.json, used when no final summary is written."""
     S = json.loads((V3 / "summary.json").read_text(encoding="utf-8"))
     st = json.loads((V3 / "status.json").read_text(encoding="utf-8")) if (V3 / "status.json").exists() else {}
     head = S.get("v3_completed_scope") or S["all"]

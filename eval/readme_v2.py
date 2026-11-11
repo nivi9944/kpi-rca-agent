@@ -1,8 +1,8 @@
-"""Write README.md for v2 from results files only, and print draft resume bullets.
+"""Write README.md for v2 from results files only, and print draft summary bullets.
 
   python -m eval.readme_v2
 
-Every number below is read from results/ (TEST: results/v2/*.json; DEV: results/runs/*.jsonl; data:
+Every number in the README is read from results/ (TEST: results/v2/*.json; DEV: results/runs/*.jsonl; data:
 results/data_summary.json; case study: results/case_study.json). Nothing is typed by hand.
 """
 from __future__ import annotations
@@ -31,6 +31,7 @@ def ci(w: dict) -> str:
 
 
 def dev_table() -> tuple[list[str], dict]:
+    """DEV table rows (top-1, top-3, MRR over planted scenarios) and {label: (top-1 hits, n planted)}."""
     man = {s["id"]: s for s in load_manifest()}
     runs = {"Agent v2": "nvidia_v2final_dev", "Agent v1": "nvidia", "B2: scan + test": "baseline_scan",
             "B1: top contribution": "baseline_topcontrib"}

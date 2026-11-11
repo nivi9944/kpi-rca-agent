@@ -35,7 +35,7 @@ REQUIRED = [
 
 
 def ensure_raw(raw: Path = RAW) -> None:
-    """Unzip any Olist zip found in data/raw (or the project root) if CSVs are missing."""
+    """If CSVs are missing, extract them from an Olist zip in data/raw, the project root or its parent."""
     if all((raw / f).exists() for f in REQUIRED):
         return
     raw.mkdir(parents=True, exist_ok=True)
@@ -137,6 +137,7 @@ DROP TABLE items_enriched; DROP TABLE pay_main; DROP TABLE rev; DROP TABLE order
 
 
 def build(db_path: Path = DEFAULT_DB, raw: Path = RAW) -> dict:
+    """Rebuild the database from scratch and return row, week and GMV counts."""
     ensure_raw(raw)
     if db_path.exists():
         db_path.unlink()

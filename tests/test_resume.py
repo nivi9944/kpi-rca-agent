@@ -1,3 +1,4 @@
+"""Resuming a run: which rows count as done, and how retried infra failures are scored and counted."""
 import json
 
 from eval.report_tables import read_jsonl

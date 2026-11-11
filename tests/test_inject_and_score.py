@@ -1,3 +1,4 @@
+"""Scenario injection on the synthetic fixture, and scoring against the planted ground truth."""
 import pandas as pd
 import pytest
 

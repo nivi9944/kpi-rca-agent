@@ -4,9 +4,9 @@
 
 Differences from the DEV manifest (inject/manifest.json), all by rule, none tuned on results:
 - Target weeks never overlap DEV target weeks and come from the same pool as DEV (from POOL_START, 2017-05-01,
-  with the same excluded event weeks), each with at least MIN_HISTORY_WEEKS of prior data. A first version
-  also used Olist's launch weeks (2017-03-27 to 2017-04-24); scenarios there were undetectable even for the
-  statistical baseline (thin, ramp-up history), so the set was rebuilt (results/v2/archive_launch_weeks).
+  with the same excluded event weeks), each with at least MIN_HISTORY_WEEKS of prior data. Olist's launch
+  weeks (2017-03-27 to 2017-04-24) are left out: scenarios there were undetectable even for the statistical
+  baseline because of the thin, ramp-up history (results/v2/archive_launch_weeks).
 - Target segments are drawn from the largest segments of each dimension (by volume in the whole window), so
   most TEST segments were never used on DEV.
 - A planted scenario must change its target metric in the target week; otherwise its week is redrawn
@@ -42,6 +42,7 @@ def _excluded(w: pd.Timestamp) -> bool:
 
 
 def free_weeks(store, metric: str, dev_weeks: set, max_abs_z: float | None = 2.0) -> list[pd.Timestamp]:
+    """Pool weeks not used on DEV, outside excluded ranges, with enough history (and |z| < max_abs_z if set)."""
     s = score_series(store, metric)
     s = s[(s["week"] >= to_week(TEST_POOL_START)) & (s["week"] <= to_week(POOL_END)) & s["z"].notna()]
     s = s[~s["week"].apply(_excluded) & ~s["week"].isin(dev_weeks)]
@@ -53,12 +54,14 @@ def free_weeks(store, metric: str, dev_weeks: set, max_abs_z: float | None = 2.0
 
 
 def top_segments(store, col: str, n: int, table: str = "orders", exclude=("", "unknown", "nan")) -> list[str]:
+    """The n most common values of col among non-canceled rows, skipping placeholder values."""
     df = store.orders if table == "orders" else store.items
     vc = df[df["is_canceled"] == 0][col].astype(str).value_counts()
     return [v for v in vc.index if v.lower() not in exclude][:n]
 
 
 def low_aov_categories(store, n: int) -> list[str]:
+    """Up to n of the 20 largest categories whose mean order value is below 80% of the overall mean."""
     o = store.orders[store.orders["is_canceled"] == 0]
     g = o.groupby("main_category")["order_value"].agg(["mean", "size"])
     overall = o["order_value"].mean()
@@ -67,6 +70,7 @@ def low_aov_categories(store, n: int) -> list[str]:
 
 
 def _changes_metric(store, sc: dict) -> bool:
+    """True if planting the scenario changes the target metric's value in the target week."""
     a = store.weekly(sc["metric"])
     b = apply_scenario(store, sc).weekly(sc["metric"])
     va = a.loc[a["week"] == to_week(sc["week"]), "value"]

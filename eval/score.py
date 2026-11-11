@@ -9,6 +9,7 @@ from __future__ import annotations
 
 
 def cause_matches(rc: dict, gt: dict) -> bool:
+    """Same dimension and segment as the truth; the effect must also match when the truth is mix or rate."""
     if str(rc.get("dimension")) != str(gt["dimension"]) or str(rc.get("segment")) != str(gt["segment"]):
         return False
     if gt.get("effect") in ("mix", "rate"):
@@ -36,6 +37,7 @@ def score_one(sc: dict, report: dict | None) -> dict:
 
 
 def pct(xs) -> float | None:
+    """Percent of truthy values, ignoring None (metrics that do not apply); None if nothing is left."""
     xs = [x for x in xs if x is not None]
     return round(100.0 * sum(bool(x) for x in xs) / len(xs), 1) if xs else None
 

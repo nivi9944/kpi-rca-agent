@@ -7,8 +7,8 @@ How it works:
    If nothing is cited, all evidence is used but the report is marked as citing nothing.
 3. A report number is grounded if some evidence number matches it within rounding tolerance
    (the precision the report wrote it with), allowing sign flips ("fell 18%" vs -18.0) and
-   fraction <-> percent (0.052 vs 5.2%).
-Ignored: dates (2018-03-12), ranks, and small integers 0-10 used as counts or list markers.
+   fraction to percent (0.052 vs 5.2%).
+Dates (2018-03-12), ranks and small integers 0-10 (counts, list markers) are ignored.
 """
 from __future__ import annotations
 
@@ -22,12 +22,14 @@ EVID_RE = re.compile(r"\be\d+\b")
 
 
 def _decimals(tok: str) -> int:
+    """Decimal places as written; scientific notation returns 12, which disables the rounding tolerance."""
     if "e" in tok.lower():
         return 12
     return len(tok.split(".")[1]) if "." in tok else 0
 
 
 def extract_numbers(text: str) -> list[tuple[float, int, str]]:
+    """(value, decimals, raw token) for each number in the text, skipping dates, evidence ids and small integers."""
     text = DATE_RE.sub(" ", text or "")
     text = EVID_RE.sub(" ", text)
     out = []
@@ -74,6 +76,7 @@ def is_grounded(value: float, decimals: int, evidence: list[float]) -> bool:
 
 
 def verify(report: dict, inv: Investigation) -> dict:
+    """Check every number in the report against the cited evidence and return grounding counts."""
     cited = set(report.get("evidence_ids") or [])
     for rc in report.get("root_causes") or []:
         cited |= set(rc.get("evidence_ids") or [])

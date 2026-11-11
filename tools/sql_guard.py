@@ -26,6 +26,7 @@ class SQLGuardError(ValueError):
 
 
 def check_sql(query: str) -> str:
+    """Strip comments and a trailing semicolon, then return the query or raise SQLGuardError."""
     q = re.sub(r"--[^\n]*", " ", query)
     q = re.sub(r"/\*.*?\*/", " ", q, flags=re.S).strip()
     q = q.rstrip(";").strip()
@@ -42,6 +43,7 @@ def check_sql(query: str) -> str:
 
 
 def run_sql(inv: Investigation, query: str) -> dict:
+    """Run a checked query on a fresh in-memory DuckDB holding the investigation's two fact tables."""
     q = check_sql(query)
     con = duckdb.connect(":memory:")
     con.register("fact_orders", inv.store.orders.drop(columns=["one"], errors="ignore"))
@@ -51,7 +53,7 @@ def run_sql(inv: Investigation, query: str) -> dict:
     try:
         cur = con.execute(q)
         cols = [d[0] for d in cur.description]
-        rows = cur.fetchmany(MAX_ROWS + 1)
+        rows = cur.fetchmany(MAX_ROWS + 1)  # one extra row shows whether the result was truncated
     except duckdb.InterruptException as e:
         raise SQLGuardError(f"Query timed out after {TIMEOUT_S}s") from e
     finally:

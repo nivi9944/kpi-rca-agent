@@ -1,4 +1,4 @@
-"""Streamlit demo: pick a metric + week (or a planted scenario), watch the tool calls, read the report.
+"""Streamlit demo: pick a metric and week (or a planted scenario), watch the tool calls, read the report.
 
   streamlit run app/streamlit_app.py
 """
@@ -81,7 +81,7 @@ if go:
             st.sidebar.metric("Latency (s)", f"{res.latency_s:.1f}")
             if res.error:
                 st.error(res.error)
-        except Exception as e:  # gateway down etc.
+        except Exception as e:  # gateway down or similar
             st.error(f"LLM not reachable ({e}). Start the gateway (docker compose up -d) or pick a baseline.")
     else:
         fn = scan_and_test if "B2" in runner else top_contribution

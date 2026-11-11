@@ -1,9 +1,9 @@
 """Anomaly detection with a robust z-score.
 
-For each week t we compute the change versus the average of the previous 4 weeks:
+For each week t, the change versus the average of the previous 4 weeks is
   sum metrics  (GMV, Orders):   c_t = value_t / mean(prev 4) - 1          (relative change)
   mean metrics (rates, AOV...):  c_t = value_t - mean(prev 4)              (absolute change)
-Then we score c_t against the previous 8 changes with the median and MAD (robust to outliers):
+c_t is then scored against the previous 8 changes with the median and MAD, which resist outliers:
   z_t = (c_t - median(c_{t-8..t-1})) / (1.4826 * MAD)
 A week is flagged when |z_t| >= 3.
 """
@@ -22,6 +22,7 @@ MIN_N = 30  # a mean metric needs at least this many rows in a week to be scored
 
 
 def score_series(store, metric: str, filters: dict | None = None) -> pd.DataFrame:
+    """Weekly series with baseline, change, z and is_anomaly columns added."""
     m = metric_def(metric)
     s = store.weekly(metric, filters).copy()
     base = s["value"].shift(1).rolling(BASE_WEEKS, min_periods=BASE_WEEKS).mean()
@@ -31,10 +32,11 @@ def score_series(store, metric: str, filters: dict | None = None) -> pd.DataFram
         s["change"] = s["value"] - base
         s.loc[s["n"] < MIN_N, "change"] = np.nan
     s["baseline"] = base
+    # shift(1): week t is scored only against earlier changes; at least 6 of the 8 must exist
     med = s["change"].shift(1).rolling(TRAIL, min_periods=6).median()
     mad = s["change"].shift(1).rolling(TRAIL, min_periods=6).apply(
         lambda x: np.median(np.abs(x - np.median(x))), raw=True)
-    # floor the scale so a flat history does not create infinite z-scores
+    # floor the scale so a flat history cannot produce huge or infinite z-scores
     floor = 0.01 if m["kind"] == "sum" else max(1e-4, 0.002 * float(np.nanmedian(np.abs(s["value"]))))
     scale = np.maximum(1.4826 * mad, floor)
     s["z"] = (s["change"] - med) / scale
@@ -45,6 +47,7 @@ def score_series(store, metric: str, filters: dict | None = None) -> pd.DataFram
 def detect_anomalies(inv: Investigation, metric: str, week: str | None = None,
                      start: str | None = None, end: str | None = None,
                      filters: dict | None = None) -> dict:
+    """Score the target week (if given) and list flagged weeks in [start, end], at most 20."""
     m = metric_def(metric)
     s = score_series(inv.store, metric, filters)
     out: dict = {"metric": metric, "method": f"robust z of change vs prev {BASE_WEEKS}-week avg, scored against trailing {TRAIL} weeks (median/MAD); flag |z|>={Z_THRESHOLD}",

@@ -2,12 +2,12 @@
 
 Which test:
   effect="share" (default for GMV / Orders, and for mix effects): did the segment's share of rows
-      change between the baseline weeks and the target week?  2x2 chi-square
-      (segment vs rest) x (baseline vs week). Robust to overall growth or seasonality,
+      change between the baseline weeks and the target week? 2x2 chi-square on
+      (segment vs rest) x (baseline vs week). Overall growth or seasonality does not trigger it,
       because it asks whether this segment moved differently from everything else.
   effect="rate" (default for mean metrics):
       binary metrics (on-time, cancellation, repeat) -> two-proportion z-test, week vs baseline
-      money metrics (AOV, avg item price), v3 engine -> Yuen trimmed-mean t-test (20% trimmed; robust to big tickets)
+      money metrics (AOV, avg item price), v3 engine -> Yuen trimmed-mean t-test (20% trimmed, resists big tickets)
       continuous metrics (AOV, delay, review)        -> Welch t-test (Mann-Whitney U reported too)
 
 Benjamini-Hochberg: every test in one investigation is added to a list; q-values are recomputed
@@ -29,6 +29,7 @@ MIN_N = 5
 
 
 def bh(pvals: list[float]) -> list[float]:
+    """Benjamini-Hochberg q-values, in the same order as pvals."""
     if not pvals:
         return []
     return list(multipletests(pvals, alpha=Q, method="fdr_bh")[1])
@@ -51,6 +52,7 @@ def _rows(store, metric, dimension, segment, week, n_baseline, filters):
 
 def run_test(store, metric: str, dimension: str, segment: str, week, n_baseline: int = 4,
              effect: str | None = None, filters: dict | None = None) -> dict:
+    """Raw test for one segment (no BH correction); p_value is 1.0 when there is too little data."""
     m = metric_def(metric)
     effect = effect or ("share" if m["kind"] == "sum" else "rate")
     df, in_seg, cur, base = _rows(store, metric, dimension, segment, week, n_baseline, filters)
@@ -82,7 +84,7 @@ def run_test(store, metric: str, dimension: str, segment: str, week, n_baseline:
         from tools.engine import TRIM, money_rate_test
         u_p = sps.mannwhitneyu(x1, x0, alternative="two-sided").pvalue
         if m.get("money") and money_rate_test() == "yuen":
-            # v3: a few big-ticket orders dominate a week's mean price; the 20% trimmed mean is robust to them
+            # v3: a few big-ticket orders dominate a week's mean price; the 20% trimmed mean resists them
             t, p = sps.ttest_ind(x1, x0, equal_var=False, trim=TRIM)
             res.update({"test": f"Yuen trimmed-mean t-test ({int(TRIM * 100)}% trimmed; money metric)", "statistic": t,
                         "p_value": p, "mann_whitney_p": u_p,
@@ -96,11 +98,12 @@ def run_test(store, metric: str, dimension: str, segment: str, week, n_baseline:
 
 def significance_test(inv: Investigation, metric: str, dimension: str, segment: str, week: str,
                       n_baseline: int = 4, effect: str | None = None, filters: dict | None = None) -> dict:
+    """Run the test, add it to the investigation's BH list, and require an unusual hist_z as well."""
     from tools.engine import hist_z
     from tools.segscan import segment_history_z
 
     res = run_test(inv.store, metric, dimension, segment, week, n_baseline, effect, filters)
-    p = float(res["p_value"]) if res["p_value"] == res["p_value"] else 1.0
+    p = float(res["p_value"]) if res["p_value"] == res["p_value"] else 1.0  # NaN != NaN, so NaN becomes 1.0
     inv.tests.append({"key": f"{metric}|{dimension}={segment}|{res['effect_tested']}", "p_value": p})
     q = bh([t["p_value"] for t in inv.tests])
     h = segment_history_z(inv.store, metric, dimension, week, res["effect_tested"], filters)

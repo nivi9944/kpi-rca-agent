@@ -68,7 +68,8 @@ def rows(path: Path) -> dict:
 
 
 def gateway_ok(timeout_min: int = 30) -> bool:
-    """Wait for the LLM gateway (it is down after a sleep until Docker is back); alert if it stays down."""
+    """Wait up to timeout_min for the LLM gateway health check (it stays down after a sleep until Docker is
+    back); write an alert and return False if it never answers."""
     import urllib.request
     end = time.time() + 60 * timeout_min
     while time.time() < end:
@@ -90,7 +91,7 @@ def run_phase(name: str, args: list[str]) -> None:
     if "nvidia" in args and not gateway_ok():
         log(f"gateway down: {name} not started")
         return
-    for attempt in range(3):  # re-pass only to retry API failures (resume skips finished scenarios)
+    for attempt in range(3):  # extra passes only retry API failures; finished scenarios are skipped
         log(f"start {name} (pass {attempt + 1}, 1 worker, deadline {deadline():%Y-%m-%d %H:%M})")
         out = subprocess.run([sys.executable, "-u", "-m", "eval.run", *args, "--workers", "1", "--engine", "v3",
                               "--deadline", deadline().isoformat(timespec="seconds")], cwd=ROOT,
@@ -114,6 +115,7 @@ def run_phase(name: str, args: list[str]) -> None:
 
 
 def dev_verdict() -> None:
+    """Replace any earlier v3 DEV verdict in DECISIONS.md, placing it before "## Model and provider" if present."""
     from eval.metrics_v3 import dev_verdict as dv
     text = dv()
     p = ROOT / "DECISIONS.md"
@@ -128,6 +130,7 @@ def dev_verdict() -> None:
 
 
 def finish() -> None:
+    """Close the progress_v3.ps1 window and suspend the machine."""
     subprocess.run(["powershell", "-NoProfile", "-Command",
                     "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*progress_v3.ps1*' } | "
                     "ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"])
@@ -152,7 +155,7 @@ def main():
     draft_summary()
     log("metrics computed, draft V3_SUMMARY.md written")
     set_status(phase="Done", done=datetime.now().isoformat(timespec="seconds"))
-    # give the interactive session up to 20 minutes to write the final summary, but never pass the ceiling
+    # allow up to 20 minutes for a final summary (marked by results/v3/FINALIZED), never past the ceiling
     limit = min(datetime.now() + timedelta(minutes=20), start_time() + timedelta(hours=CEILING_H))
     while datetime.now() < limit and not (V3 / "FINALIZED").exists():
         time.sleep(30)

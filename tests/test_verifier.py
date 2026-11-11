@@ -1,3 +1,4 @@
+"""Grounding verifier: report numbers must match a value in the cited evidence."""
 from agent.verifier import extract_numbers, verify
 from tools.context import Investigation
 from tests.fixtures.synth import make_store

@@ -64,6 +64,7 @@ def read_runs(path: Path) -> dict:
 
 
 def causes(rep: dict | None) -> list[dict]:
+    """Root causes by rank, or [] when the report does not confirm the anomaly."""
     rep = rep or {}
     if not rep.get("anomaly_confirmed"):
         return []
@@ -71,6 +72,7 @@ def causes(rep: dict | None) -> list[dict]:
 
 
 def with_fallback(v2: dict, b2: dict) -> dict:
+    """v2 rows where an empty v2 report takes B2's top cause (source=fallback, fallback_used=True)."""
     out = {}
     for i, r in v2.items():
         rep = r.get("report")
@@ -86,6 +88,10 @@ def with_fallback(v2: dict, b2: dict) -> dict:
 
 # ------------------------------------------------------------------ statistics
 def wilson(k: int, n: int, z: float = 1.96) -> dict:
+    """Wilson score interval for k successes in n, in percent.
+
+    center = (p + z^2/2n) / (1 + z^2/n), half-width = z * sqrt(p(1-p)/n + z^2/4n^2) / (1 + z^2/n).
+    Unlike the normal approximation it stays inside [0, 100] and keeps a nonzero width at p = 0 or 1."""
     if n == 0:
         return {"pct": None, "lo": None, "hi": None, "k": 0, "n": 0}
     p = k / n
@@ -96,6 +102,8 @@ def wilson(k: int, n: int, z: float = 1.96) -> dict:
 
 
 def mcnemar(a: list[bool], b: list[bool]) -> dict:
+    """Exact McNemar test on paired outcomes: only the discordant pairs matter, and under the null each is
+    equally likely to favour either side, so the p-value is a two-sided binomial test with p = 0.5."""
     only_a = sum(x and not y for x, y in zip(a, b))
     only_b = sum(y and not x for x, y in zip(a, b))
     n = only_a + only_b
@@ -104,6 +112,7 @@ def mcnemar(a: list[bool], b: list[bool]) -> dict:
 
 
 def kappa(a: list[bool], b: list[bool]) -> float | None:
+    """Cohen's kappa for two boolean ratings: (observed agreement - chance agreement) / (1 - chance)."""
     n = len(a)
     if not n:
         return None
@@ -117,7 +126,10 @@ BOOT_DRAWS, BOOT_SEED = 2000, 20270103
 
 
 def cluster_bootstrap(recs: list[dict]) -> dict:
-    """recs: one per scenario with week, planted, top1, top3, tp, fp, fn. Resample weeks, recompute metrics."""
+    """Week-clustered bootstrap 95% intervals (2.5th and 97.5th percentiles) for top-1, top-3 and F1.
+
+    recs holds one record per scenario with week, planted, top1, top3, tp, fp, fn. Each draw resamples whole
+    weeks with replacement and recomputes the metrics, so scenarios that share a week move together."""
     import numpy as np
     weeks = sorted({r["week"] for r in recs})
     by = {w: [r for r in recs if r["week"] == w] for w in weeks}
@@ -142,6 +154,7 @@ def cluster_bootstrap(recs: list[dict]) -> dict:
 
 
 def pctl(xs: list[float], q: float) -> float | None:
+    """Linearly interpolated quantile q of the non-None values."""
     xs = sorted(x for x in xs if x is not None)
     if not xs:
         return None
@@ -155,6 +168,8 @@ _TRUE_IMPACT: dict = {}
 
 
 def true_impact(sc: dict, base) -> float | None:
+    """Planted R$ impact in the target week (cached): GMV injected minus clean for GMV scenarios, the AOV change
+    times the injected order count for AOV scenarios, None for other metrics."""
     if sc["id"] in _TRUE_IMPACT:
         return _TRUE_IMPACT[sc["id"]]
     val = None
@@ -177,6 +192,9 @@ def true_impact(sc: dict, base) -> float | None:
 
 # ------------------------------------------------------------------ ungrounded-number classification
 def classify_ungrounded(row: dict) -> Counter:
+    """Count a row's ungrounded numbers by kind: field (structured report field), threshold_notation
+    (e.g. "p < 0.001"), derived (a sum, difference, ratio or percent change of two numbers in the cited
+    evidence), or invented."""
     out = Counter()
     ver = row.get("verification") or {}
     bad = ver.get("ungrounded") or []
@@ -188,10 +206,11 @@ def classify_ungrounded(row: dict) -> Counter:
     for rc in rep.get("root_causes") or []:
         cited |= set(rc.get("evidence_ids") or [])
     ev = row.get("evidence") or {}
-    pool = [e for e in cited if e in ev] or list(ev)
+    pool = [e for e in cited if e in ev] or list(ev)  # nothing cited: use all evidence
     nums: list[float] = []
     for e in pool:
         _walk_numbers(ev[e]["result"], nums)
+    # drop NaN (x != x) and huge values; cap at 400 because the pairwise set below grows quadratically
     nums = sorted({round(x, 10) for x in nums if x == x and abs(x) < 1e12})[:400]
     derived = set()
     for i, a in enumerate(nums):
@@ -223,6 +242,7 @@ def classify_ungrounded(row: dict) -> Counter:
 
 # ------------------------------------------------------------------ per-investigator metrics
 def rr(sc: dict, rep: dict | None) -> float:
+    """Reciprocal rank of the first cause matching the truth (0 if none); averaged into MRR."""
     for k, c in enumerate(causes(rep), 1):
         if cause_matches(c, sc["ground_truth"]):
             return 1.0 / k
@@ -230,6 +250,8 @@ def rr(sc: dict, rep: dict | None) -> float:
 
 
 def evaluate(rows: dict, man: dict, base) -> dict:
+    """All metrics in the module docstring for one investigator's rows. "_top1_list" (per-scenario top-1)
+    is for McNemar pairing and is popped before the summary is written."""
     ids = [i for i in man if i in rows]
     planted = [i for i in ids if not man[i]["is_control"]]
     controls = [i for i in ids if man[i]["is_control"]]
@@ -411,7 +433,8 @@ def main() -> dict:
         if a in t1 and b in t1:
             common = sorted(set(t1[a]) & set(t1[b]))
             tests[f"{a} vs {b}"] = {"n": len(common), **mcnemar([t1[a][i] for i in common], [t1[b][i] for i in common])}
-    # stability: v2 repeat on a fixed random subset, gateway cache bypassed
+    # stability: v2 repeat on a fixed random subset, gateway cache bypassed; "correct" means top-1 right on a
+    # planted scenario or no false alarm on a control
     stab = {}
     rep = read_runs(V2 / "runs" / "test_v2_repeat.jsonl")
     if rep and "v2" in runs:

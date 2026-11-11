@@ -1,3 +1,4 @@
+"""v2 evaluation statistics: Wilson, McNemar, kappa, the B2 fallback, ungrounded classes, clustered bootstrap."""
 import pytest
 
 from eval.metrics_v2 import classify_ungrounded, kappa, mcnemar, wilson, with_fallback

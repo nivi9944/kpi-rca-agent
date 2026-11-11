@@ -1,10 +1,13 @@
-"""v2 deterministic guards, applied after the report passes the grounding verifier.
+"""Deterministic guards on the final report.
 
-1. Drop guard: a root cause without a significant test (on the same dimension and segment) is removed.
-   The LLM's order is kept. (Optional `reorder=True` uses the evidence re-ranker instead, which was tried
-   on DEV and rejected; see DECISIONS.md.)
-2. Consistency guard: if at least one root cause backed by a significant test remains, anomaly_confirmed is
-   set to true; if none remains, root_causes is empty.
+v2 guards run after the report passes the grounding verifier:
+1. Drop guard: a root cause with no significant test on the same dimension and segment is removed.
+   The LLM's order is kept. `reorder=True` uses the evidence re-ranker instead (tried on DEV and
+   rejected; see DECISIONS.md).
+2. Consistency guard: if at least one significant root cause remains, anomaly_confirmed is set to true;
+   otherwise root_causes is left empty.
+
+The v3 candidate guard (bottom of the file) runs when submit_report is called.
 """
 from __future__ import annotations
 
@@ -12,6 +15,7 @@ from agent.rerank import _best, _tests_for, rerank
 
 
 def apply_guards(report: dict, evidence: dict, reorder: bool = False) -> tuple[dict, dict]:
+    """Return the guarded report and a log of what changed (before/after cause lists, flags)."""
     rcs = sorted(report.get("root_causes") or [], key=lambda r: r.get("rank", 99))
     before = [f"{c.get('dimension')}={c.get('segment')}" for c in rcs]
     if reorder:
@@ -46,6 +50,7 @@ def significant_candidates(evidence: dict) -> set[tuple[str, str]]:
 
 
 def candidate_violations(report: dict, evidence: dict) -> list[str]:
+    """Labels (dimension=segment) of reported causes that no significant test in the evidence supports."""
     allowed = significant_candidates(evidence)
     return [f"{c.get('dimension')}={c.get('segment')}" for c in report.get("root_causes") or []
             if (_norm(c.get("dimension")), _norm(c.get("segment"))) not in allowed]

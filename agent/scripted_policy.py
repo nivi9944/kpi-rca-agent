@@ -1,6 +1,7 @@
-"""A deterministic fake LLM that follows the investigation recipe. Used ONLY to test the agent loop,
-the verifier and the eval pipeline end to end without an API key. Its runs go to trial_results/,
-never to results/.
+"""A deterministic fake LLM that follows the investigation recipe.
+
+It exists only to test the agent loop, the verifier and the eval pipeline end to end without an API key.
+Its runs go to trial_results/, never to results/.
 """
 from __future__ import annotations
 
@@ -11,6 +12,7 @@ from agent.llm_client import ScriptedLLM
 
 
 def _tool_outputs(messages):
+    """Parsed JSON of every tool message so far ({} for anything that does not parse)."""
     outs = []
     for m in messages:
         if m.get("role") == "tool":
@@ -27,6 +29,8 @@ def _call(name, args, i):
 
 
 def policy(messages):
+    """Pick the next step from the number of tool results so far: detect, scan, test up to three unusual
+    candidates, estimate the impact of the first significant one, then submit."""
     task = next(m["content"] for m in messages if m["role"] == "user")
     metric = re.search(r"\((\w+)\) changed", task).group(1)
     week = re.search(r"week of (\d{4}-\d{2}-\d{2})", task).group(1)

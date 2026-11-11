@@ -1,9 +1,10 @@
-"""Block until the current evaluation phase finishes (or something needs attention). Prints one line.
+"""Block until the current evaluation phase finishes or needs attention, then print one line.
 
-  python -m eval.wait_phase
+  python -m eval.wait_phase [--until-all]
 
-Reads only results/progress_status.txt (written by eval.progress). Exits when the phase name changes or
-all phases are complete, when a failed run appears, or when there has been no progress for 30 minutes.
+Polls results/progress_status.txt (written by eval.progress) once a minute. Exits when the phase name
+changes (with --until-all, only when all phases are complete), when a failed run appears, when
+results/v2/ALERT.txt is updated, or after 30 minutes without progress.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ STALL_S = 30 * 60
 
 
 def read() -> tuple[str, str, int, str]:
+    """(phase name, "done/total", failed runs, raw line); a line without 4 fields is returned as the phase."""
     s = STATUS.read_text(encoding="utf-8").strip() if STATUS.exists() else ""
     parts = [p.strip() for p in s.split("|")]
     if len(parts) < 4:
@@ -29,7 +31,7 @@ ALERT = STATUS.parent / "v2" / "ALERT.txt"
 
 def main():
     import sys
-    until_all = "--until-all" in sys.argv  # only wake when everything is done or something breaks
+    until_all = "--until-all" in sys.argv
     alert0 = ALERT.stat().st_mtime if ALERT.exists() else 0
     phase0, done0, _, _ = read()
     last_change, last_done = time.time(), done0

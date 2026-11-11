@@ -1,6 +1,7 @@
-"""Build every results file from results/runs/*.jsonl (the ONLY source of resume numbers).
+"""Build every results file from results/runs/*.jsonl; no number in them comes from anywhere else.
 
   python -m eval.report_tables
+
 Outputs: results/eval_summary.json, baseline_summary.json, eval_by_type.csv, model_comparison.json,
          accuracy_by_severity.png, agent_vs_baseline.png, examples/*.md
 """
@@ -51,6 +52,7 @@ def infra_failures(res: Path = RES, subdir: str = "runs") -> dict[str, int]:
 
 
 def score_rows(rows: list[dict]) -> list[dict]:
+    """Each row's score dict plus the cost and grounding fields that eval.score.summarize averages."""
     out = []
     for r in rows:
         s = dict(r["score"])
@@ -174,7 +176,8 @@ def main(res: Path = RES) -> dict:
     if cache:
         (res / "cache_rerun.json").write_text(json.dumps(cache, indent=2))
 
-    # three example reports from the best available agent run (fall back to a baseline)
+    # up to three example reports from the first agent in AGENTS that has a run (else any run),
+    # preferring a correct answer for each type
     ex_model = next((m for m in AGENTS if m in runs), None) or next(iter(runs))
     exdir = res / "examples"
     exdir.mkdir(exist_ok=True)

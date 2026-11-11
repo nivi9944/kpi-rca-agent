@@ -1,4 +1,7 @@
-"""System prompt. The rules here are also enforced in code (verifier, step cap, schema)."""
+"""System prompts and the follow-up messages sent when a report is rejected.
+
+The prompt rules are also enforced in code (verifier, step cap, schema).
+"""
 
 SYSTEM_PROMPT = """You are a data analyst agent investigating why a business KPI changed in one week of an \
 e-commerce marketplace (Olist, Brazil, money in R$). You work ONLY through the provided tools.
@@ -25,7 +28,7 @@ Investigation id: {inv_id}"""
 
 SYSTEM_PROMPT_V1 = SYSTEM_PROMPT  # v1 behaviour, kept verbatim for the v1 vs v2 comparison
 
-# v2: two short rules added (see DECISIONS.md)
+# v2 adds two short rules (see DECISIONS.md)
 SYSTEM_PROMPT_V2 = SYSTEM_PROMPT_V1.replace("\n\nInvestigation id:", """
 7. Rank root_causes by evidence strength: significant tests first, then larger |hist_z| from scan_segments, \
 then smaller q. Label a cause "mix" only if its share test (effect="share") is significant, "rate" only if \

@@ -1,9 +1,9 @@
-"""Real-world case study (not part of the accuracy score): run the deterministic tools on real weeks.
+"""Case study on real weeks: run the deterministic tools where nothing is planted (not part of the accuracy score).
 
   python -m eval.case_study   -> results/case_study.json
 
 Weeks: Black Friday (2017-11-20) and the Brazilian truckers' strike (week of 2018-05-21).
-We only report what the data shows; nothing here is planted.
+The output reports only what the data shows.
 """
 from __future__ import annotations
 
@@ -31,6 +31,7 @@ def main() -> dict:
         dec = execute(inv, "decompose_metric", {"metric": metric, "week": week})
         drills = {d: execute(inv, "drill_down", {"metric": metric, "dimension": d, "week": week, "top_k": 3})["top_segments"]
                   for d in ("customer_state", "product_category", "seller_state")}
+        # B2 scan on its own Investigation, so its evidence and tests stay separate from the calls above
         rep = scan_and_test(Investigation(), metric, week)
         execute(inv, "make_chart", {"kind": "series", "metric": metric, "week": week})
         out[f"{name}:{metric}"] = {"week": week, "headline": det, "drivers": dec.get("drivers"),

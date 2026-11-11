@@ -14,6 +14,7 @@ from tools.drilldown import drill_table
 
 def estimate_impact(inv: Investigation, metric: str, dimension: str, segment: str, week: str,
                     n_baseline: int = 4, filters: dict | None = None) -> dict:
+    """Impact of one segment in the target week, with the method used (formulas in the module docstring)."""
     m = metric_def(metric)
     st = inv.store
     t, tot = drill_table(st, metric, dimension, week, n_baseline, filters, min_support=0)

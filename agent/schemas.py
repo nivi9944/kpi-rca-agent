@@ -1,4 +1,4 @@
-"""Pydantic contracts for the final report (the agent submits it through the submit_report tool)."""
+"""Pydantic schema for the final report, which the agent submits through the submit_report tool."""
 from __future__ import annotations
 
 from typing import Literal, Optional

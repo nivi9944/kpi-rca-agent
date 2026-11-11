@@ -85,6 +85,7 @@ def _bar(done: int, total: int, width: int = 30) -> str:
 
 
 def snapshot() -> tuple[str, str]:
+    """Panel text and the one-line status written to results/progress_status.txt."""
     lines, status = [], ""
     phase_info = []
     for name, path, man, subset in PHASES:
@@ -130,7 +131,8 @@ def snapshot() -> tuple[str, str]:
         if name not in LLM_PHASES:
             avg_min = 0.02
         eta_run = (len(ids) - len(done)) * avg_min / nw
-        # whole TEST phase: remaining scenarios of every LLM phase at the observed pace
+        # whole TEST phase: remaining scenarios of every LLM phase at the observed pace; rule baselines take
+        # about 0.02 min per scenario and a cache rerun is assumed to take a tenth of an LLM scenario
         pace = sum(avg_min_llm) / len(avg_min_llm) if avg_min_llm else avg_min
         rem = 0.0
         for n2, _, ids2, _, done2 in phase_info:

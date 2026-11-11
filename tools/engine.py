@@ -1,9 +1,9 @@
 """Analysis-engine settings that changed between versions, kept switchable so earlier results stay reproducible.
 
   v2: segment-scan threshold |hist_z| >= 4.25 (8.2% natural alarm rate), Welch t-test for continuous rates
-  v3: threshold 4.0 (11.2% natural alarm rate, results/calibration.json; an accepted trade-off for recall) and,
-      for money metrics (AOV, avg_item_price), Yuen's trimmed-mean test (20% trimming), robust to the few
-      big-ticket orders that dominate a week's mean
+  v3: threshold 4.0 (11.2% natural alarm rate, results/calibration.json; a higher alarm rate accepted for
+      recall) and, for money metrics (AOV, avg_item_price), Yuen's trimmed-mean test (20% trimming), which
+      resists the few big-ticket orders that dominate a week's mean
 
 Select with the KPI_ENGINE environment variable or `set_engine`; the default is v3.
 """

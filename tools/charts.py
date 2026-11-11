@@ -18,11 +18,12 @@ BLUE, RED, GREY = "#2B6CB0", "#C53030", "#A0AEC0"
 
 import threading  # noqa: E402
 
-_CHART_LOCK = threading.Lock()  # pyplot is not thread-safe (parallel evaluation workers)
+_CHART_LOCK = threading.Lock()  # pyplot is not thread-safe, and evaluation runs workers in parallel
 
 
 def make_chart(inv: Investigation, kind: str, metric: str, week: str, dimension: str | None = None,
                n_baseline: int = 4, weeks_back: int = 16, top_k: int = 8) -> dict:
+    """Save a PNG: kind="series" plots the weekly metric, kind="segments" plots contribution by dimension."""
     with _CHART_LOCK:
         return _make_chart(inv, kind, metric, week, dimension, n_baseline, weeks_back, top_k)
 

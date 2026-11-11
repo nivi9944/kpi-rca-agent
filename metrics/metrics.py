@@ -46,7 +46,7 @@ def to_week(w) -> pd.Timestamp:
 
 @dataclass
 class Store:
-    """In-memory copy of the two fact tables. Scenarios inject problems into a copy of this."""
+    """In-memory copy of the two fact tables. Scenarios inject problems into a copy of it."""
 
     orders: pd.DataFrame
     items: pd.DataFrame
@@ -79,7 +79,7 @@ class Store:
 
     # ---------- core computations ----------
     def rows(self, metric: str, filters: dict | None = None) -> pd.DataFrame:
-        """Rows that feed a metric: filtered table with a 'value' column."""
+        """Rows that feed a metric: the filtered table with a 'value' column added."""
         m = metric_def(metric)
         df = self.table(m["table"])
         if m.get("filter"):
@@ -108,11 +108,12 @@ class Store:
 
     @staticmethod
     def baseline_weeks(week, n_weeks: int = 4) -> list[pd.Timestamp]:
+        """The n_weeks weeks before the target week, oldest first."""
         w = to_week(week)
         return [w - pd.Timedelta(weeks=i) for i in range(n_weeks, 0, -1)]
 
     def period_value(self, metric: str, weeks: list, filters: dict | None = None) -> dict:
-        """Value over a set of weeks. sum -> average weekly sum; mean -> pooled mean."""
+        """Value over a set of weeks: the average weekly sum for sum metrics, the pooled mean for mean metrics."""
         m = metric_def(metric)
         df = self.rows(metric, filters)
         wk = [to_week(w) for w in weeks]

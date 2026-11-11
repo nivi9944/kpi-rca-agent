@@ -1,3 +1,4 @@
+"""SQL guard: read-only SELECT/WITH only, no file or database access, and a row limit."""
 import pytest
 
 from tests.fixtures.synth import make_store

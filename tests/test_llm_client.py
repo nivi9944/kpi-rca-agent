@@ -1,3 +1,4 @@
+"""LLM client presets (provider, model, pacing, price), the token throttle, cost estimates and the budget guard."""
 import json
 
 import pytest

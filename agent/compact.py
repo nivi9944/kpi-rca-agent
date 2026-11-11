@@ -1,13 +1,13 @@
-"""Compact tool results for the model's context, to cut tokens without losing information.
+"""Shrink tool results before they go into the model's context, without losing information.
 
-Only the text the MODEL reads is compacted. Evidence (inv.evidence) is stored in full, and the verifier
-checks report numbers against that full evidence, so grounding is unaffected.
+Only the copy the model reads is compacted. Evidence (inv.evidence) is stored in full, and the verifier
+checks report numbers against that full copy, so grounding is unaffected.
 
-Rules (nothing numeric is ever removed):
-  1. Echo-only fields: a top-level field whose value equals the argument of the same name that the model
-     just sent (metric, week, dimension, segment, filters) is dropped. The model already has it.
-  2. Duplicated text: a top-level guidance string (method, rule, note, ...; 25+ characters) whose exact text was already shown
-     earlier in this investigation is dropped. The first occurrence is always kept, so no information is lost.
+Rules (numeric values are never removed):
+  1. Echoed fields: a top-level field whose value equals the call argument of the same name
+     (metric, week, dimension, segment, filters) is dropped, since the model just sent it.
+  2. Repeated text: a top-level guidance string (method, rule, note, ...; 25+ characters) whose exact
+     text was already shown earlier in this investigation is dropped. The first occurrence is kept.
   3. Compact JSON: no spaces after separators.
 """
 from __future__ import annotations
@@ -15,10 +15,12 @@ from __future__ import annotations
 import json
 
 KEEP = {"evidence_id", "error"}
-MIN_TEXT = 25  # only long guidance text is de-duplicated; short values such as "up" or a test name always stay
+MIN_TEXT = 25  # only long guidance text is de-duplicated; short values such as "up" or a test name stay
 
 
 class Compactor:
+    """Per-investigation compactor; remembers which guidance strings the model has already seen."""
+
     def __init__(self):
         self.seen_text: set[tuple[str, str]] = set()
 
@@ -38,4 +40,5 @@ class Compactor:
 
 
 def dumps(obj) -> str:
+    """JSON without spaces after separators; non-JSON values fall back to str()."""
     return json.dumps(obj, default=str, separators=(",", ":"))

@@ -1,5 +1,6 @@
 # Live progress window for the v3 run. Single file; relaunch any time with:
 #   powershell -NoExit -ExecutionPolicy Bypass -File eval\progress_v3.ps1
+# Add -Once to draw one frame and exit.
 # Reads only the run JSONL files, results/v3/status.json, results/v3/ALERT.txt and gateway log counts.
 # Refreshes every 30 s. Source is ASCII only: box-drawing characters are built from their code points.
 
@@ -21,7 +22,7 @@ $Phases = @(
     @{ Name = 'TEST: B2 (v3 engine)'; File = 'results\v3\runs\test_b2_v3.jsonl';   Total = 170; Llm = $false },
     @{ Name = 'TEST: v3';             File = 'results\v3\runs\test_v3.jsonl';      Total = 170; Llm = $true  }
 )
-$Cache = @{}                                # file -> @{ Lines = n; Rows = list of summaries }
+$Cache = @{}                                # file -> @{ Lines = n; Rows = list of summaries }; only new lines are parsed
 
 function Read-Rows($file) {
     if (-not (Test-Path $file)) { return @() }
@@ -94,6 +95,7 @@ while ($true) {
         $t1 = @($planted | Where-Object { $_.Top1 -eq $true }).Count
         $t1s = if ($planted.Count -gt 0) { '{0:0.0}%' -f (100.0 * $t1 / $planted.Count) } else { '-' }
         $lat = @($x.Rows | Where-Object { $_.Latency -gt 0 } | ForEach-Object { $_.Latency })
+        # ETA pace: observed average, else 3.5 min for an LLM phase and 0.02 min for a rule baseline
         $avgMin = if ($lat.Count -gt 0) { ($lat | Measure-Object -Average).Average / 60 } elseif ($p.Llm) { 3.5 } else { 0.02 }
         $etaMin = ($total - $done) * $avgMin
         if (-not $stop) { $totalEtaMin += $etaMin }

@@ -1,4 +1,4 @@
-"""Calibrate the segment history-z threshold on NATURAL weeks only (no planted anomalies).
+"""Calibrate the segment history-z threshold on natural weeks only (no planted anomalies).
 
 For each metric and each week in the scenario pool (clean data), scan all segments and count the
 week as a "natural alarm" if any segment passes: classical BH q <= 0.05 AND |hist_z| >= T.

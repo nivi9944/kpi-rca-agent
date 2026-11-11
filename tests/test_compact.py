@@ -1,3 +1,4 @@
+"""Tool-result compaction: argument echoes and repeated guidance text are dropped, numbers are kept."""
 import json
 
 from agent.compact import Compactor, dumps
